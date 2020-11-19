@@ -1,0 +1,76 @@
+I:\Libraries\Nova\NovaEditor\bin\Debug\NovaEditor.dll
+I:\Libraries\Nova\NovaEditor\bin\Debug\NovaEditor.pdb
+I:\Libraries\Nova\NovaEditor\bin\Debug\UnityEditor.dll
+I:\Libraries\Nova\NovaEditor\bin\Debug\UnityEngine.dll
+I:\Libraries\Nova\NovaEditor\bin\Debug\Unity.CompilationPipeline.Common.dll
+I:\Libraries\Nova\NovaEditor\bin\Debug\Unity.Cecil.dll
+I:\Libraries\Nova\NovaEditor\bin\Debug\Unity.SerializationLogic.dll
+I:\Libraries\Nova\NovaEditor\bin\Debug\ExCSS.Unity.dll
+I:\Libraries\Nova\NovaEditor\bin\Debug\Unity.Legacy.NRefactory.dll
+I:\Libraries\Nova\NovaEditor\bin\Debug\Unity.CecilTools.dll
+I:\Libraries\Nova\NovaEditor\bin\Debug\UnityEditor.xml
+I:\Libraries\Nova\NovaEditor\bin\Debug\UnityEngine.xml
+I:\Libraries\Nova\NovaEditor\obj\Debug\NovaEditor.csprojAssemblyReference.cache
+I:\Libraries\Nova\NovaEditor\obj\Debug\NovaEditor.csproj.CoreCompileInputs.cache
+I:\Libraries\Nova\NovaEditor\obj\Debug\NovaEditor.csproj.CopyComplete
+I:\Libraries\Nova\NovaEditor\obj\Debug\NovaEditor.dll
+I:\Libraries\Nova\NovaEditor\obj\Debug\NovaEditor.pdb
+G:\Libraries\Nova\NovaEditor\bin\Debug\NovaEditor.dll
+G:\Libraries\Nova\NovaEditor\bin\Debug\NovaEditor.pdb
+G:\Libraries\Nova\NovaEditor\bin\Debug\UnityEditor.dll
+G:\Libraries\Nova\NovaEditor\bin\Debug\UnityEngine.dll
+G:\Libraries\Nova\NovaEditor\bin\Debug\Unity.CompilationPipeline.Common.dll
+G:\Libraries\Nova\NovaEditor\bin\Debug\Unity.Cecil.dll
+G:\Libraries\Nova\NovaEditor\bin\Debug\Unity.SerializationLogic.dll
+G:\Libraries\Nova\NovaEditor\bin\Debug\ExCSS.Unity.dll
+G:\Libraries\Nova\NovaEditor\bin\Debug\Unity.Legacy.NRefactory.dll
+G:\Libraries\Nova\NovaEditor\bin\Debug\Unity.CecilTools.dll
+G:\Libraries\Nova\NovaEditor\bin\Debug\UnityEditor.xml
+G:\Libraries\Nova\NovaEditor\bin\Debug\UnityEngine.xml
+G:\Libraries\Nova\NovaEditor\obj\Debug\NovaEditor.csprojAssemblyReference.cache
+G:\Libraries\Nova\NovaEditor\obj\Debug\NovaEditor.csproj.CoreCompileInputs.cache
+G:\Libraries\Nova\NovaEditor\obj\Debug\NovaEditor.csproj.CopyComplete
+G:\Libraries\Nova\NovaEditor\obj\Debug\NovaEditor.dll
+G:\Libraries\Nova\NovaEditor\obj\Debug\NovaEditor.pdb
+E:\OneDrive - STARFORGED\Drive Backup\Libraries\Nova\NovaEditor\bin\Debug\NovaEditor.dll
+E:\OneDrive - STARFORGED\Drive Backup\Libraries\Nova\NovaEditor\bin\Debug\NovaEditor.pdb
+E:\OneDrive - STARFORGED\Drive Backup\Libraries\Nova\NovaEditor\bin\Debug\UnityEditor.dll
+E:\OneDrive - STARFORGED\Drive Backup\Libraries\Nova\NovaEditor\bin\Debug\UnityEngine.dll
+E:\OneDrive - STARFORGED\Drive Backup\Libraries\Nova\NovaEditor\bin\Debug\Unity.CompilationPipeline.Common.dll
+E:\OneDrive - STARFORGED\Drive Backup\Libraries\Nova\NovaEditor\bin\Debug\Unity.Cecil.dll
+E:\OneDrive - STARFORGED\Drive Backup\Libraries\Nova\NovaEditor\bin\Debug\Unity.SerializationLogic.dll
+E:\OneDrive - STARFORGED\Drive Backup\Libraries\Nova\NovaEditor\bin\Debug\ExCSS.Unity.dll
+E:\OneDrive - STARFORGED\Drive Backup\Libraries\Nova\NovaEditor\bin\Debug\Unity.Legacy.NRefactory.dll
+E:\OneDrive - STARFORGED\Drive Backup\Libraries\Nova\NovaEditor\bin\Debug\Unity.CecilTools.dll
+E:\OneDrive - STARFORGED\Drive Backup\Libraries\Nova\NovaEditor\bin\Debug\UnityEditor.xml
+E:\OneDrive - STARFORGED\Drive Backup\Libraries\Nova\NovaEditor\bin\Debug\UnityEngine.xml
+E:\OneDrive - STARFORGED\Drive Backup\Libraries\Nova\NovaEditor\obj\Debug\NovaEditor.csprojAssemblyReference.cache
+E:\OneDrive - STARFORGED\Drive Backup\Libraries\Nova\NovaEditor\obj\Debug\NovaEditor.csproj.CoreCompileInputs.cache
+E:\OneDrive - STARFORGED\Drive Backup\Libraries\Nova\NovaEditor\obj\Debug\NovaEditor.csproj.CopyComplete
+E:\OneDrive - STARFORGED\Drive Backup\Libraries\Nova\NovaEditor\obj\Debug\NovaEditor.dll
+E:\OneDrive - STARFORGED\Drive Backup\Libraries\Nova\NovaEditor\obj\Debug\NovaEditor.pdb
+E:\OneDrive - STARFORGED\Drive Backup\Libraries\Nova\NovaEditor\bin\Debug\Nova.dll
+E:\OneDrive - STARFORGED\Drive Backup\Libraries\Nova\NovaEditor\bin\Debug\UnityEngine.UI.dll
+E:\OneDrive - STARFORGED\Drive Backup\Libraries\Nova\NovaEditor\bin\Debug\Nova.pdb
+E:\OneDrive - STARFORGED\Drive Backup\Libraries\Nova\NovaEditor\bin\Debug\UnityEngine.UI.pdb
+S:\OneDrive - STARFORGED\Drive Backup\Libraries\Nova\NovaEditor\bin\Debug\NovaEditor.dll
+S:\OneDrive - STARFORGED\Drive Backup\Libraries\Nova\NovaEditor\bin\Debug\NovaEditor.pdb
+S:\OneDrive - STARFORGED\Drive Backup\Libraries\Nova\NovaEditor\bin\Debug\Nova.dll
+S:\OneDrive - STARFORGED\Drive Backup\Libraries\Nova\NovaEditor\bin\Debug\UnityEditor.dll
+S:\OneDrive - STARFORGED\Drive Backup\Libraries\Nova\NovaEditor\bin\Debug\UnityEngine.dll
+S:\OneDrive - STARFORGED\Drive Backup\Libraries\Nova\NovaEditor\bin\Debug\UnityEngine.UI.dll
+S:\OneDrive - STARFORGED\Drive Backup\Libraries\Nova\NovaEditor\bin\Debug\Unity.CompilationPipeline.Common.dll
+S:\OneDrive - STARFORGED\Drive Backup\Libraries\Nova\NovaEditor\bin\Debug\Unity.Cecil.dll
+S:\OneDrive - STARFORGED\Drive Backup\Libraries\Nova\NovaEditor\bin\Debug\Unity.SerializationLogic.dll
+S:\OneDrive - STARFORGED\Drive Backup\Libraries\Nova\NovaEditor\bin\Debug\ExCSS.Unity.dll
+S:\OneDrive - STARFORGED\Drive Backup\Libraries\Nova\NovaEditor\bin\Debug\Unity.Legacy.NRefactory.dll
+S:\OneDrive - STARFORGED\Drive Backup\Libraries\Nova\NovaEditor\bin\Debug\Unity.CecilTools.dll
+S:\OneDrive - STARFORGED\Drive Backup\Libraries\Nova\NovaEditor\bin\Debug\Nova.pdb
+S:\OneDrive - STARFORGED\Drive Backup\Libraries\Nova\NovaEditor\bin\Debug\UnityEditor.xml
+S:\OneDrive - STARFORGED\Drive Backup\Libraries\Nova\NovaEditor\bin\Debug\UnityEngine.xml
+S:\OneDrive - STARFORGED\Drive Backup\Libraries\Nova\NovaEditor\bin\Debug\UnityEngine.UI.pdb
+S:\OneDrive - STARFORGED\Drive Backup\Libraries\Nova\NovaEditor\obj\Debug\NovaEditor.csprojAssemblyReference.cache
+S:\OneDrive - STARFORGED\Drive Backup\Libraries\Nova\NovaEditor\obj\Debug\NovaEditor.csproj.CoreCompileInputs.cache
+S:\OneDrive - STARFORGED\Drive Backup\Libraries\Nova\NovaEditor\obj\Debug\NovaEditor.csproj.CopyComplete
+S:\OneDrive - STARFORGED\Drive Backup\Libraries\Nova\NovaEditor\obj\Debug\NovaEditor.dll
+S:\OneDrive - STARFORGED\Drive Backup\Libraries\Nova\NovaEditor\obj\Debug\NovaEditor.pdb

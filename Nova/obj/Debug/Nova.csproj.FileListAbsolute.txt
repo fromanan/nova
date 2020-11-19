@@ -1,0 +1,62 @@
+H:\Libraries\Nova\Nova\bin\Debug\Nova.dll
+H:\Libraries\Nova\Nova\bin\Debug\Nova.pdb
+H:\Libraries\Nova\Nova\bin\Debug\UnityEngine.dll
+H:\Libraries\Nova\Nova\bin\Debug\UnityEngine.UI.dll
+H:\Libraries\Nova\Nova\bin\Debug\UnityEngine.xml
+H:\Libraries\Nova\Nova\bin\Debug\UnityEngine.UI.pdb
+H:\Libraries\Nova\Nova\obj\Debug\Nova.csprojAssemblyReference.cache
+H:\Libraries\Nova\Nova\obj\Debug\Nova.csproj.CoreCompileInputs.cache
+H:\Libraries\Nova\Nova\obj\Debug\Nova.csproj.CopyComplete
+H:\Libraries\Nova\Nova\obj\Debug\Nova.dll
+H:\Libraries\Nova\Nova\obj\Debug\Nova.pdb
+E:\Libraries\Nova\Nova\bin\Debug\Nova.dll
+E:\Libraries\Nova\Nova\bin\Debug\Nova.pdb
+E:\Libraries\Nova\Nova\bin\Debug\UnityEngine.dll
+E:\Libraries\Nova\Nova\bin\Debug\UnityEngine.UI.dll
+E:\Libraries\Nova\Nova\bin\Debug\UnityEngine.xml
+E:\Libraries\Nova\Nova\bin\Debug\UnityEngine.UI.pdb
+E:\Libraries\Nova\Nova\obj\Debug\Nova.csprojAssemblyReference.cache
+E:\Libraries\Nova\Nova\obj\Debug\Nova.csproj.CoreCompileInputs.cache
+E:\Libraries\Nova\Nova\obj\Debug\Nova.csproj.CopyComplete
+E:\Libraries\Nova\Nova\obj\Debug\Nova.dll
+E:\Libraries\Nova\Nova\obj\Debug\Nova.pdb
+I:\Libraries\Nova\Nova\bin\Debug\Nova.dll
+I:\Libraries\Nova\Nova\bin\Debug\Nova.pdb
+I:\Libraries\Nova\Nova\bin\Debug\UnityEngine.dll
+I:\Libraries\Nova\Nova\bin\Debug\UnityEngine.xml
+I:\Libraries\Nova\Nova\bin\Debug\UnityEngine.UI.pdb
+I:\Libraries\Nova\Nova\obj\Debug\Nova.csprojAssemblyReference.cache
+I:\Libraries\Nova\Nova\obj\Debug\Nova.csproj.CoreCompileInputs.cache
+I:\Libraries\Nova\Nova\obj\Debug\Nova.csproj.CopyComplete
+I:\Libraries\Nova\Nova\obj\Debug\Nova.dll
+I:\Libraries\Nova\Nova\obj\Debug\Nova.pdb
+G:\Libraries\Nova\Nova\bin\Debug\Nova.dll
+G:\Libraries\Nova\Nova\bin\Debug\Nova.pdb
+G:\Libraries\Nova\Nova\bin\Debug\UnityEngine.dll
+G:\Libraries\Nova\Nova\bin\Debug\UnityEngine.xml
+G:\Libraries\Nova\Nova\bin\Debug\UnityEngine.UI.pdb
+G:\Libraries\Nova\Nova\obj\Debug\Nova.csprojAssemblyReference.cache
+G:\Libraries\Nova\Nova\obj\Debug\Nova.csproj.CoreCompileInputs.cache
+G:\Libraries\Nova\Nova\obj\Debug\Nova.csproj.CopyComplete
+G:\Libraries\Nova\Nova\obj\Debug\Nova.dll
+G:\Libraries\Nova\Nova\obj\Debug\Nova.pdb
+E:\OneDrive - STARFORGED\Drive Backup\Libraries\Nova\Nova\bin\Debug\Nova.dll
+E:\OneDrive - STARFORGED\Drive Backup\Libraries\Nova\Nova\bin\Debug\Nova.pdb
+E:\OneDrive - STARFORGED\Drive Backup\Libraries\Nova\Nova\bin\Debug\UnityEngine.dll
+E:\OneDrive - STARFORGED\Drive Backup\Libraries\Nova\Nova\bin\Debug\UnityEngine.xml
+E:\OneDrive - STARFORGED\Drive Backup\Libraries\Nova\Nova\bin\Debug\UnityEngine.UI.pdb
+E:\OneDrive - STARFORGED\Drive Backup\Libraries\Nova\Nova\obj\Debug\Nova.csprojAssemblyReference.cache
+E:\OneDrive - STARFORGED\Drive Backup\Libraries\Nova\Nova\obj\Debug\Nova.csproj.CoreCompileInputs.cache
+E:\OneDrive - STARFORGED\Drive Backup\Libraries\Nova\Nova\obj\Debug\Nova.csproj.CopyComplete
+E:\OneDrive - STARFORGED\Drive Backup\Libraries\Nova\Nova\obj\Debug\Nova.dll
+E:\OneDrive - STARFORGED\Drive Backup\Libraries\Nova\Nova\obj\Debug\Nova.pdb
+S:\OneDrive - STARFORGED\Drive Backup\Libraries\Nova\Nova\bin\Debug\Nova.dll
+S:\OneDrive - STARFORGED\Drive Backup\Libraries\Nova\Nova\bin\Debug\Nova.pdb
+S:\OneDrive - STARFORGED\Drive Backup\Libraries\Nova\Nova\bin\Debug\UnityEngine.dll
+S:\OneDrive - STARFORGED\Drive Backup\Libraries\Nova\Nova\bin\Debug\UnityEngine.xml
+S:\OneDrive - STARFORGED\Drive Backup\Libraries\Nova\Nova\bin\Debug\UnityEngine.UI.pdb
+S:\OneDrive - STARFORGED\Drive Backup\Libraries\Nova\Nova\obj\Debug\Nova.csprojAssemblyReference.cache
+S:\OneDrive - STARFORGED\Drive Backup\Libraries\Nova\Nova\obj\Debug\Nova.csproj.CoreCompileInputs.cache
+S:\OneDrive - STARFORGED\Drive Backup\Libraries\Nova\Nova\obj\Debug\Nova.csproj.CopyComplete
+S:\OneDrive - STARFORGED\Drive Backup\Libraries\Nova\Nova\obj\Debug\Nova.dll
+S:\OneDrive - STARFORGED\Drive Backup\Libraries\Nova\Nova\obj\Debug\Nova.pdb
