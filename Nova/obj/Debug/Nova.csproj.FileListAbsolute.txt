@@ -60,3 +60,14 @@ S:\OneDrive - STARFORGED\Drive Backup\Libraries\Nova\Nova\obj\Debug\Nova.csproj.
 S:\OneDrive - STARFORGED\Drive Backup\Libraries\Nova\Nova\obj\Debug\Nova.csproj.CopyComplete
 S:\OneDrive - STARFORGED\Drive Backup\Libraries\Nova\Nova\obj\Debug\Nova.dll
 S:\OneDrive - STARFORGED\Drive Backup\Libraries\Nova\Nova\obj\Debug\Nova.pdb
+C:\Users\StarForged Admin\Documents\Source\Nova\Nova\bin\Debug\Nova.dll
+C:\Users\StarForged Admin\Documents\Source\Nova\Nova\bin\Debug\Nova.pdb
+C:\Users\StarForged Admin\Documents\Source\Nova\Nova\bin\Debug\UnityEditor.dll
+C:\Users\StarForged Admin\Documents\Source\Nova\Nova\bin\Debug\UnityEditor.UI.dll
+C:\Users\StarForged Admin\Documents\Source\Nova\Nova\bin\Debug\UnityEngine.dll
+C:\Users\StarForged Admin\Documents\Source\Nova\Nova\bin\Debug\UnityEngine.UI.dll
+C:\Users\StarForged Admin\Documents\Source\Nova\Nova\obj\Debug\Nova.csprojAssemblyReference.cache
+C:\Users\StarForged Admin\Documents\Source\Nova\Nova\obj\Debug\Nova.csproj.CoreCompileInputs.cache
+C:\Users\StarForged Admin\Documents\Source\Nova\Nova\obj\Debug\Nova.csproj.CopyComplete
+C:\Users\StarForged Admin\Documents\Source\Nova\Nova\obj\Debug\Nova.dll
+C:\Users\StarForged Admin\Documents\Source\Nova\Nova\obj\Debug\Nova.pdb
