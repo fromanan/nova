@@ -2,7 +2,6 @@ namespace Nova.Library.Files
 {
     using System.IO;
     using UnityEngine;
-    using UnityEditor;
 
     public static class FileSystem
     {

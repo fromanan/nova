@@ -1,0 +1,17 @@
+using System.Collections.Specialized;
+using System.Net;
+using System.Text;
+
+namespace Nova.Library.Web
+{
+    public static class Forms
+    {
+        public static string FormPost(string url, NameValueCollection postData)
+        {
+            using (WebClient webClient = new WebClient())
+            {
+                return Encoding.ASCII.GetString(webClient.UploadValues(url, postData));
+            }
+        }
+    }
+}

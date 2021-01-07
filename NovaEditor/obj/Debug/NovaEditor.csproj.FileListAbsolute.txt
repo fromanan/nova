@@ -95,3 +95,22 @@ C:\Users\StarForged Admin\Documents\Source\Nova\NovaEditor\obj\Debug\NovaEditor.
 C:\Users\StarForged Admin\Documents\Source\Nova\NovaEditor\obj\Debug\NovaEditor.csproj.CopyComplete
 C:\Users\StarForged Admin\Documents\Source\Nova\NovaEditor\obj\Debug\NovaEditor.dll
 C:\Users\StarForged Admin\Documents\Source\Nova\NovaEditor\obj\Debug\NovaEditor.pdb
+D:\Source\Nova\NovaEditor\bin\Debug\NovaEditor.dll
+D:\Source\Nova\NovaEditor\bin\Debug\NovaEditor.pdb
+D:\Source\Nova\NovaEditor\bin\Debug\Nova.dll
+D:\Source\Nova\NovaEditor\bin\Debug\UnityEngine.UI.dll
+D:\Source\Nova\NovaEditor\bin\Debug\Unity.CompilationPipeline.Common.dll
+D:\Source\Nova\NovaEditor\bin\Debug\Unity.Cecil.dll
+D:\Source\Nova\NovaEditor\bin\Debug\Unity.SerializationLogic.dll
+D:\Source\Nova\NovaEditor\bin\Debug\ExCSS.Unity.dll
+D:\Source\Nova\NovaEditor\bin\Debug\Unity.Legacy.NRefactory.dll
+D:\Source\Nova\NovaEditor\bin\Debug\Unity.CecilTools.dll
+D:\Source\Nova\NovaEditor\bin\Debug\Nova.pdb
+D:\Source\Nova\NovaEditor\bin\Debug\UnityEditor.xml
+D:\Source\Nova\NovaEditor\bin\Debug\UnityEngine.xml
+D:\Source\Nova\NovaEditor\bin\Debug\UnityEngine.UI.pdb
+D:\Source\Nova\NovaEditor\obj\Debug\NovaEditor.csprojAssemblyReference.cache
+D:\Source\Nova\NovaEditor\obj\Debug\NovaEditor.csproj.CoreCompileInputs.cache
+D:\Source\Nova\NovaEditor\obj\Debug\NovaEditor.csproj.CopyComplete
+D:\Source\Nova\NovaEditor\obj\Debug\NovaEditor.dll
+D:\Source\Nova\NovaEditor\obj\Debug\NovaEditor.pdb

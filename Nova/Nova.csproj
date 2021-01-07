@@ -53,6 +53,7 @@
         <Compile Include="Library\Classes\Flags.cs" />
         <Compile Include="Library\Extensions\ColliderExtensions.cs" />
         <Compile Include="Library\Extensions\GameObjectExtensions.cs" />
+        <Compile Include="Library\Extensions\StringExtensions.cs" />
         <Compile Include="Library\Extensions\TransformExtensions.cs" />
         <Compile Include="Library\Files\Asset.cs" />
         <Compile Include="Library\Files\FileSystem.cs" />
@@ -64,6 +65,9 @@
         <Compile Include="Library\Utilities\ObjExporter.cs" />
         <Compile Include="Library\Utilities\PlayerFunctions.cs" />
         <Compile Include="Library\Utilities\UIFunctions.cs" />
+        <Compile Include="Library\Web\Email.cs" />
+        <Compile Include="Library\Web\Forms.cs" />
+        <Compile Include="Library\Web\Hosts.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -71,3 +71,14 @@ C:\Users\StarForged Admin\Documents\Source\Nova\Nova\obj\Debug\Nova.csproj.CoreC
 C:\Users\StarForged Admin\Documents\Source\Nova\Nova\obj\Debug\Nova.csproj.CopyComplete
 C:\Users\StarForged Admin\Documents\Source\Nova\Nova\obj\Debug\Nova.dll
 C:\Users\StarForged Admin\Documents\Source\Nova\Nova\obj\Debug\Nova.pdb
+D:\Source\Nova\Nova\bin\Debug\Nova.dll
+D:\Source\Nova\Nova\bin\Debug\Nova.pdb
+D:\Source\Nova\Nova\bin\Debug\UnityEditor.dll
+D:\Source\Nova\Nova\bin\Debug\UnityEditor.UI.dll
+D:\Source\Nova\Nova\bin\Debug\UnityEngine.dll
+D:\Source\Nova\Nova\bin\Debug\UnityEngine.UI.dll
+D:\Source\Nova\Nova\obj\Debug\Nova.csprojAssemblyReference.cache
+D:\Source\Nova\Nova\obj\Debug\Nova.csproj.CoreCompileInputs.cache
+D:\Source\Nova\Nova\obj\Debug\Nova.csproj.CopyComplete
+D:\Source\Nova\Nova\obj\Debug\Nova.dll
+D:\Source\Nova\Nova\obj\Debug\Nova.pdb
