@@ -8,6 +8,8 @@ namespace Nova.Library.Utilities
         {
             if (other.root.childCount > 1 && other.root.GetChild(1).childCount > 1)
                 return other.root.GetChild(1).GetChild(0).CompareTag("Player");
+            if (other.root.childCount > 1 && other.root.GetChild(1).childCount > 1)
+                return other.root.GetChild(1).GetChild(0).CompareTag("Player");
             return false;
         }
 

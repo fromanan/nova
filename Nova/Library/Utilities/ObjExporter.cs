@@ -5,6 +5,7 @@ using System.Text;
 
 namespace Nova.Library.Utilities
 {
+    // Written for exporting uTerrains to OBJ files
     public static class ObjExporter
     {
         private static char pathChar = Path.DirectorySeparatorChar;

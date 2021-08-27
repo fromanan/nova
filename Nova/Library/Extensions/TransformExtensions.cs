@@ -4,12 +4,14 @@ namespace Nova.Library.Extensions
 {
     public static class TransformExtensions
     {
+        // Employs the Physics Update loop to translate frame independently
         public static void SmoothMoveTowards(this Transform transform, Vector3 destination, float moveSpeed)
         {
             transform.position = Vector3.Lerp(destination, transform.position,
                 Mathf.Pow(0.9f, Time.deltaTime * moveSpeed));
         }
 
+        // Employs the Physics Update loop to rotate frame independently
         public static void SmoothRotateTowards(this Transform transform, Vector3 newRotation, float turnRate)
         {
             transform.rotation = Quaternion.RotateTowards(
@@ -40,6 +42,7 @@ namespace Nova.Library.Extensions
             }
         }
 
+        // TODO: Does not always result in the precise center
         public static Vector3 Center(this Transform transform)
         {
             Vector3 sum = transform.position;
@@ -55,15 +58,17 @@ namespace Nova.Library.Extensions
             return sum;
         }
 
+        // Destroys all children objects of a transform
         public static void ClearChildren(this Transform transform, bool playMode = true)
         {
             foreach (Transform child in transform)
             {
-                if (playMode) GameObject.Destroy(child.gameObject);
-                else GameObject.DestroyImmediate(child.gameObject);
+                if (playMode) Object.Destroy(child.gameObject);
+                else Object.DestroyImmediate(child.gameObject);
             }
         }
 
+        // Transfers child transforms to a new parent transform
         public static void BulkReparent(this Transform parent, Transform[] transforms)
         {
             foreach (Transform child in transforms)
@@ -72,6 +77,7 @@ namespace Nova.Library.Extensions
             }
         }
 
+        // Generates a direction quaternion based on two points
         public static Quaternion DirectionFromPoints(Transform origin, Transform target)
         {
             return Quaternion.LookRotation((target.position - origin.position).normalized);
