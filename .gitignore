@@ -1,1 +1,7 @@
 .idea
+bin
+obj
+packages
+*.exe
+*.pdb
+*.apk
