@@ -43,6 +43,7 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="Library\Extensions\EditorExtensions.cs" />
         <Compile Include="Library\Files\EditorFileSystem.cs" />
         <Compile Include="Library\Utilities\GELScreenshotUtility.cs" />
         <Compile Include="Library\Utilities\ScreenshotUtility.cs" />
