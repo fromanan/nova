@@ -1,4 +1,6 @@
+using System.Linq;
 using Nova.Library.Files;
+using NovaCore.Library.Files;
 using UnityEditor;
 using UnityEngine;
 
@@ -8,7 +10,7 @@ namespace NovaEditor.Files
     {
         public static bool ValidateFolder(string folder, params string[] folderParentHierarchy)
         {
-            string path = FileSystem.GeneratePath(folderParentHierarchy + folder);
+            string path = FileSystem.BuildPath(folderParentHierarchy.Append(folder).ToArray());
             if (AssetDatabase.IsValidFolder(path)) return true;
             
             // TODO: Should include error checking (path could not be made)

@@ -1,16 +1,15 @@
 using System;
 using System.IO;
-using Nova.Library.Utilities.Functions;
+using NovaCore.Library.Files;
 using UnityEngine;
+using Guid = NovaCore.Library.Utilities.Guid;
 using Object = UnityEngine.Object;
 
 namespace Nova.Library.Files
 {
     public class Asset : Object
     {
-        private Guid guid;
-        
-        public Guid Guid => guid;
+        public System.Guid guid { get; }
     
         private string filepath;
     
@@ -30,19 +29,19 @@ namespace Nova.Library.Files
         // Set the Filepath Attribute and Decode a File to the Class if One Exists
         public Asset(string assetPath)
         {
-            guid = GUID.Generate();
+            guid = Guid.Generate();
             CreateEntry(assetPath);
         }
     
         public Asset(string assetPath, string guid)
         {
-            this.guid = GUID.Load(guid);
+            this.guid = Guid.Load(guid);
             CreateEntry(assetPath);
         }
     
         private void CreateEntry(string assetPath)
         {
-            filepath = $"{assetPath}{FileSystem.SEPARATOR}{guid}.{Extension}";
+            filepath = FileSystem.BuildPath(assetPath, $"{guid}.{Extension}");
             
             dateCreated = File.GetCreationTime(filepath);
             dateModified = File.GetLastWriteTime(filepath);

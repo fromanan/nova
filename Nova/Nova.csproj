@@ -49,26 +49,26 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="Library\Attachables\Billboard.cs" />
         <Compile Include="Library\Attachables\LightFlickerEffect.cs" />
-        <Compile Include="Library\Classes\Flags.cs" />
         <Compile Include="Library\Extensions\ColliderExtensions.cs" />
         <Compile Include="Library\Extensions\GameObjectExtensions.cs" />
-        <Compile Include="Library\Extensions\StringExtensions.cs" />
         <Compile Include="Library\Extensions\TransformExtensions.cs" />
+        <Compile Include="Library\Extensions\VectorExtensions.cs" />
         <Compile Include="Library\Files\Asset.cs" />
-        <Compile Include="Library\Files\FileSystem.cs" />
-        <Compile Include="Library\Utilities\Functions\GUID.cs" />
-        <Compile Include="Library\Utilities\Functions\Hash.cs" />
-        <Compile Include="Library\Utilities\Functions\Math.cs" />
-        <Compile Include="Library\Utilities\Functions\Threading.cs" />
+        <Compile Include="Library\Files\NovaFileSystem.cs" />
+        <Compile Include="Library\Interactions\InteractMessage.cs" />
         <Compile Include="Library\Utilities\InputFunctions.cs" />
         <Compile Include="Library\Utilities\ObjExporter.cs" />
         <Compile Include="Library\Utilities\PlayerFunctions.cs" />
-        <Compile Include="Library\Utilities\UIFunctions.cs" />
-        <Compile Include="Library\Web\Email.cs" />
-        <Compile Include="Library\Web\Forms.cs" />
-        <Compile Include="Library\Web\Hosts.cs" />
+        <Compile Include="Library\Utilities\Threading.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
+    </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\NovaCore\NovaCore.csproj">
+        <Project>{b98bdb12-7d23-4f51-a60a-816a30c66ef2}</Project>
+        <Name>NovaCore</Name>
+      </ProjectReference>
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

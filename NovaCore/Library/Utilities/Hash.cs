@@ -3,7 +3,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Nova.Library.Utilities.Functions
+namespace NovaCore.Library.Utilities
 {
     public static class Hash
     {

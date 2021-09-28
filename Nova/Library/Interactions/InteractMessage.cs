@@ -1,26 +1,26 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace Nova.Library.Utilities
+namespace Nova.Library.Interactions
 {
-    public class UIFunctions
+    public class InteractMessage
     {
-        public enum messagePriority
+        public enum MessagePriority
         {
-            noMessage,
-            highPriority,
-            mediumPriority,
-            lowPriority
+            Hidden,
+            High,
+            Medium,
+            Low
         }
 
-        private messagePriority currentMessagePriority = messagePriority.noMessage;
+        private MessagePriority currentMessagePriority = MessagePriority.Hidden;
         private static readonly int ShowMessage = Animator.StringToHash("ShowMessage");
 
-        public static void ShowInteractMessage(string message, messagePriority priority)
+        public static void ShowInteractMessage(string message, MessagePriority priority)
         {
         }
 
-        public static void ShowWarningMessage(string message, messagePriority priority)
+        public static void ShowWarningMessage(string message, MessagePriority priority)
         {
             GameObject warningMsgUI = GameObject.FindGameObjectWithTag("WarningMsg");
 

@@ -52,6 +52,10 @@
       <Folder Include="Library\Dialogue" />
     </ItemGroup>
     <ItemGroup>
+      <ProjectReference Include="..\NovaCore\NovaCore.csproj">
+        <Project>{b98bdb12-7d23-4f51-a60a-816a30c66ef2}</Project>
+        <Name>NovaCore</Name>
+      </ProjectReference>
       <ProjectReference Include="..\Nova\Nova.csproj">
         <Project>{3099d215-7155-4ee7-8006-0d76e3b072c9}</Project>
         <Name>Nova</Name>

@@ -2,7 +2,7 @@
 
 namespace Nova.Library.Utilities
 {
-    public static class InputFunctions
+    public static class NovaInput
     {
         /// <summary>
         /// Returns true if mouse moves, false otherwise

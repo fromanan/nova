@@ -1,6 +1,9 @@
 using System;
+using System.IO;
+using System.Linq;
+using System.Text;
 
-namespace Nova.Library.Extensions
+namespace NovaCore.Library.Extensions
 {
     public static class StringExtensions
     {
@@ -49,5 +52,26 @@ namespace Nova.Library.Extensions
                    str.Substring(str.Length - substr.Length, substr.Length) == substr;
         }
         #endregion
+        
+        public static string Enclose(this string str, string front, string back)
+        {
+            return str.Insert(0, front).Insert(str.Length + 1, back);
+        }
+
+        public static void Save(this StringBuilder stringBuilder, string filename)
+        {
+            File.WriteAllText(filename, stringBuilder.ToString());
+        }
+        
+        public static string Truncate(this string value, int maxChars)
+        {
+            return value.Length <= maxChars ? value : value.Substring(0, maxChars) + "...";
+        }
+
+        // https://stackoverflow.com/questions/541954/how-would-you-count-occurrences-of-a-string-actually-a-char-within-a-string
+        public static int CountOccurrences(this string str, string substr)
+        {
+            return str.Select((c, i) => str.Substring(i)).Count(sub => sub.StartsWith(substr));
+        }
     }
 }

@@ -6,12 +6,12 @@ namespace Nova.Library.Extensions
     {
         public static T GetComponent<T>(this Collision other)
         {
-            return other.GetComponent<T>();
+            return other.gameObject.GetComponent<T>();
         }
     
         public static T GetComponent<T>(this Collider other)
         {
-            return other.GetComponent<T>();
+            return other.gameObject.GetComponent<T>();
         }
 
         public static bool CompareTag(this Collision other, string tag)

@@ -2,15 +2,15 @@
 using UnityEngine;
 using System.IO;
 using System.Text;
+using NovaCore.Library.Files;
 
 namespace Nova.Library.Utilities
 {
     // Written for exporting uTerrains to OBJ files
     public static class ObjExporter
     {
-        private static char pathChar = Path.DirectorySeparatorChar;
-        
-        public static string UTERRAINS_CHUNK_PATH = $"{Application.dataPath}{pathChar}Art{pathChar}Meshes{pathChar}uTerrains";
+        public static string UTERRAINS_CHUNK_PATH = 
+            FileSystem.BuildPath(Application.dataPath, "Art", "Meshes", "uTerrains");
 
         public static string MeshToString(MeshFilter mf)
         {
@@ -106,14 +106,17 @@ namespace Nova.Library.Utilities
         {
             MeshToFile(m, Guid.NewGuid().ToString());
         }
+        
+        public static string MeshPath(string filename) => 
+            FileSystem.BuildPath(UTERRAINS_CHUNK_PATH, $"{filename}.obj");
 
         public static void MeshToFile(MeshFilter mf, string filename)
         {
             Debug.Log("Started Save Operation");
 
-            CheckForPath();
+            VerifyPath();
 
-            string location = $"{UTERRAINS_CHUNK_PATH}{pathChar}{filename}.obj";
+            string location = MeshPath(filename);
             using (StreamWriter sw = new StreamWriter(location))
             {
                 string meshData = MeshToString(mf);
@@ -128,9 +131,9 @@ namespace Nova.Library.Utilities
         {
             Debug.Log("Started Save Operation");
 
-            CheckForPath();
+            VerifyPath();
 
-            string location = $"{UTERRAINS_CHUNK_PATH}{pathChar}{filename}.obj";
+            string location = MeshPath(filename);
             using (StreamWriter sw = new StreamWriter(location))
             {
                 string meshData = MeshToString(mesh);
@@ -141,7 +144,7 @@ namespace Nova.Library.Utilities
             Debug.Log($"Successfully Saved file to {location}");
         }
 
-        private static void CheckForPath()
+        private static void VerifyPath()
         {
             if (!Directory.Exists(UTERRAINS_CHUNK_PATH))
             {
