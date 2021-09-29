@@ -5,6 +5,11 @@
         <LangVersion>7.3</LangVersion>
     </PropertyGroup>
 
+    <PropertyGroup>
+        <AssemblyOriginatorKeyFile>novacore.snk</AssemblyOriginatorKeyFile>
+        <SignAssembly>True</SignAssembly>
+    </PropertyGroup>
+
     <ItemGroup>
       <Reference Include="System.Windows.Forms" />
     </ItemGroup>
