@@ -1,7 +1,7 @@
 using System;
 using System.IO;
-using NovaCore.Library.Files;
 using UnityEngine;
+using static NovaCore.Library.Files.FileSystem;
 using Guid = NovaCore.Library.Utilities.Guid;
 using Object = UnityEngine.Object;
 
@@ -9,18 +9,10 @@ namespace Nova.Library.Files
 {
     public class Asset : Object
     {
-        public System.Guid guid { get; }
-    
-        private string filepath;
-    
-        public string Filepath => filepath;
-    
-        private DateTime dateCreated;
-        private DateTime dateModified;
-    
-        public DateTime DateCreated => dateCreated;
-    
-        public DateTime DateModified => dateModified;
+        public System.Guid guid { get; private set; }
+        public string Filepath { get; private set; }
+        public DateTime DateCreated { get; private set; }
+        public DateTime DateModified { get; private set; }
 
         private const string EXTENSION = "nva";
 
@@ -41,12 +33,12 @@ namespace Nova.Library.Files
     
         private void CreateEntry(string assetPath)
         {
-            filepath = FileSystem.BuildPath(assetPath, $"{guid}.{Extension}");
+            Filepath = BuildPath(assetPath, $"{guid}.{Extension}");
             
-            dateCreated = File.GetCreationTime(filepath);
-            dateModified = File.GetLastWriteTime(filepath);
+            DateCreated = File.GetCreationTime(Filepath);
+            DateModified = File.GetLastWriteTime(Filepath);
             
-            if (File.Exists(filepath)) Decode();
+            if (File.Exists(Filepath)) Decode();
             else Encode();
         }
     
@@ -58,7 +50,7 @@ namespace Nova.Library.Files
         
         public void Encode()
         {
-            using (FileStream fs = FileSystem.OpenAssetStream(filepath))
+            using (FileStream fs = FileSystem.OpenAssetStream(Filepath))
             {
                 using (BinaryWriter writer = FileSystem.OpenBinaryWriter(fs))
                 {
@@ -69,7 +61,7 @@ namespace Nova.Library.Files
     
         public void Decode()
         {
-            using (FileStream fs = FileSystem.OpenAssetStream(filepath))
+            using (FileStream fs = FileSystem.OpenAssetStream(Filepath))
             {
                 using (BinaryReader reader = FileSystem.OpenBinaryReader(fs))
                 {

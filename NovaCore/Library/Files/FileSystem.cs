@@ -10,23 +10,6 @@ namespace NovaCore.Library.Files
 {
     public static class FileSystem
     {
-        #region FileStream Operations
-        public static FileStream OpenAssetStream(string filepath)
-        {
-            return !File.Exists(filepath) ? File.Create(filepath) : File.Open(filepath, FileMode.Open);
-        }
-
-        public static BinaryWriter OpenBinaryWriter(FileStream fs)
-        {
-            return new BinaryWriter(fs);
-        }
-
-        public static BinaryReader OpenBinaryReader(FileStream fs)
-        {
-            return new BinaryReader(fs);
-        }
-        #endregion
-    
         public static class Paths
         {
             // System Folders

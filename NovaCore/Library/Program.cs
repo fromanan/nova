@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Windows.Forms;
 using NovaCore.Library.Files;
 using NovaCore.Library.Logging;
 
@@ -10,11 +11,11 @@ namespace NovaCore.Library
         public static class Paths
         {
             // Project Specific
-            public const string ROOT = @"Informatix";
-            public static readonly string Settings = Path.Combine(FileSystem.Paths.AppData, ROOT, @"Settings");
-            public static readonly string Preferences = Path.Combine(FileSystem.Paths.AppData, ROOT, @"Settings");
-            public static readonly string UserData = Path.Combine(FileSystem.Paths.AppData, ROOT, @"UserData");
-            public static readonly string Log = Path.Combine(FileSystem.Paths.AppData, ROOT, @"Logfiles");
+            public static readonly string Root = Application.ProductName;
+            public static readonly string Settings = Path.Combine(FileSystem.Paths.AppData, Root, @"Settings");
+            public static readonly string Preferences = Path.Combine(FileSystem.Paths.AppData, Root, @"Settings");
+            public static readonly string UserData = Path.Combine(FileSystem.Paths.AppData, Root, @"UserData");
+            public static readonly string Log = Path.Combine(FileSystem.Paths.AppData, Root, @"Logfiles");
         }
         
         public static void Exit(ExitCode exitCode)

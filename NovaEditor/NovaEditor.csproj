@@ -40,10 +40,12 @@
         <Reference Include="System.Core" />
         <Reference Include="System.Xml" />
         <Reference Include="UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>C:\Program Files\Unity\Hub\Editor\2019.3.2f1\Editor\Data\Managed\UnityEditor.dll</HintPath>
+          <HintPath>..\packages\Unity3D.SDK.2021.1.14.1\lib\UnityEditor.dll</HintPath>
+          <Private>True</Private>
         </Reference>
-        <Reference Include="UnityEngine">
-            <HintPath>C:\Program Files\Unity\Hub\Editor\2019.3.2f1\Editor\Data\Managed\UnityEngine.dll</HintPath>
+        <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>..\packages\Unity3D.SDK.2021.1.14.1\lib\UnityEngine.dll</HintPath>
+          <Private>True</Private>
         </Reference>
     </ItemGroup>
     <ItemGroup>
@@ -65,6 +67,9 @@
         <Project>{3099d215-7155-4ee7-8006-0d76e3b072c9}</Project>
         <Name>Nova</Name>
       </ProjectReference>
+    </ItemGroup>
+    <ItemGroup>
+      <None Include="packages.config" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

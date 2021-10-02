@@ -2,7 +2,7 @@ using System.Collections.Specialized;
 using System.Net;
 using System.Text;
 
-namespace Nova.Library.Web
+namespace NovaCore.Library.Web
 {
     public static class Forms
     {

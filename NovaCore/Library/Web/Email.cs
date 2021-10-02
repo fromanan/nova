@@ -1,6 +1,6 @@
 using System.Net.Mail;
 
-namespace Nova.Library.Web
+namespace NovaCore.Library.Web
 {
     public class Email
     {

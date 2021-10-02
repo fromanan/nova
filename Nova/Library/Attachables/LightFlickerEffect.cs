@@ -30,8 +30,8 @@ namespace Nova.Library.Attachables
 
         // Continuous average calculation via FIFO queue
         // Saves us iterating every time we update, we just change by the delta
-        Queue<float> smoothQueue;
-        float lastSum;
+        private Queue<float> smoothQueue;
+        private float lastSum;
 
         /// <summary>
         /// Reset the randomness and start again. You usually don't need to call

@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 namespace Nova.Library.Interactions
 {
@@ -31,7 +31,7 @@ namespace Nova.Library.Interactions
             }
 
             // Set UI Message
-            warningMsgUI.transform.GetChild(0).gameObject.GetComponent<Text>().text = message;
+            warningMsgUI.transform.GetChild(0).gameObject.GetComponent<TextElement>().text = message;
 
             // Play UI Animation
             Animator animator = warningMsgUI.GetComponent<Animator>();

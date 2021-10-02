@@ -1,4 +1,4 @@
-namespace Nova.Library.Web
+namespace NovaCore.Library.Web
 {
     public static class Hosts
     {
