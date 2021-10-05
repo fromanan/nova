@@ -27,7 +27,7 @@ namespace Nova.Library.Extensions
             transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * rotateSpeed);
         }
 
-        public static bool ComparePosition(this Transform transform, Vector3 target, float tolerance)
+        public static bool ComparePosition(this Transform transform, Vector3 target, float tolerance = 0.01f)
         {
             return Vector3.Distance(transform.position, target) < tolerance;
         }
