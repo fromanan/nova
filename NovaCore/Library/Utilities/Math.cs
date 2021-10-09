@@ -18,5 +18,15 @@ namespace NovaCore.Library.Utilities
         {
             return System.Math.Abs(a - b);
         }
+        
+        public static bool Between(float value, float lowerBound, float upperBound, bool inclusive = false)
+        {
+            return inclusive ? value >= lowerBound && value <= upperBound : value > lowerBound && value < upperBound;
+        }
+        
+        public static bool Between(float value, float bounds, bool inclusive = false)
+        {
+            return inclusive ? value >= -bounds && value <= bounds : value > -bounds && value < bounds;
+        }
     }
 }

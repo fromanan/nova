@@ -39,6 +39,9 @@
         <Reference Include="System" />
         <Reference Include="System.Core" />
         <Reference Include="System.Xml" />
+        <Reference Include="Unity.InputSystem, Version=1.0.2.0, Culture=neutral, PublicKeyToken=null">
+          <HintPath>External\Unity.InputSystem.dll</HintPath>
+        </Reference>
         <Reference Include="UnityEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
           <HintPath>..\packages\Unity3D.SDK.2021.1.14.1\lib\UnityEditor.dll</HintPath>
           <Private>True</Private>
@@ -51,16 +54,25 @@
     <ItemGroup>
         <Compile Include="Library\Attachables\Billboard.cs" />
         <Compile Include="Library\Attachables\LightFlickerEffect.cs" />
+        <Compile Include="Library\Attachables\Pickup.cs" />
+        <Compile Include="Library\Attachables\ScreenspaceCursor.cs" />
+        <Compile Include="Library\Attachables\StayLevel.cs" />
+        <Compile Include="Library\Attributes\ReadOnlyAttribute.cs" />
+        <Compile Include="Library\Derivables\PlayerCollisionBehavior.cs" />
+        <Compile Include="Library\Derivables\PlayerTriggerBehavior.cs" />
+        <Compile Include="Library\Detectors\Detector.cs" />
         <Compile Include="Library\Extensions\ColliderExtensions.cs" />
         <Compile Include="Library\Extensions\GameObjectExtensions.cs" />
         <Compile Include="Library\Extensions\TransformExtensions.cs" />
         <Compile Include="Library\Extensions\VectorExtensions.cs" />
         <Compile Include="Library\Files\Asset.cs" />
         <Compile Include="Library\Files\FileSystem.cs" />
-        <Compile Include="Library\Interactions\InteractMessage.cs" />
-        <Compile Include="Library\Utilities\InputFunctions.cs" />
-        <Compile Include="Library\Utilities\ObjExporter.cs" />
-        <Compile Include="Library\Utilities\PlayerFunctions.cs" />
+        <Compile Include="Library\Interactions\Interact.cs" />
+        <Compile Include="Library\Utilities\Axes.cs" />
+        <Compile Include="Library\Utilities\Layers.cs" />
+        <Compile Include="Library\Utilities\NovaInput.cs" />
+        <Compile Include="Library\Utilities\MeshExporter.cs" />
+        <Compile Include="Library\Utilities\Player.cs" />
         <Compile Include="Library\Utilities\Threading.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>
@@ -72,6 +84,9 @@
     </ItemGroup>
     <ItemGroup>
       <None Include="packages.config" />
+    </ItemGroup>
+    <ItemGroup>
+      <Content Include="External\Unity.InputSystem.dll" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,8 +1,8 @@
 using System;
 using System.IO;
+using NovaCore.Library.Utilities;
 using UnityEngine;
 using static NovaCore.Library.Files.FileSystem;
-using Guid = NovaCore.Library.Utilities.Guid;
 using Object = UnityEngine.Object;
 
 namespace Nova.Library.Files
@@ -21,13 +21,13 @@ namespace Nova.Library.Files
         // Set the Filepath Attribute and Decode a File to the Class if One Exists
         public Asset(string assetPath)
         {
-            guid = Guid.Generate();
+            guid = GuidTools.Generate();
             CreateEntry(assetPath);
         }
     
         public Asset(string assetPath, string guid)
         {
-            this.guid = Guid.Load(guid);
+            this.guid = GuidTools.Load(guid);
             CreateEntry(assetPath);
         }
     

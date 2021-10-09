@@ -1,3 +1,4 @@
+using Nova.Library.Utilities;
 using UnityEngine;
 
 namespace Nova.Library.Extensions
@@ -5,21 +6,74 @@ namespace Nova.Library.Extensions
     public static class TransformExtensions
     {
         // Employs the Physics Update loop to translate frame independently
+        
         public static void SmoothMoveTowards(this Transform transform, Vector3 destination, float moveSpeed)
         {
             transform.position = Vector3.Lerp(destination, transform.position,
                 Mathf.Pow(0.9f, Time.deltaTime * moveSpeed));
         }
+        
+        public static void SmoothMoveTowards(this Transform transform, Transform destination, float moveSpeed)
+        {
+            transform.position = Vector3.Lerp(destination.position, transform.position,
+                Mathf.Pow(0.9f, Time.deltaTime * moveSpeed));
+        }
+
+        public static void FixedSmoothMoveTowards(this Transform transform, Vector3 destination, float moveSpeed)
+        {
+            transform.position = Vector3.Lerp(destination, transform.position,
+                Mathf.Pow(0.9f, Time.fixedDeltaTime * moveSpeed));
+        }
+
+        public static void FixedSmoothMoveTowards(this Transform transform, Transform destination, float moveSpeed)
+        {
+            transform.position = Vector3.Lerp(destination.position, transform.position,
+                Mathf.Pow(0.9f, Time.fixedDeltaTime * moveSpeed));
+        }
 
         // Employs the Physics Update loop to rotate frame independently
-        public static void SmoothRotateTowards(this Transform transform, Vector3 newRotation, float turnRate)
+        /*public static void SmoothRotateTowards(this Transform transform, Vector3 newRotation, float turnRate)
         {
             transform.rotation = Quaternion.RotateTowards(
                 transform.rotation,
                 Quaternion.Euler(newRotation),
                 turnRate * Time.deltaTime);
+        }*/
+        
+        public static void SmoothRotateTowards(this Transform transform, Transform target, float turnRate)
+        {
+            transform.rotation = Quaternion.Slerp(transform.rotation, target.rotation,
+                turnRate * Time.deltaTime);
+        }
+        
+        public static void SmoothRotateTowards(this Transform transform, Vector3 newRotation, float turnRate)
+        {
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(newRotation),
+                turnRate * Time.deltaTime);
         }
 
+        public static void SmoothRotateTowards(this Transform transform, Quaternion newRotation, float turnRate)
+        {
+            transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, turnRate * Time.deltaTime);
+        }
+
+        public static void FixedSmoothRotateTowards(this Transform transform, Vector3 newRotation, float turnRate)
+        {
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(newRotation),
+                turnRate * Time.fixedDeltaTime);
+        }
+
+        public static void FixedSmoothRotateTowards(this Transform transform, Quaternion newRotation, float turnRate)
+        {
+            transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, turnRate * Time.fixedDeltaTime);
+        }
+        
+        public static void FixedSmoothRotateTowards(this Transform transform, Transform target, float turnRate)
+        {
+            transform.rotation = Quaternion.Slerp(transform.rotation, target.rotation,
+                turnRate * Time.fixedDeltaTime);
+        }
+        
         public static void RotateTowards(this Transform transform, Transform target, float rotateSpeed)
         {
             Vector3 direction = (target.position - transform.position).normalized;
@@ -34,7 +88,7 @@ namespace Nova.Library.Extensions
 
         public static void ChangeLayersRecursively(this Transform transform, LayerMask layerMask)
         {
-            int layer = (int) Mathf.Log(layerMask, 2);
+            int layer = (int)Mathf.Log(layerMask, 2);
             transform.gameObject.layer = layer;
             foreach (Transform child in transform)
             {
@@ -81,6 +135,90 @@ namespace Nova.Library.Extensions
         public static Quaternion DirectionFromPoints(Transform origin, Transform target)
         {
             return Quaternion.LookRotation((target.position - origin.position).normalized);
+        }
+
+        public static bool ComparePosition(this Transform transform, Transform target, float tolerance = 0.01f)
+        {
+            return Vector3.Distance(transform.position, target.position) < tolerance;
+        }
+
+        public static bool CompareRotation(this Transform transform, Quaternion target, float tolerance = 0.01f)
+        {
+            return 1f - Mathf.Abs(Quaternion.Dot(transform.rotation, target)) < tolerance;
+        }
+
+        public static bool CompareRotation(this Transform transform, Transform target, float tolerance = 0.01f)
+        {
+            return 1f - Mathf.Abs(Quaternion.Dot(transform.rotation, target.rotation)) < tolerance;
+        }
+
+        public static float Distance(this Transform a, Transform b)
+        {
+            return Vector3.Distance(a.position, b.position);
+        }
+
+        public static float Distance(this Transform a, Vector3 b)
+        {
+            return Vector3.Distance(a.position, b);
+        }
+
+        public static Vector3 Direction(this Transform a, Transform b)
+        {
+            return b.position - a.position;
+        }
+
+        public static Vector3 Direction(this Transform a, Vector3 b)
+        {
+            return b - a.position;
+        }
+
+        public static string Format(this Transform transform)
+        {
+            return $"{transform.name} ({transform.tag})";
+        }
+
+        public static void Set(this Transform a, Transform b)
+        {
+            a.position = b.position;
+            a.rotation = b.rotation;
+        }
+
+        public static void Set(this Transform transform, Vector3 position, Quaternion rotation)
+        {
+            transform.position = position;
+            transform.rotation = rotation;
+        }
+
+        public static void Set(this Transform transform, Vector3 position)
+        {
+            transform.position = position;
+        }
+
+        public static void SetLocal(this Transform a, Transform b)
+        {
+            a.localPosition = b.localPosition;
+            a.localRotation = b.localRotation;
+        }
+
+        public static void SetLocal(this Transform transform, Vector3 position, Quaternion rotation)
+        {
+            transform.localPosition = position;
+            transform.localRotation = rotation;
+        }
+
+        public static void SetLocal(this Transform transform, Vector3 position)
+        {
+            transform.localPosition = position;
+        }
+        
+        public static Vector3 MaskRotation(this Transform transform, Axes.Axis axis)
+        {
+            return transform.eulerAngles.Hadamard(Axes.VectorFromMask(axis));
+        }
+        
+        public static Vector3 MaskRotation(this Transform transform, Vector3 vector)
+        {
+            return transform.eulerAngles.Hadamard(vector);
         }
     }
 }
