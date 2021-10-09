@@ -32,6 +32,12 @@ namespace Nova.Library.Extensions
         {
             return (a + b) / 2f;
         }
+        
+        // Returns a vector that points from a to b
+        public static Vector3 Direction(this Vector3 a, Vector3 b)
+        {
+            return b - a;
+        }
 
         public static Vector3 Closest(this Vector3 center, Vector3 a, Vector3 b)
         {

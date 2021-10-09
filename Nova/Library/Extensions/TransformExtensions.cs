@@ -162,6 +162,7 @@ namespace Nova.Library.Extensions
             return Vector3.Distance(a.position, b);
         }
 
+        // Returns a vector that points from a to b
         public static Vector3 Direction(this Transform a, Transform b)
         {
             return b.position - a.position;
