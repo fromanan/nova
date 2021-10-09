@@ -44,7 +44,7 @@ namespace NovaCore.Library.Extensions
         }
         
         public static HtmlDocument Strip(this HtmlDocument htmlDoc, string[] nodesToRemove = null, 
-            string[] idsToRemove = null, string[] classesToRemove = null, string[][] classPatternGroups = null)
+            string[] idsToRemove = null, string[] classesToRemove = null, params string[][] classPatternGroups)
         {
             htmlDoc.DocumentNode.Descendants()
                 .Where(n => n.HasId("header") || n.NodeMatch(nodesToRemove) ||
