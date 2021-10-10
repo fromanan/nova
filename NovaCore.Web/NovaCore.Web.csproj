@@ -39,14 +39,17 @@
         <Reference Include="System" />
         <Reference Include="System.Core" />
         <Reference Include="System.Data" />
+        <Reference Include="System.Windows.Forms" />
         <Reference Include="System.Xml" />
-        <Reference Include="uhttpsharp, Version=0.1.7944.28696, Culture=neutral, PublicKeyToken=afc37096b6db9cd0">
+        <Reference Include="uhttpsharp, Version=0.1.7953.31557, Culture=neutral, PublicKeyToken=afc37096b6db9cd0">
           <HintPath>External\uhttpsharp.dll</HintPath>
         </Reference>
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="Library\Extensions\AgilityExtensions.cs" />
         <Compile Include="Library\Extensions\SqliteExtensions.cs" />
         <Compile Include="Library\Interfaces\ICallback.cs" />
+        <Compile Include="Library\Web\WebDriver.cs" />
         <Compile Include="Library\Web\WebServer.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>
@@ -61,8 +64,10 @@
       </ProjectReference>
     </ItemGroup>
     <ItemGroup>
+        <PackageReference Include="HtmlAgilityPack" Version="1.11.37" />
         <PackageReference Include="Microsoft.Data.Sqlite" Version="5.0.10" />
         <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="5.0.10" />
+        <PackageReference Include="RestSharp" Version="106.12.0" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

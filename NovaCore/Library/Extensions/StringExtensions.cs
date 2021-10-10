@@ -73,5 +73,10 @@ namespace NovaCore.Library.Extensions
         {
             return str.Select((c, i) => str.Substring(i)).Count(sub => sub.StartsWith(substr));
         }
+        
+        public static int CountOccurrences(this string str, char c)
+        {
+            return str.Count(ch => ch == c);
+        }
     }
 }

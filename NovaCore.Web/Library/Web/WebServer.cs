@@ -3,13 +3,13 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-using NovaCore.Library.Interfaces;
 using NovaCore.Library.Utilities;
+using NovaCore.Web.Library.Interfaces;
 using uhttpsharp;
 using uhttpsharp.Listeners;
 using uhttpsharp.RequestProviders;
 
-namespace NovaCore.Library.Web
+namespace NovaCore.Web.Library.Web
 {
     public abstract class WebServer : IDisposable, ICallback
     {
