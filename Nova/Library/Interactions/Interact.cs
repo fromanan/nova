@@ -1,7 +1,11 @@
+using System;
 using Nova.Library.Derivables;
 using UnityEngine;
 using UnityEngine.Events;
+
+#if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
+#endif
 
 namespace Nova.Library.Interactions
 {
@@ -13,16 +17,17 @@ namespace Nova.Library.Interactions
         [SerializeField] private UnityEvent OnStartInteraction = new UnityEvent();
         [SerializeField] private UnityEvent OnStopInteraction = new UnityEvent();
         
-        [Header("GUI Interactions")]
-        [SerializeField] private InputAction InteractAction;
-        [SerializeField] private InputAction ExitAction;
-
         public bool Interactible { get; private set; }
         
         public bool PlayerInRange { get; private set; }
         
         public bool Interacting { get; private set; }
-
+        
+#if ENABLE_INPUT_SYSTEM
+        [Header("GUI Interactions")]
+        [SerializeField] private InputAction InteractAction;
+        [SerializeField] private InputAction ExitAction;
+        
         private void OnEnable()
         {
             InteractAction.performed += OnInteract;
@@ -34,7 +39,7 @@ namespace Nova.Library.Interactions
             InteractAction.performed -= OnInteract;
             ExitAction.performed -= OnExit;
         }
-
+        
         private void OnInteract(InputAction.CallbackContext context)
         {
             if (Interactible && PlayerInRange) StartInteraction();
@@ -44,6 +49,36 @@ namespace Nova.Library.Interactions
         {
             if (Interacting) StopInteraction();
         }
+#endif
+        
+#if ENABLE_LEGACY_INPUT_MANAGER
+        [Header("GUI Interactions")]
+        [SerializeField] private KeyCode InteractKey;
+        [SerializeField] private KeyCode ExitKey;
+
+        private void Update()
+        {
+            if (Input.GetKeyDown(InteractKey))
+            {
+                OnInteract();
+            }
+
+            if (Input.GetKeyDown(ExitKey))
+            {
+                OnExit();
+            }
+        }
+
+        private void OnInteract()
+        {
+            if (Interactible && PlayerInRange) StartInteraction();
+        }
+
+        private void OnExit()
+        {
+            if (Interacting) StopInteraction();
+        }
+#endif
 
         protected virtual void StartInteraction()
         {

@@ -4,7 +4,6 @@ using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Linq;
 using System.Reflection;
-using Microsoft.Data.Sqlite;
 using NovaCore.Library.Logging;
 using NovaCore.Library.Utilities;
 using NovaCore.Library.Web;
@@ -13,14 +12,6 @@ namespace NovaCore.Library.Extensions
 {
     public static class DatabaseExtensions
     {
-        public static void EnumerateResults(this SqliteDataReader reader)
-        {
-            for (int i = 0; i < reader.FieldCount; i++)
-            {
-                Debug.Log($"- {reader.GetName(i)} : {reader.GetValue(i)}");
-            }
-        }
-
         public static IEnumerable<DataRow> GetRows(this DataTable dataTable)
         {
             return dataTable.Rows.Cast<DataRow>();

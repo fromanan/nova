@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NovaEditor", "NovaEditor\No
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NovaCore", "NovaCore\NovaCore.csproj", "{B98BDB12-7D23-4F51-A60A-816A30C66EF2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NovaCore.Web", "NovaCore.Web\NovaCore.Web.csproj", "{89E92382-C653-4E1A-B873-AAFB5A743939}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{B98BDB12-7D23-4F51-A60A-816A30C66EF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B98BDB12-7D23-4F51-A60A-816A30C66EF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B98BDB12-7D23-4F51-A60A-816A30C66EF2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89E92382-C653-4E1A-B873-AAFB5A743939}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89E92382-C653-4E1A-B873-AAFB5A743939}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89E92382-C653-4E1A-B873-AAFB5A743939}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89E92382-C653-4E1A-B873-AAFB5A743939}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
