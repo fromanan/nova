@@ -34,7 +34,7 @@ namespace NovaCore.Library.Logging
             Output.WriteLine($"[EXCEPTION]: {message}");
             if (exit)
             {
-                Program.Exit(ExitCode.Error);
+                Program.Exit(Program.ExitCode.Error);
             }
         }
         
@@ -43,14 +43,14 @@ namespace NovaCore.Library.Logging
             Output.WriteLine($"[CRITICAL]: {message}");
             if (exit)
             {
-                Program.Exit(ExitCode.Critical);
+                Program.Exit(Program.ExitCode.Critical);
             }
         }
         
         public static void LogCrash(string message)
         {
             Output.WriteLine($"[CRASH]: {message}");
-            Program.Exit(ExitCode.Crash);
+            Program.Exit(Program.ExitCode.Crash);
         }
 
         public static void LogCustom(string tag, string message)
@@ -83,7 +83,7 @@ namespace NovaCore.Library.Logging
             Output.WriteLine($"[EXCEPTION]: {message}");
             if (exit)
             {
-                Program.Exit(ExitCode.Error);
+                Program.Exit(Program.ExitCode.Error);
             }
         }
         
@@ -92,14 +92,14 @@ namespace NovaCore.Library.Logging
             Output.WriteLine($"[CRITICAL]: {message}");
             if (exit)
             {
-                Program.Exit(ExitCode.Critical);
+                Program.Exit(Program.ExitCode.Critical);
             }
         }
         
         public static void LogCrash(IFormattable message)
         {
             Output.WriteLine($"[CRASH]: {message}");
-            Program.Exit(ExitCode.Crash);
+            Program.Exit(Program.ExitCode.Crash);
         }
         
         public static void LogCustom(string tag, IFormattable message)
@@ -118,7 +118,7 @@ namespace NovaCore.Library.Logging
             ExceptionStack.Push(exception);
             if (exit)
             {
-                Program.Exit(ExitCode.Error);
+                Program.Exit(Program.ExitCode.Error);
             }
         }
     }

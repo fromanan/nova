@@ -1,17 +1,25 @@
 using System;
 using System.IO;
-using System.Windows.Forms;
 using NovaCore.Library.Files;
-using NovaCore.Library.Logging;
+using NovaCore.Library.Utilities;
 
 namespace NovaCore.Library
 {
-    public partial class Program
+    public static class Program
     {
+        public enum ExitCode : int 
+        {
+            Success = 0,
+            Error = 1,
+            Critical = 2,
+            Crash = 3,
+            Normal = 4
+        }
+        
         public static class Paths
         {
             // Project Specific
-            public static readonly string Root = Application.ProductName;
+            public static readonly string Root = Info.ApplicationTitle;
             public static readonly string Settings = Path.Combine(FileSystem.Paths.AppData, Root, @"Settings");
             public static readonly string Preferences = Path.Combine(FileSystem.Paths.AppData, Root, @"Settings");
             public static readonly string UserData = Path.Combine(FileSystem.Paths.AppData, Root, @"UserData");

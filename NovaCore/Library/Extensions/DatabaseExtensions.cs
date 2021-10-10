@@ -29,7 +29,7 @@ namespace NovaCore.Library.Extensions
         public static string Format(this DataRow dataRow, int colLength, string separator = " ")
         {
             return Join(separator, 
-                dataRow.ItemArray.Select(item => $"{Decode(item).Truncate(colLength-3),-16}"));
+                dataRow.ItemArray.Select(item => Decode(item).Truncate(colLength-3).PadRight(colLength)));
         }
         
         public static string Format(this DataRow dataRow, string separator = " ")
@@ -60,7 +60,7 @@ namespace NovaCore.Library.Extensions
         public static void Print(this DataTable dataTable, int colLength)
         {
             // Print Headers
-            Debug.Log(Join(" ", dataTable.GetColumns().Select(col => $"{col.ColumnName,-16}")));
+            Debug.Log(Join(" ", dataTable.GetColumns().Select(col => col.ColumnName.PadRight(colLength))));
 
             // Print Separators
             Debug.Log(Join(" ", Enumerable.Repeat(new string('=', colLength), dataTable.Columns.Count)));
@@ -72,6 +72,11 @@ namespace NovaCore.Library.Extensions
         public static void DropColumn(this DataTable dataTable, string columnName)
         {
             dataTable.Columns.Remove(columnName);
+        }
+        
+        public static void DropColumns(this DataTable dataTable, params string[] columnNames)
+        {
+            columnNames.ToList().ForEach(dataTable.Columns.Remove);
         }
         
         // Source: https://stackoverflow.com/questions/19673502/how-to-convert-datarow-to-an-object/45074265
