@@ -122,7 +122,10 @@ namespace NovaCore.Library.Files
             
             RunSTA(() => 
             {
-                OpenFileDialog ofd = new OpenFileDialog {Multiselect = true, DefaultExt = defaultExtension, Filter = filter, InitialDirectory = Paths.Downloads};
+                OpenFileDialog ofd = new OpenFileDialog
+                {
+                    Multiselect = true, DefaultExt = defaultExtension, Filter = filter, InitialDirectory = Paths.Downloads
+                };
                 if (ofd.ShowDialog() == DialogResult.Cancel) return;
                 selectedPath = ofd.FileNames;
             });
