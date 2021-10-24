@@ -28,23 +28,29 @@ namespace NovaCore.Library.Files
             return !string.IsNullOrEmpty(filename) && filename.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0;
         }
 
-        public static bool IsValidDirectory(string path)
+        public static bool IsValidDirectory(string directory)
         {
-            return !string.IsNullOrEmpty(path) && path.IndexOfAny(Path.GetInvalidPathChars()) >= 0;
+            return !string.IsNullOrEmpty(directory) && directory.IndexOfAny(Path.GetInvalidPathChars()) >= 0;
         }
-
-        public static bool Verify(string filename)
-        {
-            if (File.Exists(filename)) return true;
-            Debug.LogWarning($"File does not exist: \"{filename}\"");
-            return false;
-        }
-
+        
+        /// <summary>
+        /// Returns if a given filepath has both a valid filename and a valid directory
+        /// </summary>
+        /// <param name="filepath"></param>
+        /// <returns></returns>
         public static bool Validate(string filepath)
         {
-            return filepath.IndexOfAny(Path.GetInvalidPathChars()) < 0 && 
-                   Directory.Exists(Path.GetDirectoryName(filepath)) && 
-                   File.Exists(filepath);
+            return IsValidFilename(Path.GetFileName(filepath)) && IsValidDirectory(Path.GetDirectoryName(filepath));
+        }
+
+        /// <summary>
+        /// Returns if a generated file exists (used for verifying that a file was successfully downloaded, for example)
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <returns></returns>
+        public static bool Verify(string filename)
+        {
+            return Validate(filename) && Directory.Exists(Path.GetDirectoryName(filename)) && File.Exists(filename);
         }
 
         public static string BuildPath(params string[] folderHierarchy)
