@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Newtonsoft.Json;
 using Debug = NovaCore.Library.Logging.Debug;
@@ -112,6 +113,36 @@ namespace NovaCore.Library.Files
                 process.WaitForExit();
                 if (printResults) Console.WriteLine(process.StandardOutput.ReadToEnd());
             }
+        }
+        
+        // https://stackoverflow.com/questions/10788982/is-there-any-async-equivalent-of-process-start
+        public static Task<int> RunExternalProcessAsync(string path, string arguments)
+        {
+            TaskCompletionSource<int> completionSource = new TaskCompletionSource<int>();
+            
+            Process process = new Process
+            {
+                StartInfo =
+                {
+                    FileName = path,
+                    Arguments = arguments,
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    CreateNoWindow = true
+                    //WindowStyle = ProcessWindowStyle.Hidden,
+                    //CreateNoWindow = false
+                }
+            };
+            
+            process.Exited += (sender, args) =>
+            {
+                completionSource.SetResult(process.ExitCode);
+                process.Dispose();
+            };
+
+            process.Start();
+
+            return completionSource.Task;
         }
 
         public static void RunSTA(ThreadStart threadStart)
