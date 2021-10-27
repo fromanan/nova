@@ -17,7 +17,7 @@ namespace NovaCore.Library.Extensions
         public static string Before(this string str, string substr)
         {
             int loc = str.IndexOf(substr, StringComparison.Ordinal);
-            return loc > 0 ? str.Substring(0, loc) : "";
+            return loc > 0 ? str.Substring(0, loc) : string.Empty;
         }
 
         public static string Between(this string str, string frontSubstr, string backSubstr)
@@ -29,7 +29,12 @@ namespace NovaCore.Library.Extensions
 
         public static string Remove(this string str, string substr)
         {
-            return str.Replace(substr, "");
+            return str.Replace(substr, string.Empty);
+        }
+        
+        public static string RemoveAll(this string str, params string[] substrings)
+        {
+            return substrings.Aggregate(str, (result, substr) => result.Remove(substr));
         }
         #endregion
 
