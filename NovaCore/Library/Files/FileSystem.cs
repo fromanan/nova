@@ -26,12 +26,17 @@ namespace NovaCore.Library.Files
 
         public static bool IsValidFilename(string filename)
         {
-            return !string.IsNullOrEmpty(filename) && filename.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0;
+            return ValidString(filename, Path.GetInvalidFileNameChars());
         }
 
         public static bool IsValidDirectory(string directory)
         {
-            return !string.IsNullOrEmpty(directory) && directory.IndexOfAny(Path.GetInvalidPathChars()) >= 0;
+            return ValidString(directory, Path.GetInvalidPathChars());
+        }
+
+        public static bool ValidString(string str, char[] invalidChars)
+        {
+            return !string.IsNullOrEmpty(str) && str.IndexOfAny(invalidChars) < 0;
         }
         
         /// <summary>

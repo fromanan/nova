@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using HtmlAgilityPack;
 using NovaCore.Library.Files;
 using NovaCore.Library.Logging;
+using NovaCore.Web.Library.Extensions;
 using RestSharp;
 using HtmlDocument = HtmlAgilityPack.HtmlDocument;
 using Header = System.Collections.Generic.KeyValuePair<string, string>;
