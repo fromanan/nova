@@ -50,12 +50,11 @@ namespace NovaCore.Library.Web
 
         public static string Decode(string input) => HttpUtility.HtmlDecode(input);
         
-        public static Uri Validate(string address)
+        // https://stackoverflow.com/questions/7578857/how-to-check-whether-a-string-is-a-valid-http-url
+        public static bool Validate(string urlString, out Uri result)
         {
-            bool success = Uri.TryCreate(address, UriKind.Absolute, out Uri uriResult)
-                           && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
-
-            return success ? uriResult : null;
+            return Uri.TryCreate(urlString, UriKind.Absolute, out result) && 
+                   (result.Scheme == Uri.UriSchemeHttp || result.Scheme == Uri.UriSchemeHttps);
         }
 
         // https://stackoverflow.com/questions/570098/in-c-how-to-check-if-a-tcp-port-is-available/4165374
