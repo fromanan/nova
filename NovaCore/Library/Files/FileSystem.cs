@@ -136,7 +136,8 @@ namespace NovaCore.Library.Files
                     CreateNoWindow = true
                     //WindowStyle = ProcessWindowStyle.Hidden,
                     //CreateNoWindow = false
-                }
+                },
+                EnableRaisingEvents = true
             };
             
             process.Exited += (sender, args) =>
@@ -158,15 +159,61 @@ namespace NovaCore.Library.Files
             thread.Join();
         }
         
-        public static string[] OpenFileDialogue(string defaultExtension = "", string filter = "")
+        public static string SaveFileDialogue(string defaultExtension = "", string filter = "", string directory = null)
         {
-            string[] selectedPath = null;
+            string selectedPath = "";
+            
+            string initialDirectory = string.IsNullOrEmpty(directory) ? Paths.Downloads : directory;
+            
+            RunSTA(() => 
+            {
+                SaveFileDialog ofd = new SaveFileDialog
+                {
+                    DefaultExt = defaultExtension, 
+                    Filter = filter, 
+                    InitialDirectory = initialDirectory,
+                    RestoreDirectory = true
+                };
+                if (ofd.ShowDialog() == DialogResult.Cancel) return;
+                selectedPath = ofd.FileName;
+            });
+
+            return selectedPath;
+        }
+        
+        /*public static string OpenFileDialogue(string defaultExtension = "", string filter = "")
+        {
+            string selectedPath = "";
             
             RunSTA(() => 
             {
                 OpenFileDialog ofd = new OpenFileDialog
                 {
-                    Multiselect = true, DefaultExt = defaultExtension, Filter = filter, InitialDirectory = Paths.Downloads
+                    DefaultExt = defaultExtension, 
+                    Filter = filter, 
+                    InitialDirectory = Paths.Downloads
+                };
+                if (ofd.ShowDialog() == DialogResult.Cancel) return;
+                selectedPath = ofd.FileName;
+            });
+
+            return selectedPath;
+        }*/
+        
+        public static string[] OpenFileDialogue(string defaultExtension = "", string filter = "", string directory = null)
+        {
+            string[] selectedPath = null;
+            
+            string initialDirectory = string.IsNullOrEmpty(directory) ? Paths.Downloads : directory;
+            
+            RunSTA(() => 
+            {
+                OpenFileDialog ofd = new OpenFileDialog
+                {
+                    Multiselect = true, 
+                    DefaultExt = defaultExtension, 
+                    Filter = filter, 
+                    InitialDirectory = initialDirectory
                 };
                 if (ofd.ShowDialog() == DialogResult.Cancel) return;
                 selectedPath = ofd.FileNames;
@@ -175,15 +222,17 @@ namespace NovaCore.Library.Files
             return selectedPath;
         }
         
-        public static string OpenFolderDialogue()
+        // TODO: Support initial directory option
+        public static string OpenFolderDialogue(string directory = null)
         {
             string selectedPath = "";
-            
+
             RunSTA(() => 
             {
                 FolderBrowserDialog fbd = new FolderBrowserDialog
                 {
-                    RootFolder = Environment.SpecialFolder.MyComputer, ShowNewFolderButton = true
+                    RootFolder = Environment.SpecialFolder.MyComputer, 
+                    ShowNewFolderButton = true
                 };
                 if (fbd.ShowDialog() == DialogResult.Cancel) return;
                 selectedPath = fbd.SelectedPath;
@@ -233,30 +282,58 @@ namespace NovaCore.Library.Files
             return File.ReadAllText(filepath);
         }
 
+        public static string CreateFile(string extension = "", string filepath = "", string directory = null)
+        {
+            if (string.IsNullOrEmpty(filepath))
+            {
+                filepath = SaveFileDialogue(extension, Filter(extension), directory);
+                if (!string.IsNullOrEmpty(filepath))
+                {
+                    using (File.Create(filepath))
+                    {
+                        return filepath;
+                    }
+                }
+                return null;
+            }
+            
+            // File exists
+            if (Validate(filepath))
+            {
+                return null;
+            }
+            
+            using (File.Create(filepath))
+            {
+                return Validate(filepath) ? filepath : null;
+            }
+        }
+
         public static string CreateTempFile()
         {
             return Path.GetTempFileName();
         }
 
-        // TODO: Does not support multi-extensions
-        public static string[] LoadFile(string extension)
+        public static string Filter(string extension) => $"{extension} files (*.{extension})|*.{extension}";
+
+        // TODO: Does not support multiple extensions
+        // TODO: Detect file prompt closing, catch the null operator - Verify for this purpose
+        public static string[] LoadFile(string extension, string startDirectory = null)
         {
-            return OpenFileDialogue(extension, $"{extension} files (*.{extension})|*.{extension}") ?? 
-                   Array.Empty<string>(); // Return an empty array to iterate if file cancelled
-            
-            // TODO: Detect file prompt closing, catch the null operator
+            // Return an empty array to iterate if file cancelled
+            return OpenFileDialogue(extension, Filter(extension), startDirectory) ?? Array.Empty<string>();
         }
         
         // TODO: Default Filenames
 
-        public static string[] LoadJson()
+        public static string[] LoadJson(string startDirectory = null)
         {
-            return LoadFile("json");
+            return LoadFile("json", startDirectory);
         }
 
-        public static string[] LoadTxt()
+        public static string[] LoadTxt(string startDirectory = null)
         {
-            return LoadFile("txt");
+            return LoadFile("txt", startDirectory);
         }
         
         public static bool LoadSuccessful(string[] filepaths)
