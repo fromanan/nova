@@ -289,10 +289,8 @@ namespace NovaCore.Library.Files
                 filepath = SaveFileDialogue(extension, Filter(extension), directory);
                 if (!string.IsNullOrEmpty(filepath))
                 {
-                    using (File.Create(filepath))
-                    {
-                        return filepath;
-                    }
+                    File.Create(filepath).Close();
+                    return filepath;
                 }
                 return null;
             }
@@ -303,10 +301,9 @@ namespace NovaCore.Library.Files
                 return null;
             }
             
-            using (File.Create(filepath))
-            {
-                return Validate(filepath) ? filepath : null;
-            }
+            File.Create(filepath).Close();
+            
+            return Validate(filepath) ? filepath : null;
         }
 
         public static string CreateTempFile()
