@@ -186,6 +186,7 @@
         <Compile Include="Library\Files\Asset.cs" />
         <Compile Include="Library\Files\FileSystem.cs" />
         <Compile Include="Library\Interactions\Interact.cs" />
+        <Compile Include="Library\Utilities\Angle.cs" />
         <Compile Include="Library\Utilities\Axes.cs" />
         <Compile Include="Library\Utilities\Layers.cs" />
         <Compile Include="Library\Utilities\NovaInput.cs" />
