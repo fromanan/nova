@@ -14,7 +14,9 @@ namespace Nova.Library.Utilities
             public const string VERTICAL = "Vertical";
             public const string MOUSE_SCROLLWHEEL = "Mouse ScrollWheel";
         }
-        
+
+        public static Vector3 MousePosition => Input.mousePosition;
+
         /// <summary>
         /// Returns true if mouse moves, false otherwise
         /// </summary>
@@ -28,15 +30,21 @@ namespace Nova.Library.Utilities
         /// Gets the mouses position relative to the origin, as a point in Unity space
         /// </summary>
         /// <param name="origin"></param>
+        /// <param name="camera"></param>
         /// <returns></returns>
         public static Vector3 GetMouseVector(GameObject origin, Camera camera)
         {
-            return Input.mousePosition - camera.WorldToScreenPoint(origin.transform.position);
+            return MousePosition - camera.WorldToScreenPoint(origin.transform.position);
+        }
+        
+        public static Vector3 GetMouseVector(Transform origin, Camera camera)
+        {
+            return MousePosition - camera.WorldToScreenPoint(origin.position);
         }
 
         public static Ray MouseRay(Camera camera)
         {
-            return camera.ScreenPointToRay(Input.mousePosition);
+            return camera.ScreenPointToRay(MousePosition);
         }
 
         public static bool PlayerMoving(float threshold = 0.01f)
@@ -53,12 +61,12 @@ namespace Nova.Library.Utilities
 
         public static bool IsScrolling(float threshold = 0.01f)
         {
-            return Mathf.Abs(Input.GetAxis(InputAxis.MOUSE_SCROLLWHEEL)) > threshold;
+            return AxisAboveThreshold(InputAxis.MOUSE_SCROLLWHEEL, threshold);
         }
 
         public static bool AxisAboveThreshold(string axisName, float threshold = 0.01f)
         {
-            return !Math.Between(Input.GetAxisRaw(axisName), threshold);
+            return !Math.Between(GetAxisRaw(axisName), threshold);
         }
         
         public static bool RaycastMouse(Camera camera, out RaycastHit hit, LayerMask ignore, float maxDistance = Single.PositiveInfinity)
@@ -70,6 +78,20 @@ namespace Nova.Library.Utilities
         {
             return Physics.Raycast(MouseRay(camera), out hit, maxDistance);
         }
+        
+        public static Vector3 GetMouseInput(Vector2 sensitivity)
+        {
+            return new Vector3(-GetAxis(InputAxis.MOUSE_Y) * sensitivity.x, GetAxis(InputAxis.MOUSE_X) * sensitivity.y, 0f);
+        }
+        
+        public static Vector3 GetMovementInput(Vector2 sensitivity)
+        {
+            return new Vector3(GetAxis(InputAxis.VERTICAL) * sensitivity.x, 0f, GetAxis(InputAxis.HORIZONTAL) * sensitivity.y);
+        }
+
+        public static float GetAxisRaw(string axisName) => Input.GetAxisRaw(axisName);
+        
+        public static float GetAxis(string axisName) => Input.GetAxis(axisName);
 
         // Mouse Functions
         public static bool LeftMouse        =>      Input.GetMouseButton(0);
