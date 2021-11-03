@@ -21,7 +21,7 @@ namespace Nova.Library.Attachables
         private void FixedUpdate()
         {
             if (disabled) return;
-            Vector3 angles = transform.MaskRotation(axisVector);
+            Vector3 angles = transform.MaskLocalRotation(axisVector);
             if (angles.magnitude > 0.01f)
             {
                 transform.FixedSmoothRotateTowards(angles, adjustmentSpeed);
