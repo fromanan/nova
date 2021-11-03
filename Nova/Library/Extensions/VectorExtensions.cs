@@ -1,3 +1,4 @@
+using Nova.Library.Utilities;
 using UnityEngine;
 
 namespace Nova.Library.Extensions
@@ -16,11 +17,7 @@ namespace Nova.Library.Extensions
 
         public static Vector3 LerpNegative(this Vector3 a, Vector3 b, float t)
         {
-            Vector3 c = Vector3.zero;
-            c.x = LerpNegative(a.x, b.x, t);
-            c.y = LerpNegative(a.y, b.y, t);
-            c.z = LerpNegative(a.z, b.z, t);
-            return c;
+            return new Vector3(LerpNegative(a.x, b.x, t), LerpNegative(a.y, b.y, t), LerpNegative(a.z, b.z, t));
         }
         
         public static Vector3 Inverse(this Vector3 vector)
@@ -64,6 +61,19 @@ namespace Nova.Library.Extensions
             return Quaternion.AngleAxis(angles.x, Vector3.right) * 
                    Quaternion.AngleAxis(angles.y, Vector3.up) * 
                    Quaternion.AngleAxis(angles.z, Vector3.forward) * vector;
+        }
+        
+        public static Vector3 Constrain(this Vector3 vector, Vector2 xConstraints, Vector2 yConstraints)
+        {
+            return new Vector3(Angle.Constrain(vector.x, xConstraints),
+                Angle.Constrain(vector.y, yConstraints), vector.z);
+        }
+
+        public static Vector3 Constrain(this Vector3 vector, Vector2 xConstraints, Vector2 yConstraints, Vector2 zConstraints)
+        {
+            return new Vector3(Angle.Constrain(vector.x, xConstraints), 
+                Angle.Constrain(vector.y, yConstraints),
+                Angle.Constrain(vector.z, zConstraints));
         }
     }
 }
