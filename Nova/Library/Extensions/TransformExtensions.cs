@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using Nova.Library.Utilities;
 using UnityEngine;
 
@@ -7,16 +9,32 @@ namespace Nova.Library.Extensions
     {
         // Employs the Physics Update loop to translate frame independently
         
-        public static void SmoothMoveTowards(this Transform transform, Vector3 destination, float moveSpeed)
-        {
-            transform.position = Vector3.Lerp(destination, transform.position,
-                Mathf.Pow(0.9f, Time.deltaTime * moveSpeed));
-        }
+        // SmoothMoveTowards (Update)
         
         public static void SmoothMoveTowards(this Transform transform, Transform destination, float moveSpeed)
         {
             transform.position = Vector3.Lerp(destination.position, transform.position,
                 Mathf.Pow(0.9f, Time.deltaTime * moveSpeed));
+        }
+        
+        public static void SmoothMoveTowards(this Transform transform, Vector3 destination, float moveSpeed)
+        {
+            transform.position = Vector3.Lerp(destination, transform.position,
+                Mathf.Pow(0.9f, Time.deltaTime * moveSpeed));
+        }
+
+        public static void SmoothMoveTowards(this Transform transform, float x, float y, float z, float moveSpeed)
+        {
+            transform.position = Vector3.Lerp(new Vector3(x, y, z), transform.position,
+                Mathf.Pow(0.9f, Time.deltaTime * moveSpeed));
+        }
+        
+        // FixedSmoothMoveTowards (FixedUpdate)
+        
+        public static void FixedSmoothMoveTowards(this Transform transform, Transform destination, float moveSpeed)
+        {
+            transform.position = Vector3.Lerp(destination.position, transform.position,
+                Mathf.Pow(0.9f, Time.fixedDeltaTime * moveSpeed));
         }
 
         public static void FixedSmoothMoveTowards(this Transform transform, Vector3 destination, float moveSpeed)
@@ -25,12 +43,14 @@ namespace Nova.Library.Extensions
                 Mathf.Pow(0.9f, Time.fixedDeltaTime * moveSpeed));
         }
 
-        public static void FixedSmoothMoveTowards(this Transform transform, Transform destination, float moveSpeed)
+        public static void FixedSmoothMoveTowards(this Transform transform, float x, float y, float z, float moveSpeed)
         {
-            transform.position = Vector3.Lerp(destination.position, transform.position,
+            transform.position = Vector3.Lerp(new Vector3(x, y, z), transform.position,
                 Mathf.Pow(0.9f, Time.fixedDeltaTime * moveSpeed));
         }
 
+        // SmoothRotateTowards (Update)
+        
         // Employs the Physics Update loop to rotate frame independently
         /*public static void SmoothRotateTowards(this Transform transform, Vector3 newRotation, float turnRate)
         {
@@ -51,15 +71,35 @@ namespace Nova.Library.Extensions
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(newRotation),
                 turnRate * Time.deltaTime);
         }
+        
+        public static void SmoothRotateTowards(this Transform transform, float x, float y, float z, float turnRate)
+        {
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(x, y, z),
+                turnRate * Time.deltaTime);
+        }
 
         public static void SmoothRotateTowards(this Transform transform, Quaternion newRotation, float turnRate)
         {
             transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, turnRate * Time.deltaTime);
         }
+        
+        // FixedSmoothMoveTowards (FixedUpdate)
+        
+        public static void FixedSmoothRotateTowards(this Transform transform, Transform target, float turnRate)
+        {
+            transform.rotation = Quaternion.Slerp(transform.rotation, target.rotation,
+                turnRate * Time.fixedDeltaTime);
+        }
 
         public static void FixedSmoothRotateTowards(this Transform transform, Vector3 newRotation, float turnRate)
         {
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(newRotation),
+                turnRate * Time.fixedDeltaTime);
+        }
+        
+        public static void FixedSmoothRotateTowards(this Transform transform, float x, float y, float z, float turnRate)
+        {
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(x, y, z),
                 turnRate * Time.fixedDeltaTime);
         }
 
@@ -68,11 +108,6 @@ namespace Nova.Library.Extensions
             transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, turnRate * Time.fixedDeltaTime);
         }
         
-        public static void FixedSmoothRotateTowards(this Transform transform, Transform target, float turnRate)
-        {
-            transform.rotation = Quaternion.Slerp(transform.rotation, target.rotation,
-                turnRate * Time.fixedDeltaTime);
-        }
         
         public static void RotateTowards(this Transform transform, Transform target, float rotateSpeed)
         {
@@ -85,10 +120,12 @@ namespace Nova.Library.Extensions
         {
             return Vector3.Distance(transform.position, target) < tolerance;
         }
+        
+        public static IEnumerable<Transform> GetChildren(this Transform transform) => transform.Cast<Transform>();
 
         public static void ChangeLayersRecursively(this Transform transform, LayerMask layerMask)
         {
-            int layer = (int)Mathf.Log(layerMask, 2);
+            int layer = (int) Mathf.Log(layerMask, 2f);
             transform.gameObject.layer = layer;
             foreach (Transform child in transform)
             {
@@ -220,6 +257,16 @@ namespace Nova.Library.Extensions
         public static Vector3 MaskRotation(this Transform transform, Vector3 vector)
         {
             return transform.eulerAngles.Hadamard(vector);
+        }
+        
+        public static Vector3 MaskLocalRotation(this Transform transform, Axes.Axis axis)
+        {
+            return transform.localEulerAngles.Hadamard(Axes.VectorFromMask(axis));
+        }
+        
+        public static Vector3 MaskLocalRotation(this Transform transform, Vector3 vector)
+        {
+            return transform.localEulerAngles.Hadamard(vector);
         }
     }
 }
