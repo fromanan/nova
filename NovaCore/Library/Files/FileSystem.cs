@@ -159,67 +159,70 @@ namespace NovaCore.Library.Files
             thread.Join();
         }
         
-        public static string SaveFileDialogue(string defaultExtension = "", string filter = "", string directory = null)
+        /*public static async Task RunSTAAsync(ThreadStart threadStart)
+        {
+            Thread thread = new Thread(threadStart);
+            thread.SetApartmentState(ApartmentState.STA);
+            thread.Start();
+            thread.Join();
+        }*/
+        
+        public static string RunFileDialog<T>(T dialog) where T : FileDialog
         {
             string selectedPath = "";
             
-            string initialDirectory = string.IsNullOrEmpty(directory) ? Paths.Downloads : directory;
-            
             RunSTA(() => 
             {
-                SaveFileDialog ofd = new SaveFileDialog
-                {
-                    DefaultExt = defaultExtension, 
-                    Filter = filter, 
-                    InitialDirectory = initialDirectory,
-                    RestoreDirectory = true
-                };
-                if (ofd.ShowDialog() == DialogResult.Cancel) return;
-                selectedPath = ofd.FileName;
+                if (dialog.ShowDialog() == DialogResult.Cancel) return;
+                selectedPath = dialog.FileName;
             });
 
             return selectedPath;
         }
         
-        /*public static string OpenFileDialogue(string defaultExtension = "", string filter = "")
+        public static string[] RunMultiFileDialog<T>(T dialog) where T : FileDialog
         {
-            string selectedPath = "";
+            string[] selectedPaths = null;
             
             RunSTA(() => 
             {
-                OpenFileDialog ofd = new OpenFileDialog
-                {
-                    DefaultExt = defaultExtension, 
-                    Filter = filter, 
-                    InitialDirectory = Paths.Downloads
-                };
-                if (ofd.ShowDialog() == DialogResult.Cancel) return;
-                selectedPath = ofd.FileName;
+                if (dialog.ShowDialog() == DialogResult.Cancel) return;
+                selectedPaths = dialog.FileNames;
             });
 
-            return selectedPath;
-        }*/
+            return selectedPaths;
+        }
         
-        public static string[] OpenFileDialogue(string defaultExtension = "", string filter = "", string directory = null)
+        public static string SaveFileDialogue(string defaultExtension = "", string filter = "", string directory = null)
         {
-            string[] selectedPath = null;
-            
-            string initialDirectory = string.IsNullOrEmpty(directory) ? Paths.Downloads : directory;
-            
-            RunSTA(() => 
+            return RunFileDialog(new SaveFileDialog
             {
-                OpenFileDialog ofd = new OpenFileDialog
-                {
-                    Multiselect = true, 
-                    DefaultExt = defaultExtension, 
-                    Filter = filter, 
-                    InitialDirectory = initialDirectory
-                };
-                if (ofd.ShowDialog() == DialogResult.Cancel) return;
-                selectedPath = ofd.FileNames;
+                DefaultExt = defaultExtension, 
+                Filter = filter, 
+                InitialDirectory = string.IsNullOrEmpty(directory) ? Paths.Downloads : directory,
+                RestoreDirectory = true
             });
-
-            return selectedPath;
+        }
+        
+        public static string OpenFileDialogue(string defaultExtension = "", string filter = "", string directory = null)
+        {
+            return RunFileDialog(new OpenFileDialog
+            {
+                DefaultExt = defaultExtension,
+                Filter = filter,
+                InitialDirectory = string.IsNullOrEmpty(directory) ? Paths.Downloads : directory
+            });
+        }
+        
+        public static string[] OpenMultiFileDialogue(string defaultExtension = "", string filter = "", string directory = null)
+        {
+            return RunMultiFileDialog(new OpenFileDialog
+            {
+                Multiselect = true,
+                DefaultExt = defaultExtension,
+                Filter = filter,
+                InitialDirectory = string.IsNullOrEmpty(directory) ? Paths.Downloads : directory
+            });
         }
         
         // TODO: Support initial directory option
@@ -239,6 +242,24 @@ namespace NovaCore.Library.Files
             });
 
             return selectedPath;
+        }
+        
+        public static string[] OpenMultiFolderDialogue(string directory = null)
+        {
+            string[] selectedPaths = null;
+            
+            RunSTA(() =>
+            {
+                FolderSelectDialog dialog = new FolderSelectDialog
+                {
+                    Multiselect = true,
+                    InitialDirectory = string.IsNullOrEmpty(directory) ? Paths.Downloads : directory
+                };
+                if (!dialog.ShowDialog()) return;
+                selectedPaths = dialog.FileNames;
+            });
+
+            return selectedPaths;
         }
 
         #region Data Serialization
@@ -315,22 +336,27 @@ namespace NovaCore.Library.Files
 
         // TODO: Does not support multiple extensions
         // TODO: Detect file prompt closing, catch the null operator - Verify for this purpose
-        public static string[] LoadFile(string extension, string startDirectory = null)
+        public static string LoadFile(string extension, string startDirectory = null)
         {
-            // Return an empty array to iterate if file cancelled
-            return OpenFileDialogue(extension, Filter(extension), startDirectory) ?? Array.Empty<string>();
+            return OpenFileDialogue(extension, Filter(extension), startDirectory);
+        }
+        
+        public static string[] LoadFiles(string extension, string startDirectory = null)
+        {
+            // Return an empty array if file cancelled (for iteration)
+            return OpenMultiFileDialogue(extension, Filter(extension), startDirectory) ?? Array.Empty<string>();
         }
         
         // TODO: Default Filenames
 
         public static string[] LoadJson(string startDirectory = null)
         {
-            return LoadFile("json", startDirectory);
+            return LoadFiles("json", startDirectory);
         }
 
         public static string[] LoadTxt(string startDirectory = null)
         {
-            return LoadFile("txt", startDirectory);
+            return LoadFiles("txt", startDirectory);
         }
         
         public static bool LoadSuccessful(string[] filepaths)
