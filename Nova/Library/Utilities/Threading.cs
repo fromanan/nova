@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Nova.Library.Utilities.Functions
+namespace Nova.Library.Utilities
 {
     public static class Threading
     {
@@ -20,17 +20,21 @@ namespace Nova.Library.Utilities.Functions
             }
         }
 
-        /*public static void ExecuteInMainContext(Action action)
+        public static async Task ExecuteInMainContextAsync(Action action)
         {
             Task task = new Task(action);
+            
             if (TaskScheduler.FromCurrentSynchronizationContext() is TaskScheduler scheduler)
             {
                 task.Start(scheduler);
             }
+            else
             {
                 task.Start();
             }
-        }*/
+            
+            await task;
+        }
 
         public static bool IsPlaying()
         {
