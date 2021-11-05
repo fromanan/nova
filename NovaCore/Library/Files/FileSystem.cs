@@ -225,10 +225,9 @@ namespace NovaCore.Library.Files
             });
         }
         
-        // TODO: Support initial directory option
         public static string OpenFolderDialogue(string directory = null)
         {
-            string selectedPath = "";
+            /*string selectedPath = "";
 
             RunSTA(() => 
             {
@@ -239,6 +238,20 @@ namespace NovaCore.Library.Files
                 };
                 if (fbd.ShowDialog() == DialogResult.Cancel) return;
                 selectedPath = fbd.SelectedPath;
+            });
+
+            return selectedPath;*/
+            
+            string selectedPath = null;
+            
+            RunSTA(() =>
+            {
+                FolderSelectDialog dialog = new FolderSelectDialog
+                {
+                    InitialDirectory = string.IsNullOrEmpty(directory) ? Paths.Downloads : directory
+                };
+                if (!dialog.ShowDialog()) return;
+                selectedPath = dialog.FileName;
             });
 
             return selectedPath;
@@ -305,22 +318,17 @@ namespace NovaCore.Library.Files
 
         public static string CreateFile(string extension = "", string filepath = "", string directory = null)
         {
+            // Filepath was provided
             if (string.IsNullOrEmpty(filepath))
             {
                 filepath = SaveFileDialogue(extension, Filter(extension), directory);
-                if (!string.IsNullOrEmpty(filepath))
-                {
-                    File.Create(filepath).Close();
-                    return filepath;
-                }
-                return null;
+                if (string.IsNullOrEmpty(filepath)) return null;
+                File.Create(filepath).Close();
+                return filepath;
             }
             
             // File exists
-            if (Validate(filepath))
-            {
-                return null;
-            }
+            if (Validate(filepath)) return null; //< TODO: Return the existing filename?
             
             File.Create(filepath).Close();
             
@@ -394,14 +402,19 @@ namespace NovaCore.Library.Files
             return $"{prefix}{separator}{Guid()}";
         }
 
-        public static string[] GetFiles(string directory, string searchPattern)
+        public static string[] GetFiles(string directory, string searchPattern = "*")
         {
             return Directory.GetFiles(directory, searchPattern, SearchOption.TopDirectoryOnly);
         }
 
-        public static string[] GetAllFiles(string directory, string searchPattern)
+        public static string[] GetAllFiles(string directory, string searchPattern = "*")
         {
             return Directory.GetFiles(directory, searchPattern, SearchOption.AllDirectories);
+        }
+        
+        public static string[] GetSubdirectories(string directoryPath)
+        {
+            return Directory.GetDirectories(directoryPath);
         }
 
         public static void OpenExplorer(string arguments)
@@ -427,6 +440,21 @@ namespace NovaCore.Library.Files
         public static void ShowFileLocation(string filepath)
         {
             OpenExplorer($"/select,\"{filepath}\"");
+        }
+
+        public static FileInfo GetFileInfo(string filepath)
+        {
+            return new FileInfo(filepath);
+        }
+        
+        public static long GetFileSize(FileInfo fileInfo)
+        {
+            return fileInfo.Length;
+        }
+        
+        public static long GetFileSize(string filepath)
+        {
+            return GetFileInfo(filepath).Length;
         }
     }
 }
