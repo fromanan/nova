@@ -24,7 +24,7 @@ namespace NovaCore.Library.Files
         public string InitialDirectory
         {
             get => dialog.InitialDirectory;
-            set => dialog.InitialDirectory = string.IsNullOrEmpty(value) ? Environment.CurrentDirectory : value;
+            set => dialog.InitialDirectory = string.IsNullOrEmpty(value) ? FileSystem.Paths.Downloads : value;
         }
         public string Title
         {
@@ -186,8 +186,8 @@ namespace NovaCore.Library.Files
             
             public object CallAs2(Type type, object obj, string func, object[] parameters)
             {
-                MethodInfo methInfo = type.GetMethod(func, Bindings);
-                return methInfo.Invoke(obj, parameters);
+                MethodInfo methodInfo = type.GetMethod(func, Bindings);
+                return methodInfo?.Invoke(obj, parameters);
             }
             
             public object Get(object obj, string prop)
@@ -197,8 +197,8 @@ namespace NovaCore.Library.Files
             
             public object GetAs(Type type, object obj, string prop)
             {
-                PropertyInfo propInfo = type.GetProperty(prop, Bindings);
-                return propInfo.GetValue(obj, null);
+                PropertyInfo propertyInfo = type.GetProperty(prop, Bindings);
+                return propertyInfo?.GetValue(obj, null);
             }
             
             public object GetEnum(string typeName, string name)
