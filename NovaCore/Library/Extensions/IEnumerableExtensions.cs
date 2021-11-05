@@ -8,5 +8,15 @@ namespace NovaCore.Library.Extensions
         {
             return string.Join(separator, enumerable);
         }
+        
+        public static string MergeWrap<T>(this IEnumerable<T> enumerable, string start, string end, string separator = ", ")
+        {
+            return $"{start}{enumerable.Merge($"{end}{separator}{start}")}{end}";
+        }
+
+        public static string MergeQuotes<T>(this IEnumerable<T> enumerable, string separator = ", ")
+        {
+            return $"\"{enumerable.Merge($"\"{separator}\"")}\"";
+        }
     }
 }
