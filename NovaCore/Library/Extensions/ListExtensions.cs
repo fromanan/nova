@@ -6,7 +6,7 @@ namespace NovaCore.Library.Extensions
 {
     public static class ListExtensions
     {
-        private static readonly Random RNG = new Random();
+        private static readonly Random Random = new Random();
 
         public static void Shuffle<T>(this IList<T> list)
         {
@@ -14,7 +14,7 @@ namespace NovaCore.Library.Extensions
             while (n > 1)
             {
                 n--;
-                int k = RNG.Next(n + 1);
+                int k = Random.Next(n + 1);
                 (list[k], list[n]) = (list[n], list[k]);
             }
         }
@@ -27,7 +27,7 @@ namespace NovaCore.Library.Extensions
             while (n > 1)
             {
                 n--;
-                int k = RNG.Next(n + 1);
+                int k = Random.Next(n + 1);
                 (newList[k], newList[n]) = (newList[n], newList[k]);
             }
 
