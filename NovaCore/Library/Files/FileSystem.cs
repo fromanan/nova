@@ -456,5 +456,11 @@ namespace NovaCore.Library.Files
         {
             return GetFileInfo(filepath).Length;
         }
+
+        public static string FormatFileInfo(string filepath)
+        {
+            FileInfo fileInfo = GetFileInfo(filepath);
+            return $"{fileInfo.Name} ({fileInfo.Length} bytes) : \"{filepath}\"";
+        }
     }
 }
