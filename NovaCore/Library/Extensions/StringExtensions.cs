@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace NovaCore.Library.Extensions
 {
@@ -82,6 +83,16 @@ namespace NovaCore.Library.Extensions
         public static int CountOccurrences(this string str, char c)
         {
             return str.Count(ch => ch == c);
+        }
+        
+        // https://stackoverflow.com/questions/5417070/c-sharp-version-of-sql-like/5419544
+        // TODO: Doesn't work...
+        public static bool Like(this string toSearch, string toFind)
+        {
+            return new Regex(@"\A" + new Regex(@"\.|\$|\^|\{|\[|\(|\||\)|\*|\+|\?|\\")
+                .Replace(toFind, ch => @"\" + ch)
+                .Replace('_', '.')
+                .Replace("%", ".*") + @"\z", RegexOptions.Singleline).IsMatch(toSearch);
         }
     }
 }
