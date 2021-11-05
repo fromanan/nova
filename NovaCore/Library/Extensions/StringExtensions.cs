@@ -94,5 +94,11 @@ namespace NovaCore.Library.Extensions
                 .Replace('_', '.')
                 .Replace("%", ".*") + @"\z", RegexOptions.Singleline).IsMatch(toSearch);
         }
+        
+        // https://stackoverflow.com/questions/444798/case-insensitive-containsstring
+        public static bool Contains(this string str, string substring, StringComparison stringComparison)
+        {
+            return str?.IndexOf(substring, stringComparison) >= 0;
+        }
     }
 }
