@@ -6,13 +6,13 @@ namespace NovaCore.Library.Extensions
 {
     /*public static class DictionaryExtensions
     {
-        public static T Flatten<S, T, U>(this IDictionary<S, T> dictionary) where T : class, IEnumerable<U>, ICollection
+        public static IEnumerable<T> Flatten<S, T>(this IDictionary<S, ICollection<T>> dictionary)
         {
-            return dictionary.Values.SelectMany(elem => elem) as T;
+            return dictionary.Values.SelectMany(elem => elem);
         }
 
         // // https://social.msdn.microsoft.com/Forums/en-US/95c96221-48c5-461f-b68e-fb23e11169a7/merging-dictionaries-in-linq?forum=csharpgeneral
-        public static IDictionary<S, T> Merge<S, T, U>(this IDictionary<S, T> a, IDictionary<S, T> b) where T : class, IEnumerable<U>, ICollection
+        public static IDictionary<S, ICollection<T>> Merge<S, T>(this IDictionary<S, ICollection<T>> a, IDictionary<S, ICollection<T>> b)
         {
             return a
                 .ToLookup(z => z.Key)
@@ -20,7 +20,7 @@ namespace NovaCore.Library.Extensions
                 .GroupBy(z => z.Key, z => 
                     z.Select(y => y.Value))
                 .ToDictionary(z => z.Key, z => 
-                    z.SelectMany(y => y.SelectMany(u => u)).Distinct()) as IDictionary<S, T>;
+                    z.SelectMany(y => y.SelectMany(u => u)).Distinct() as ICollection<T>);
         }
     }*/
 }
