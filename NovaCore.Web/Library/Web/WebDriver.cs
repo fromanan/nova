@@ -21,14 +21,20 @@ namespace NovaCore.Web.Library.Web
         // Used to load a scripted/dynamic webpage
         public static HtmlDocument OpenBrowser(string address)
         {
-            HtmlWeb web = new HtmlWeb();
-            return web.LoadFromBrowser(address, WaitForPageLoaded);
+            return LoadWeb(OpenWeb(), address);
         }
 
         public static bool WaitForPageLoaded(object browser)
         {
             Application.DoEvents();
             return ((WebBrowser) browser).ReadyState == WebBrowserReadyState.Complete;
+        }
+
+        public static HtmlWeb OpenWeb() => new HtmlWeb();
+
+        public static HtmlDocument LoadWeb(HtmlWeb web, string address)
+        {
+            return web.LoadFromBrowser(address, WaitForPageLoaded);
         }
 
         // Used for loading basic (static) webpages or making queries
@@ -38,7 +44,7 @@ namespace NovaCore.Web.Library.Web
             try
             {
                 HttpWebResponse response = (HttpWebResponse) request.GetResponse();
-                Debug.LogInfo("Request successful");
+                //Debug.LogInfo("Request successful");
                 return RequestToString(response);
             }
             catch (WebException exception)
@@ -48,6 +54,7 @@ namespace NovaCore.Web.Library.Web
             }
         }
 
+        // TODO: Return response?
         public static void HandleWebException(WebException exception)
         {
             HttpWebResponse response = (HttpWebResponse) exception.Response;
