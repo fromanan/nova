@@ -462,5 +462,36 @@ namespace NovaCore.Library.Files
             FileInfo fileInfo = GetFileInfo(filepath);
             return $"{fileInfo.Name} ({fileInfo.Length} bytes) : \"{filepath}\"";
         }
+        
+        // https://stackoverflow.com/questions/876473/is-there-a-way-to-check-if-a-file-is-in-use
+        public static bool IsFileLocked(string filepath)
+        {
+            try
+            {
+                File.Open(filepath, FileMode.Open, FileAccess.Read, FileShare.None).Close();
+                return false;
+            }
+            catch (IOException)
+            {
+                return true;
+            }
+        }
+        
+        public static bool IsFileLocked(FileInfo file)
+        {
+            try
+            {
+                file.Open(FileMode.Open, FileAccess.Read, FileShare.None).Close();
+                return false;
+            }
+            catch (IOException)
+            {
+                //the file is unavailable because it is:
+                //still being written to
+                //or being processed by another thread
+                //or does not exist (has already been processed)
+                return true;
+            }
+        }
     }
 }
