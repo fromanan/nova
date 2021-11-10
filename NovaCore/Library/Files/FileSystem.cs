@@ -475,8 +475,13 @@ namespace NovaCore.Library.Files
             {
                 return true;
             }
+            catch (UnauthorizedAccessException)
+            {
+                return true;
+            }
         }
         
+        // TODO: Return int instead indicating the failure type?
         public static bool IsFileLocked(FileInfo file)
         {
             try
@@ -490,6 +495,10 @@ namespace NovaCore.Library.Files
                 //still being written to
                 //or being processed by another thread
                 //or does not exist (has already been processed)
+                return true;
+            }
+            catch (UnauthorizedAccessException)
+            {
                 return true;
             }
         }
