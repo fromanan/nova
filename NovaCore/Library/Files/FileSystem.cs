@@ -1,11 +1,13 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Newtonsoft.Json;
 using Debug = NovaCore.Library.Logging.Debug;
+using SpecialFolder = System.Environment.SpecialFolder;
 
 namespace NovaCore.Library.Files
 {
@@ -16,11 +18,11 @@ namespace NovaCore.Library.Files
             // System Folders
             public static readonly string Project = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..\\..\\..\\"));
             public static readonly string Build = AppContext.BaseDirectory;
-            public static readonly string AppData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            public static readonly string Common = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
-            public static readonly string Local = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            public static readonly string AppData = Environment.GetFolderPath(SpecialFolder.ApplicationData);
+            public static readonly string Common = Environment.GetFolderPath(SpecialFolder.CommonApplicationData);
+            public static readonly string Local = Environment.GetFolderPath(SpecialFolder.LocalApplicationData);
             public static readonly string Temp = Path.GetTempPath();
-            public static readonly string Documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            public static readonly string Documents = Environment.GetFolderPath(SpecialFolder.MyDocuments);
             public static readonly string Downloads = KnownFolders.GetPath(KnownFolder.Downloads);
         }
 
@@ -61,7 +63,22 @@ namespace NovaCore.Library.Files
 
         public static string BuildPath(params string[] folderHierarchy)
         {
-            if (folderHierarchy == null || folderHierarchy.Length <= 0)
+            return EmptyHierarchy(folderHierarchy) ? null : Path.Combine(folderHierarchy);
+        }
+        
+        public static string BuildFilepath(string filename, params string[] folderHierarchy)
+        {
+            return EmptyHierarchy(folderHierarchy) ? filename : Path.Combine(folderHierarchy.Append(filename).ToArray());
+        }
+
+        private static bool EmptyHierarchy(string[] folderHierarchy)
+        {
+            return folderHierarchy == null || folderHierarchy.Length <= 0;
+        }
+        
+        public static string CreatePath(params string[] folderHierarchy)
+        {
+            if (EmptyHierarchy(folderHierarchy))
             {
                 return null;
             }
@@ -75,10 +92,12 @@ namespace NovaCore.Library.Files
             return directory;
         }
         
-        public static string BuildFilepath(string filename, params string[] folderHierarchy)
+        public static string CreateFilepath(string filename, params string[] folderHierarchy)
         {
-            if (folderHierarchy == null || folderHierarchy.Length <= 0)
+            if (EmptyHierarchy(folderHierarchy))
+            {
                 return filename;
+            }
             
             string directory = Path.Combine(folderHierarchy);
             if (!Directory.Exists(directory))
@@ -167,6 +186,7 @@ namespace NovaCore.Library.Files
             thread.Join();
         }*/
         
+        #region Dialogs
         public static string RunFileDialog<T>(T dialog) where T : FileDialog
         {
             string selectedPath = "";
@@ -233,7 +253,7 @@ namespace NovaCore.Library.Files
             {
                 FolderBrowserDialog fbd = new FolderBrowserDialog
                 {
-                    RootFolder = Environment.SpecialFolder.MyComputer, 
+                    RootFolder = SpecialFolder.MyComputer, 
                     ShowNewFolderButton = true
                 };
                 if (fbd.ShowDialog() == DialogResult.Cancel) return;
@@ -274,6 +294,8 @@ namespace NovaCore.Library.Files
 
             return selectedPaths;
         }
+        
+        #endregion
 
         #region Data Serialization
 
@@ -321,14 +343,21 @@ namespace NovaCore.Library.Files
             // Filepath was provided
             if (string.IsNullOrEmpty(filepath))
             {
-                filepath = SaveFileDialogue(extension, Filter(extension), directory);
-                if (string.IsNullOrEmpty(filepath)) return null;
+                filepath = SaveFileDialogue(extension, BasicFileFilter(extension), directory);
+                if (string.IsNullOrEmpty(filepath))
+                {
+                    return null;
+                }
                 File.Create(filepath).Close();
                 return filepath;
             }
             
             // File exists
-            if (Validate(filepath)) return null; //< TODO: Return the existing filename?
+            // TODO: Return the existing filename?
+            if (Validate(filepath))
+            {
+                return null; 
+            }
             
             File.Create(filepath).Close();
             
@@ -340,19 +369,19 @@ namespace NovaCore.Library.Files
             return Path.GetTempFileName();
         }
 
-        public static string Filter(string extension) => $"{extension} files (*.{extension})|*.{extension}";
+        public static string BasicFileFilter(string extension) => $"{extension} files (*.{extension})|*.{extension}";
 
         // TODO: Does not support multiple extensions
         // TODO: Detect file prompt closing, catch the null operator - Verify for this purpose
         public static string LoadFile(string extension, string startDirectory = null)
         {
-            return OpenFileDialogue(extension, Filter(extension), startDirectory);
+            return OpenFileDialogue(extension, BasicFileFilter(extension), startDirectory);
         }
         
         public static string[] LoadFiles(string extension, string startDirectory = null)
         {
             // Return an empty array if file cancelled (for iteration)
-            return OpenMultiFileDialogue(extension, Filter(extension), startDirectory) ?? Array.Empty<string>();
+            return OpenMultiFileDialogue(extension, BasicFileFilter(extension), startDirectory) ?? Array.Empty<string>();
         }
         
         // TODO: Default Filenames
@@ -369,11 +398,10 @@ namespace NovaCore.Library.Files
         
         public static bool LoadSuccessful(string[] filepaths)
         {
-            return !(filepaths == null || filepaths.Length < 1 ||
-                   filepaths.Length == 1 && string.IsNullOrEmpty(filepaths[0]));
+            return !(EmptyHierarchy(filepaths) || filepaths.Length == 1 && string.IsNullOrEmpty(filepaths[0]));
         }
 
-        // Copies a selected file to the downloads folder
+        // Copies a selected file to the downloads folderwwwwwwwwwwwww
         public static string Download(string filepath)
         {
             string filename = Path.Combine(Paths.Downloads, Path.GetFileName(filepath));
@@ -417,14 +445,20 @@ namespace NovaCore.Library.Files
             return Directory.GetDirectories(directoryPath);
         }
 
-        public static void OpenExplorer(string arguments)
+        public static void RunBasicProcess(string processName, string arguments)
         {
-            using (Process process = new Process())
+            using (Process process = new Process
             {
-                process.StartInfo.FileName = "explorer";
-                process.StartInfo.Arguments = arguments;
+                StartInfo = new ProcessStartInfo(processName, arguments)
+            })
+            {
                 process.Start();
             }
+        }
+
+        public static void OpenExplorer(string arguments)
+        {
+            RunBasicProcess("explorer", arguments);
         }
 
         public static void OpenFolder(string path)
