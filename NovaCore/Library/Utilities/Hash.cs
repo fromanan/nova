@@ -1,40 +1,55 @@
-using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using NovaCore.Library.Extensions;
 
 namespace NovaCore.Library.Utilities
 {
     public static class Hash
     {
-        // https://stackoverflow.com/questions/16999361/obtain-sha-256-string-of-a-string/17001289
+        // Source: https://stackoverflow.com/questions/16999361/obtain-sha-256-string-of-a-string/17001289
+        // Simplified using LINQ
         public static string Sha256(string value)
         {
-            StringBuilder sb = new StringBuilder();
-
-            using (var hash = SHA256.Create())
+            using (SHA256 sha256 = SHA256.Create())
             {
-                Encoding enc = Encoding.UTF8;
-                Byte[] result = hash.ComputeHash(enc.GetBytes(value));
-
-                foreach (Byte b in result)
-                    sb.Append(b.ToString("x2"));
+                return ByteString(sha256.ComputeHash(Encoding.UTF8.GetBytes(value)));
             }
-
-            return sb.ToString();
         }
         
-        private static readonly Random random = new Random();
-        public static string RandomString(int length)
+        public static string Sha512(string value)
         {
-            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            return new string(Enumerable.Repeat(chars, length)
-                .Select(s => s[random.Next(s.Length)]).ToArray());
+            using (SHA512 sha512 = SHA512.Create())
+            {
+                return ByteString(sha512.ComputeHash(Encoding.UTF8.GetBytes(value)));
+            }
         }
 
         public static string SaltedHash(string text, string salt)
         {
             return Sha256($"{text}{salt}");
         }
+
+        public static string SimpleHash(string input)
+        {
+            using (MD5 md5 = MD5.Create())
+            {
+                return ByteString(md5.ComputeHash(Encoding.ASCII.GetBytes(input)));
+            }
+        }
+
+        public static string ByteString(IEnumerable<byte> bytes)
+        {
+            return bytes.Select(b => b.ToString("X2")).Merge();
+        }
+        
+        /*public static string ByteString<T>(string value, Encoding encoding) where T : HashAlgorithm
+        {
+            using (SHA512 hash = SHA512.Create())
+            {
+                return ByteString(hash.ComputeHash(encoding.GetBytes(value)));
+            }
+        }*/
     }
 }
