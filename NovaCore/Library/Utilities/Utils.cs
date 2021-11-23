@@ -13,6 +13,12 @@ namespace NovaCore.Library.Utilities
 
         public static int ToInt(object value) => Convert.ToInt32(value);
 
+        public static long ToLong(object value) => Convert.ToInt64(value);
+
+        public static float ToFloat(object value) => Convert.ToSingle(value);
+
+        public static double ToDouble(object value) => Convert.ToDouble(value);
+
         public static string RandomString(int length)
         {
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
