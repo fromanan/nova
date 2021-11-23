@@ -476,6 +476,21 @@ namespace NovaCore.Library.Files
             OpenExplorer($"/select,\"{filepath}\"");
         }
 
+        public static void OpenWithDefaultBrowser(string url)
+        {
+            ProcessStartInfo processStartInfo = new ProcessStartInfo
+            {
+                UseShellExecute = true,
+                FileName = url
+            };
+            Process.Start(processStartInfo);
+        }
+        
+        /*public static void OpenBrowser(string url)
+        {
+            
+        }*/
+
         public static FileInfo GetFileInfo(string filepath)
         {
             return new FileInfo(filepath);
@@ -497,7 +512,8 @@ namespace NovaCore.Library.Files
             return $"{fileInfo.Name} ({fileInfo.Length} bytes) : \"{filepath}\"";
         }
         
-        // https://stackoverflow.com/questions/876473/is-there-a-way-to-check-if-a-file-is-in-use
+        // Source: https://stackoverflow.com/questions/876473/is-there-a-way-to-check-if-a-file-is-in-use
+        // Simplified syntax
         public static bool IsFileLocked(string filepath)
         {
             try
@@ -525,10 +541,10 @@ namespace NovaCore.Library.Files
             }
             catch (IOException)
             {
-                //the file is unavailable because it is:
-                //still being written to
-                //or being processed by another thread
-                //or does not exist (has already been processed)
+                /* The file is unavailable because it is:
+                 *  - still being written to
+                 *  - or being processed by another thread
+                 *  - or does not exist (has already been processed) */
                 return true;
             }
             catch (UnauthorizedAccessException)
