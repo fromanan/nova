@@ -29,5 +29,22 @@ namespace NovaCore.Library.Utilities
         {
             return bytes.Select(b => b.ToString("X2")).Merge();
         }
+        
+        public static int WrappedClamp(int n, int max, int min = 0)
+        {
+            return n < min ? max - 1 : n > max ? n % max : n;
+        }
+    
+        // Used for cycling through a list continuously
+        public static int CycleList(int index, int delta, int length)
+        {
+            return WrappedClamp(index + delta, length);
+        }
+
+        // TODO: Extend into different generator types
+        public static IEnumerable<T> Repeat<T>(Func<T> generator, int n)
+        {
+            return Enumerable.Range(0, n).Select(x => generator.Invoke());
+        }
     }
 }
