@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using NovaCore.Library.Extensions;
 
 namespace NovaCore.Library.Utilities
 {
@@ -15,6 +17,11 @@ namespace NovaCore.Library.Utilities
         {
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
             return new string(Enumerable.Repeat(chars, length).Select(s => s[Random.Next(s.Length)]).ToArray());
+        }
+        
+        public static string ByteString(IEnumerable<byte> bytes)
+        {
+            return bytes.Select(b => b.ToString("X2")).Merge();
         }
     }
 }

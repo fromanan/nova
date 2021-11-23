@@ -1,8 +1,5 @@
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using NovaCore.Library.Extensions;
 
 namespace NovaCore.Library.Utilities
 {
@@ -14,7 +11,7 @@ namespace NovaCore.Library.Utilities
         {
             using (SHA256 sha256 = SHA256.Create())
             {
-                return ByteString(sha256.ComputeHash(Encoding.UTF8.GetBytes(value)));
+                return Utils.ByteString(sha256.ComputeHash(Encoding.UTF8.GetBytes(value)));
             }
         }
         
@@ -22,28 +19,28 @@ namespace NovaCore.Library.Utilities
         {
             using (SHA512 sha512 = SHA512.Create())
             {
-                return ByteString(sha512.ComputeHash(Encoding.UTF8.GetBytes(value)));
+                return Utils.ByteString(sha512.ComputeHash(Encoding.UTF8.GetBytes(value)));
             }
-        }
-
-        public static string SaltedHash(string text, string salt)
-        {
-            return Sha256($"{text}{salt}");
         }
 
         public static string SimpleHash(string input)
         {
             using (MD5 md5 = MD5.Create())
             {
-                return ByteString(md5.ComputeHash(Encoding.ASCII.GetBytes(input)));
+                return Utils.ByteString(md5.ComputeHash(Encoding.ASCII.GetBytes(input)));
             }
         }
-
-        public static string ByteString(IEnumerable<byte> bytes)
-        {
-            return bytes.Select(b => b.ToString("X2")).Merge();
-        }
         
+        public static string SaltedHash(string text, string salt)
+        {
+            return Sha256($"{text}{salt}");
+        }
+
+        public static string RunHash(string value)
+        {
+            return "";
+        }
+
         /*public static string ByteString<T>(string value, Encoding encoding) where T : HashAlgorithm
         {
             using (SHA512 hash = SHA512.Create())
