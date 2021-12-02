@@ -51,11 +51,21 @@ namespace Nova.Utilities
             return AxisAboveThreshold(InputAxis.HORIZONTAL, threshold) || 
                    AxisAboveThreshold(InputAxis.VERTICAL, threshold);
         }
-
-        public static void ToggleCursor(bool cursorOn)
+        
+        public static void ShowCursor()
         {
-            Cursor.visible = cursorOn;
-            Cursor.lockState = cursorOn ? CursorLockMode.None : CursorLockMode.Locked;
+            Cursor.visible = true;
+        }
+        
+        public static void HideCursor()
+        {
+            Cursor.visible = false;
+        }
+
+        public static void ToggleCursor(bool cursorEnabled)
+        {
+            Cursor.visible = cursorEnabled;
+            Cursor.lockState = cursorEnabled ? CursorLockMode.None : CursorLockMode.Locked;
         }
 
         public static bool IsScrolling(float threshold = 0.01f)
@@ -65,15 +75,15 @@ namespace Nova.Utilities
 
         public static bool AxisAboveThreshold(string axisName, float threshold = 0.01f)
         {
-            return !Math.Between(GetAxisRaw(axisName), threshold);
+            return !NovaMath.Between(GetAxisRaw(axisName), threshold);
         }
         
-        public static bool RaycastMouse(Camera camera, out RaycastHit hit, LayerMask ignore, float maxDistance = Single.PositiveInfinity)
+        public static bool RaycastMouse(Camera camera, out RaycastHit hit, LayerMask ignore, float maxDistance = float.PositiveInfinity)
         {
             return Physics.Raycast(MouseRay(camera), out hit, maxDistance, ~ignore);
         }
         
-        public static bool RaycastMouse(Camera camera, out RaycastHit hit, float maxDistance = Single.PositiveInfinity)
+        public static bool RaycastMouse(Camera camera, out RaycastHit hit, float maxDistance = float.PositiveInfinity)
         {
             return Physics.Raycast(MouseRay(camera), out hit, maxDistance);
         }
@@ -86,6 +96,17 @@ namespace Nova.Utilities
         public static Vector3 GetMovementInput(Vector2 sensitivity)
         {
             return new Vector3(GetAxis(InputAxis.VERTICAL) * sensitivity.x, 0f, GetAxis(InputAxis.HORIZONTAL) * sensitivity.y);
+        }
+
+        private static Vector3 ScreenClampedMouse()
+        {
+            return ClampInScreen(MousePosition);
+        }
+        
+        private static Vector3 ClampInScreen(Vector3 mousePosition)
+        {
+            return new Vector3(Mathf.Clamp(mousePosition.x, 0f, Screen.width),
+                Mathf.Clamp(mousePosition.y, 0f, Screen.height), mousePosition.z);
         }
 
         public static float GetAxisRaw(string axisName) => Input.GetAxisRaw(axisName);
