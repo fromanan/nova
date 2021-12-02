@@ -11,7 +11,7 @@ namespace NovaCore.Files
     /// </summary>
     public static class KnownFolders
     {
-        private static string[] _knownFolderGuids =
+        private static readonly string[] KnownFolderGuids =
         {
             "{56784854-C6CB-462B-8169-88E350ACB882}", // Contacts
             "{B4BFCC3A-DB2C-424C-B029-7FE99A87C641}", // Desktop
@@ -43,7 +43,7 @@ namespace NovaCore.Files
 
         private static string GetPath(KnownFolder knownFolder, KnownFolderFlags flags, bool defaultUser)
         {
-            int result = SHGetKnownFolderPath(new Guid(_knownFolderGuids[(int) knownFolder]),
+            int result = SHGetKnownFolderPath(new Guid(KnownFolderGuids[(int) knownFolder]),
                 (uint) flags, new IntPtr(defaultUser ? -1 : 0), out IntPtr outPath);
 
             if (result < 0)
