@@ -2,7 +2,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace Nova.Library.Extensions
+namespace Nova.Extensions
 {
     public static class GizmoExtensions
     {

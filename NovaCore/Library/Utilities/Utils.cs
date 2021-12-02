@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NovaCore.Library.Extensions;
+using NovaCore.Extensions;
 
-namespace NovaCore.Library.Utilities
+namespace NovaCore.Utilities
 {
     public static class Utils
     {

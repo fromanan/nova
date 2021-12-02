@@ -3,7 +3,7 @@ using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
-namespace NovaEditor.Library.Extensions
+namespace NovaEditor.Extensions
 {
     public static class EditorExtensions
     {

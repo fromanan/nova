@@ -1,6 +1,6 @@
 using System;
 
-namespace NovaCore.Library.Utilities
+namespace NovaCore.Utilities
 {
     public static class GuidTools 
     {

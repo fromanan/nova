@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 // Source:
 // https://www.codeproject.com/Articles/878605/Getting-All-Special-Folders-in-NET
 // https://stackoverflow.com/questions/10667012/getting-downloads-folder-in-c
-namespace NovaCore.Library.Files
+namespace NovaCore.Files
 {
     /// <summary>
     /// Class containing methods to retrieve specific file system paths.

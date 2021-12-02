@@ -1,9 +1,9 @@
-﻿using UnityEngine;
-using System.Linq;
+﻿using System.Linq;
 using System.Text;
-using NovaCore.Library.Files;
+using NovaCore.Files;
+using UnityEngine;
 
-namespace Nova.Library.Utilities
+namespace Nova.Utilities
 {
     // Written for exporting uTerrains to OBJ files
     public static class MeshExporter

@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace NovaCore.Library.Utilities
+namespace NovaCore.Utilities
 {
     public static class Info
     {

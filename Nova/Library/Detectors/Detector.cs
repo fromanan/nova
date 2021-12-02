@@ -1,8 +1,8 @@
-using Nova.Library.Derivables;
+using Nova.Derivables;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Nova.Library.Detectors
+namespace Nova.Detectors
 {
     public abstract class Detector : PlayerTriggerBehavior
     {

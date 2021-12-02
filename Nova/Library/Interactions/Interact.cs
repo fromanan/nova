@@ -1,13 +1,11 @@
-using System;
-using Nova.Library.Derivables;
+using Nova.Derivables;
 using UnityEngine;
 using UnityEngine.Events;
-
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
 #endif
 
-namespace Nova.Library.Interactions
+namespace Nova.Interactions
 {
     public class Interact : PlayerTriggerBehavior
     {

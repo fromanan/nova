@@ -1,8 +1,7 @@
-﻿using System;
+﻿using NovaCore.Utilities;
 using UnityEngine;
-using Math = NovaCore.Library.Utilities.Math;
 
-namespace Nova.Library.Utilities
+namespace Nova.Utilities
 {
     public static class NovaInput
     {

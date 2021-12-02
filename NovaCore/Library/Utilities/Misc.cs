@@ -1,4 +1,4 @@
-namespace NovaCore.Library.Utilities
+namespace NovaCore.Utilities
 {
     public static class Misc
     {

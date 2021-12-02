@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace NovaCore.Library.Extensions
+namespace NovaCore.Extensions
 {
     public static class IEnumerableExtensions
     {

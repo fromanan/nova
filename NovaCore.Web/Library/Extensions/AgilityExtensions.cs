@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using HtmlAgilityPack;
-using NovaCore.Library.Files;
+using NovaCore.Files;
 
-namespace NovaCore.Web.Library.Extensions
+namespace NovaCore.Web.Extensions
 {
     public static class AgilityExtensions
     {

@@ -1,12 +1,12 @@
 using System.Collections;
-using Nova.Library.Attributes;
-using Nova.Library.Derivables;
-using Nova.Library.Extensions;
+using Nova.Attributes;
+using Nova.Derivables;
+using Nova.Extensions;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Nova.Library.Attachables
+namespace Nova.Attachables
 {
     public class Pickup : PlayerTriggerBehavior
     {

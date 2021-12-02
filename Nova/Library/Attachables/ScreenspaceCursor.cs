@@ -1,7 +1,7 @@
-using Nova.Library.Utilities;
+using Nova.Utilities;
 using UnityEngine;
 
-namespace Nova.Library.Attachables
+namespace Nova.Attachables
 {
     public class ScreenspaceCursor : MonoBehaviour
     {

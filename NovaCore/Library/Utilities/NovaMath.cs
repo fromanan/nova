@@ -1,6 +1,6 @@
-namespace NovaCore.Library.Utilities
+namespace NovaCore.Utilities
 {
-    public static class Math
+    public static class NovaMath
     {
         public static int WrappedClamp(int n, int min, int max)
         {

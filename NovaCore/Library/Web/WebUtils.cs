@@ -5,7 +5,7 @@ using System.Net.NetworkInformation;
 using System.Web;
 using Query = System.Collections.Generic.KeyValuePair<string, string>;
 
-namespace NovaCore.Library.Web
+namespace NovaCore.Web
 {
     public class WebUtils
     {

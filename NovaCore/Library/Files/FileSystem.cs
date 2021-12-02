@@ -6,10 +6,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Newtonsoft.Json;
-using Debug = NovaCore.Library.Logging.Debug;
+using Debug = NovaCore.Logging.Debug;
 using SpecialFolder = System.Environment.SpecialFolder;
 
-namespace NovaCore.Library.Files
+namespace NovaCore.Files
 {
     public static class FileSystem
     {

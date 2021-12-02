@@ -3,7 +3,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 
-namespace NovaCore.Library.Files
+namespace NovaCore.Files
 {
     // https://stackoverflow.com/questions/12261598/browse-multiple-folders-using-folderbrowserdialog-in-windows-application
     public class FolderSelectDialog

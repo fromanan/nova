@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace NovaCore.Library.Extensions
+namespace NovaCore.Extensions
 {
     public static class StringExtensions
     {

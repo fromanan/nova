@@ -1,15 +1,15 @@
 using System;
 using System.IO;
-using NovaCore.Library.Utilities;
+using NovaCore.Utilities;
 using UnityEngine;
-using static NovaCore.Library.Files.FileSystem;
+using static NovaCore.Files.FileSystem;
 using Object = UnityEngine.Object;
 
-namespace Nova.Library.Files
+namespace Nova.Files
 {
     public class Asset : Object
     {
-        public System.Guid guid { get; private set; }
+        public Guid guid { get; private set; }
         public string Filepath { get; private set; }
         public DateTime DateCreated { get; private set; }
         public DateTime DateModified { get; private set; }

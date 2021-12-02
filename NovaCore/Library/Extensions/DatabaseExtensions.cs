@@ -4,11 +4,11 @@ using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Linq;
 using System.Reflection;
-using NovaCore.Library.Logging;
-using NovaCore.Library.Utilities;
-using NovaCore.Library.Web;
+using NovaCore.Utilities;
+using NovaCore.Web;
+using Debug = NovaCore.Logging.Debug;
 
-namespace NovaCore.Library.Extensions
+namespace NovaCore.Extensions
 {
     public static class DatabaseExtensions
     {

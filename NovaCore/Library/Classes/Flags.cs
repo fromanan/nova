@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace NovaCore.Library.Classes
+namespace NovaCore.Classes
 {
     public static class Flags
     {

@@ -1,11 +1,11 @@
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
 
 // Written by Steve Streeting 2017
 // License: CC0 Public Domain http://creativecommons.org/publicdomain/zero/1.0/
 // Updated to Unity 2020.2.3 by Tony Froman 06/01/2020
 
-namespace Nova.Library.Attachables
+namespace Nova.Attachables
 {
     /// <summary>
     /// Component which will flicker a linked light while active by changing its
@@ -41,7 +41,7 @@ namespace Nova.Library.Attachables
         public void Reset()
         {
             smoothQueue.Clear();
-            lastSum = 0;
+            lastSum = 0f;
         }
 
         private void Start()

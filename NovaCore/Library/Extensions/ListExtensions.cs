@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace NovaCore.Library.Extensions
+namespace NovaCore.Extensions
 {
     public static class ListExtensions
     {

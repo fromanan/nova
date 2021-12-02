@@ -1,6 +1,6 @@
 using System;
 
-namespace NovaCore.Library.Logging
+namespace NovaCore.Logging
 {
     public static partial class Debug
     {

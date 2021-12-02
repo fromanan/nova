@@ -2,7 +2,7 @@ using UnityEditor;
 using UnityEngine;
 using static UnityEditor.EditorGUILayout;
 
-namespace NovaEditor.Library.Utilities
+namespace NovaEditor.Utilities
 {
     public class ScreenshotUtility : EditorWindow
     {

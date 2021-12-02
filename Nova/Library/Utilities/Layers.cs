@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Nova.Library.Utilities
+namespace Nova.Utilities
 {
     /**
     * Class that holds layer-related utilities and string constants for layer names.

@@ -1,4 +1,4 @@
-namespace NovaCore.Library.Logging
+namespace NovaCore.Logging
 {
     
 }

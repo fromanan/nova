@@ -1,8 +1,8 @@
 using System.IO;
 using UnityEngine;
-using static NovaCore.Library.Files.FileSystem;
+using static NovaCore.Files.FileSystem;
 
-namespace Nova.Library.Files
+namespace Nova.Files
 {
     public static class FileSystem
     {

@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using uhttpsharp;
 
-namespace NovaCore.Web.Library.Interfaces
+namespace NovaCore.Web.Interfaces
 {
     public interface ICallback
     {

@@ -1,9 +1,9 @@
-using Nova.Library.Extensions;
-using Nova.Library.Utilities;
+using Nova.Extensions;
+using Nova.Utilities;
 using UnityEngine;
-using Axis = Nova.Library.Utilities.Axes.Axis;
+using Axis = Nova.Utilities.Axes.Axis;
 
-namespace Nova.Library.Attachables
+namespace Nova.Attachables
 {
     public class StayLevel : MonoBehaviour
     {

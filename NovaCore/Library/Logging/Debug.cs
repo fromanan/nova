@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows.Forms;
-using NovaCore.Library.Files;
+using NovaCore.Files;
 
-namespace NovaCore.Library.Logging
+namespace NovaCore.Logging
 {
     public static partial class Debug
     {

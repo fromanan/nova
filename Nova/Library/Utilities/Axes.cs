@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Nova.Library.Utilities
+namespace Nova.Utilities
 {
     public static class Axes
     {

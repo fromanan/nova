@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Nova.Library.Attachables
+namespace Nova.Attachables
 {
     [ExecuteAlways]
     public class Billboard : MonoBehaviour

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Nova.Library.Derivables
+namespace Nova.Derivables
 {
     public abstract class PlayerTriggerBehavior : MonoBehaviour
     {

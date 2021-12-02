@@ -6,15 +6,15 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using HtmlAgilityPack;
-using NovaCore.Library.Files;
-using NovaCore.Library.Logging;
-using NovaCore.Web.Library.Extensions;
+using NovaCore.Files;
+using NovaCore.Web.Extensions;
 using RestSharp;
+using Debug = NovaCore.Logging.Debug;
 using HtmlDocument = HtmlAgilityPack.HtmlDocument;
 using Header = System.Collections.Generic.KeyValuePair<string, string>;
 using Parameter = System.Collections.Generic.KeyValuePair<string, string>;
 
-namespace NovaCore.Web.Library.Web
+namespace NovaCore.Web
 {
     public static class WebDriver
     {

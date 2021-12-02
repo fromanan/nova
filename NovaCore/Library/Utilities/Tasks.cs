@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace NovaCore.Library.Utilities
+namespace NovaCore.Utilities
 {
     public static class Tasks
     {

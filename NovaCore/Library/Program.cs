@@ -1,9 +1,9 @@
 using System;
 using System.IO;
-using NovaCore.Library.Files;
-using NovaCore.Library.Utilities;
+using NovaCore.Files;
+using NovaCore.Utilities;
 
-namespace NovaCore.Library
+namespace NovaCore
 {
     public static class Program
     {

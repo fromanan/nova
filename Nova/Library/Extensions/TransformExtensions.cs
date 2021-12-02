@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
-using Nova.Library.Utilities;
+using Nova.Utilities;
 using UnityEngine;
 
-namespace Nova.Library.Extensions
+namespace Nova.Extensions
 {
     public static class TransformExtensions
     {

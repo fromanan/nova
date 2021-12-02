@@ -1,7 +1,7 @@
 using Microsoft.Data.Sqlite;
-using NovaCore.Library.Logging;
+using Debug = NovaCore.Logging.Debug;
 
-namespace NovaCore.Web.Library.Extensions
+namespace NovaCore.Web.Extensions
 {
     public static class SqliteExtensions
     {
