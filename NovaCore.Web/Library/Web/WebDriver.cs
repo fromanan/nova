@@ -95,7 +95,7 @@ namespace NovaCore.Web
 
         public static StreamReader OpenStreamReader(Stream responseStream, string characterSet = null)
         {
-            return String.IsNullOrWhiteSpace(characterSet)
+            return string.IsNullOrWhiteSpace(characterSet)
                 ? new StreamReader(responseStream)
                 : new StreamReader(responseStream, Encoding.GetEncoding(characterSet));
         }
@@ -147,12 +147,10 @@ namespace NovaCore.Web
             request.ContentType = contentType;
             request.Headers.Add("Authorization", authorization);
             request.UserAgent = userAgent;
-            
             foreach (Header header in extraHeaders)
             {
                 request.Headers.Add(header.Key, header.Value);
             }
-
             return request;
         }
         
