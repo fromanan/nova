@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Web;
-using Query = System.Collections.Generic.KeyValuePair<string, string>;
 
 namespace NovaCore.Web
 {
@@ -24,9 +23,9 @@ namespace NovaCore.Web
             
             public string Path;
             
-            public List<Query> Queries;
+            public List<WebQuery> Queries;
 
-            public Url(string protocol, string domain, string path, params Query[] queries)
+            public Url(string protocol, string domain, string path, params WebQuery[] queries)
             {
                 Protocol = protocol;
                 Domain = domain;
@@ -34,9 +33,9 @@ namespace NovaCore.Web
                 Queries = queries.ToList();
             }
 
-            public static Query Query(string key, string value)
+            public static WebQuery Query(string key, string value)
             {
-                return new Query(key, value);
+                return new WebQuery(key, value);
             }
 
             public string QueryString => 
