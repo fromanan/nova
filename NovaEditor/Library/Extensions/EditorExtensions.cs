@@ -9,7 +9,7 @@ namespace NovaEditor.Extensions
     {
         private static readonly Assembly UnityEditorAssembly = typeof(AudioImporter).Assembly;
         private static readonly Type AudioUtilClass = UnityEditorAssembly.GetType("UnityEditor.AudioUtil");
-        private static readonly BindingFlags Flags = BindingFlags.Static | BindingFlags.Public;
+        private const BindingFlags Flags = BindingFlags.Static | BindingFlags.Public;
 
         private static readonly MethodInfo PlayClipMethodInfo = GetMethod("PlayClip", typeof(AudioClip));
         private static readonly MethodInfo StopAllClipsMethodInfo = GetMethod("StopAllClips");
