@@ -476,14 +476,13 @@ namespace NovaCore.Files
             OpenExplorer($"/select,\"{filepath}\"");
         }
 
-        public static void OpenWithDefaultBrowser(string url)
+        public static Process OpenWithDefaultBrowser(string url)
         {
-            ProcessStartInfo processStartInfo = new ProcessStartInfo
+            return Process.Start(new ProcessStartInfo
             {
                 UseShellExecute = true,
                 FileName = url
-            };
-            Process.Start(processStartInfo);
+            });
         }
         
         /*public static void OpenBrowser(string url)
