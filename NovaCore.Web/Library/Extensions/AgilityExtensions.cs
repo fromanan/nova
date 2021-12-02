@@ -10,27 +10,27 @@ namespace NovaCore.Web.Extensions
     {
         public static bool HasId(this HtmlNode node, params string[] ids)
         {
-            return ids.Any(id => node.Id == id);
+            return ids?.Any(id => node.Id == id) ?? false;
         }
         
         public static bool NodeMatch(this HtmlNode node, params string[] nodes)
         {
-            return nodes.Any(n => n == node.Name);
+            return nodes?.Any(n => n == node.Name) ?? false;
         }
         
-        public static bool ClassMatch(this HtmlNode node, string[] classes)
+        public static bool ClassMatch(this HtmlNode node, params string[] classes)
         {
-            return classes.Any(node.HasClass);
+            return classes?.Any(node.HasClass) ?? false;
         }
         
         public static bool MultiClassMatch(this HtmlNode node, params string[] classes)
         {
-            return classes.All(node.HasClass);
+            return classes?.All(node.HasClass) ?? false;
         }
 
         public static bool ClassPatternMatch(this HtmlNode node, params string[][] classPatternGroups)
         {
-            return classPatternGroups.Any(node.MultiClassMatch);
+            return classPatternGroups?.Any(node.MultiClassMatch) ?? false;
         }
 
         public static void PrintBody(this HtmlDocument htmlDoc)
@@ -69,6 +69,12 @@ namespace NovaCore.Web.Extensions
         public static string ToString(this HtmlDocument htmlDoc)
         {
             return htmlDoc.DocumentNode.OuterHtml;
+        }
+
+        public static HtmlNode Filter(this HtmlNode node, params string[] nodesToRemove)
+        {
+            node.Descendants().Where(n => nodesToRemove.Any(id => n.HasId(id))).ToList().ForEach(n => n.Remove());
+            return node;
         }
     }
 }
