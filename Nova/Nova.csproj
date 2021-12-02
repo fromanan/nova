@@ -174,6 +174,7 @@
         <Compile Include="Library\Attachables\Pickup.cs" />
         <Compile Include="Library\Attachables\ScreenspaceCursor.cs" />
         <Compile Include="Library\Attachables\StayLevel.cs" />
+        <Compile Include="Library\Attachables\TimedObjectDestructor.cs" />
         <Compile Include="Library\Attributes\ReadOnlyAttribute.cs" />
         <Compile Include="Library\Derivables\PlayerCollisionBehavior.cs" />
         <Compile Include="Library\Derivables\PlayerTriggerBehavior.cs" />
@@ -181,6 +182,7 @@
         <Compile Include="Library\Extensions\AnimatorExtensions.cs" />
         <Compile Include="Library\Extensions\ColliderExtensions.cs" />
         <Compile Include="Library\Extensions\GameObjectExtensions.cs" />
+        <Compile Include="Library\Extensions\QuaternionExtensions.cs" />
         <Compile Include="Library\Extensions\TransformExtensions.cs" />
         <Compile Include="Library\Extensions\VectorExtensions.cs" />
         <Compile Include="Library\Files\Asset.cs" />
