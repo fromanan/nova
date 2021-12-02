@@ -1,7 +1,7 @@
-using Nova.Library.Utilities;
+using Nova.Utilities;
 using UnityEngine;
 
-namespace Nova.Library.Extensions
+namespace Nova.Extensions
 {
     public static class VectorExtensions
     {
@@ -63,13 +63,28 @@ namespace Nova.Library.Extensions
                    Quaternion.AngleAxis(angles.z, Vector3.forward) * vector;
         }
         
-        public static Vector3 Constrain(this Vector3 vector, Vector2 xConstraints, Vector2 yConstraints)
+        // In-place
+        public static void Constrain(this Vector3 vector, Vector2 xConstraints, Vector2 yConstraints)
         {
-            return new Vector3(Angle.Constrain(vector.x, xConstraints),
+            vector.x = Angle.Constrain(vector.x, xConstraints);
+            vector.y = Angle.Constrain(vector.y, yConstraints);
+        }
+        
+        public static Vector3 Constrained(this Vector3 vector, Vector2 xConstraints, Vector2 yConstraints)
+        {
+            return new Vector3(Angle.Constrain(vector.x, xConstraints), 
                 Angle.Constrain(vector.y, yConstraints), vector.z);
         }
 
-        public static Vector3 Constrain(this Vector3 vector, Vector2 xConstraints, Vector2 yConstraints, Vector2 zConstraints)
+        // In-place
+        public static void Constrain(this Vector3 vector, Vector2 xConstraints, Vector2 yConstraints, Vector2 zConstraints)
+        {
+            vector.x = Angle.Constrain(vector.x, xConstraints);
+            vector.y = Angle.Constrain(vector.y, yConstraints);
+            vector.z = Angle.Constrain(vector.z, zConstraints);
+        }
+        
+        public static Vector3 Constrained(this Vector3 vector, Vector2 xConstraints, Vector2 yConstraints, Vector2 zConstraints)
         {
             return new Vector3(Angle.Constrain(vector.x, xConstraints), 
                 Angle.Constrain(vector.y, yConstraints),
