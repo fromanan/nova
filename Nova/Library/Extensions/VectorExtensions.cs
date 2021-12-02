@@ -75,5 +75,28 @@ namespace Nova.Library.Extensions
                 Angle.Constrain(vector.y, yConstraints),
                 Angle.Constrain(vector.z, zConstraints));
         }
+        
+        // TODO: Clamping
+
+        public static Vector3 InDirectionOf(this Vector3 vector, Transform transform)
+        {
+            return transform.right * vector.x + transform.up * vector.y + transform.forward * vector.z;
+        }
+
+        public static Vector3 Mask(this Vector3 vector, Axes.Axis axes)
+        {
+            return vector.Hadamard(Axes.VectorFromMask(axes));
+        }
+        
+        // In-place
+        public static void Flip(this Vector3 vector)
+        {
+            (vector.x, vector.z) = (vector.z, vector.x);
+        }
+        
+        public static Vector3 Flipped(this Vector3 vector)
+        {
+            return new Vector3(vector.z, vector.y, vector.x);
+        }
     }
 }
