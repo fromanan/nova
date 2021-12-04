@@ -182,6 +182,7 @@
         <Compile Include="Library\Extensions\AnimatorExtensions.cs" />
         <Compile Include="Library\Extensions\ColliderExtensions.cs" />
         <Compile Include="Library\Extensions\GameObjectExtensions.cs" />
+        <Compile Include="Library\Extensions\GizmosExtensions.cs" />
         <Compile Include="Library\Extensions\QuaternionExtensions.cs" />
         <Compile Include="Library\Extensions\TransformExtensions.cs" />
         <Compile Include="Library\Extensions\VectorExtensions.cs" />

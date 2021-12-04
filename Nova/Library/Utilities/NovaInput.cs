@@ -98,12 +98,12 @@ namespace Nova.Utilities
             return new Vector3(GetAxis(InputAxis.VERTICAL) * sensitivity.x, 0f, GetAxis(InputAxis.HORIZONTAL) * sensitivity.y);
         }
 
-        private static Vector3 ScreenClampedMouse()
+        public static Vector3 ScreenClampedMouse()
         {
             return ClampInScreen(MousePosition);
         }
         
-        private static Vector3 ClampInScreen(Vector3 mousePosition)
+        public static Vector3 ClampInScreen(Vector3 mousePosition)
         {
             return new Vector3(Mathf.Clamp(mousePosition.x, 0f, Screen.width),
                 Mathf.Clamp(mousePosition.y, 0f, Screen.height), mousePosition.z);

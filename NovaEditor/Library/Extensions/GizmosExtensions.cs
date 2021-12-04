@@ -2,9 +2,9 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace Nova.Extensions
+namespace NovaEditor.Extensions
 {
-    public static class GizmoExtensions
+    public static class GizmosExtensions
     {
         public static void DrawWireCapsule(Vector3 pos, Quaternion rot, float radius, float height, Color color = default)
         {

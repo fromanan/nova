@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using NovaCore.Utilities;
 using NovaCore.Web;
 using Debug = NovaCore.Logging.Debug;
@@ -22,51 +23,76 @@ namespace NovaCore.Extensions
             return dataTable.Columns.Cast<DataColumn>();
         }
 
-        private static string Join(string separator, IEnumerable<string> values) => string.Join(separator, values);
-
         private static string Decode(object item) => WebUtils.Decode($"{item}");
         
         public static string Format(this DataRow dataRow, int colLength, string separator = " ")
         {
-            return Join(separator, 
-                dataRow.ItemArray.Select(item => Decode(item).Truncate(colLength-3).PadRight(colLength)));
+            return dataRow.ItemArray.
+                Select(item => Decode(item).Truncate(colLength-3).PadRight(colLength)).
+                Merge(separator);
         }
         
         public static string Format(this DataRow dataRow, string separator = " ")
         {
-            return Join(separator, dataRow.ItemArray.Select(Decode));
+            return dataRow.ItemArray.Select(Decode).Merge(separator);
         }
 
         public static void Print(this DataRow dataRow)
         {
             Debug.Log(dataRow.Format());
         }
-        
-        public static string Format(this DataTable dataTable, int colLength, string separator = "\n")
+
+        public static string FormatColumns(this DataTable dataTable, int colLength = -1, string separator = " ")
         {
-            return Join(separator, dataTable.GetRows().Select(dataRow => dataRow.Format(colLength)));
+            return dataTable.GetColumns().FormatColumns(colLength, separator);
         }
         
-        public static string Format(this DataTable dataTable, string separator = "\n")
+        public static string FormatColumns(this IEnumerable<DataColumn> columns, int colLength = -1, string separator = " ")
         {
-            return Join(separator, dataTable.GetRows().Select(dataRow => dataRow.Format()));
+            return columns.
+                Select(col => colLength < 0 ? col.ColumnName : col.ColumnName.PadRight(colLength)).
+                Merge(separator);
+        }
+        
+        public static string FormatRows(this DataTable dataTable, int colLength = -1, string separator = "\n")
+        {
+            return dataTable.GetRows().FormatRows(colLength, separator);
+        }
+        
+        public static string FormatRows(this IEnumerable<DataRow> rows, int colLength = -1, string separator = "\n")
+        {
+            return rows.
+                Select(dataRow => colLength < 0 ? dataRow.Format() : dataRow.Format(colLength)).
+                Merge(separator);
         }
         
         public static void Print(this DataTable dataTable)
         {
-            Debug.Log(dataTable.Format());
+            Debug.Log(dataTable.FormatRows());
         }
-
-        public static void Print(this DataTable dataTable, int colLength)
+        
+        public static void Print(this DataTable dataTable, int colLength, int count = 0, int start = 0)
         {
+            StringBuilder buffer = new StringBuilder();
+            
             // Print Headers
-            Debug.Log(Join(" ", dataTable.GetColumns().Select(col => col.ColumnName.PadRight(colLength))));
+            buffer.AppendLine(dataTable.FormatColumns(colLength));
 
             // Print Separators
-            Debug.Log(Join(" ", Enumerable.Repeat(new string('=', colLength), dataTable.Columns.Count)));
+            buffer.AppendLine(Separators(colLength, dataTable.Columns.Count));
 
             // Print the Data Elements
-            Debug.Log(dataTable.Format(colLength));
+            IEnumerable<DataRow> rows = dataTable.GetRows();
+            if (start > 0) rows = rows.Skip(start);
+            if (count > 0) rows = rows.Take(count);
+            buffer.Append(rows.FormatRows(colLength));
+
+            Debug.Log(buffer.ToString());
+        }
+
+        private static string Separators(int colLength, int colCount, string separator = " ")
+        {
+            return Enumerable.Repeat(new string('=', colLength), colCount).Merge(separator);
         }
 
         public static void DropColumn(this DataTable dataTable, string columnName)
@@ -80,15 +106,15 @@ namespace NovaCore.Extensions
         }
         
         // Source: https://stackoverflow.com/questions/19673502/how-to-convert-datarow-to-an-object/45074265
+        // Converted to modern C# (8) and simplified
         public static T ToObject<T>(this DataRow dataRow) where T : new()
         {
             T item = new T();
 
             foreach (DataColumn column in dataRow.Table.Columns)
             {
-                PropertyInfo property = GetProperty(typeof(T), column.ColumnName);
-
-                if (property != null && dataRow[column] != DBNull.Value && dataRow[column].ToString() != "NULL")
+                if (GetProperty(typeof(T), column.ColumnName) is PropertyInfo property && 
+                    dataRow[column] != DBNull.Value && dataRow[column].ToString() != "NULL")
                 {
                     property.SetValue(item, ChangeType(dataRow[column], property.PropertyType), null);
                 }
@@ -99,18 +125,14 @@ namespace NovaCore.Extensions
 
         private static PropertyInfo GetProperty(Type type, string attributeName)
         {
-            PropertyInfo property = type.GetProperty(attributeName);
+            return type.GetProperty(attributeName) ?? type.GetProperties().FirstOrDefault(p => Sigma(p, attributeName));
+        }
 
-            if (property != null)
-            {
-                return property;
-            }
-
-            return type
-                .GetProperties()
-                .FirstOrDefault(p => p.IsDefined(typeof(DisplayAttribute), false) && 
-                                     p.GetCustomAttributes(typeof(DisplayAttribute), false)
-                                         .Cast<DisplayAttribute>().Single().Name == attributeName);
+        private static bool Sigma(PropertyInfo propertyInfo, string attributeName)
+        {
+            return propertyInfo.IsDefined(typeof(DisplayAttribute), false) &&
+                   propertyInfo.GetCustomAttributes(typeof(DisplayAttribute), false)
+                       .Cast<DisplayAttribute>().Single().Name == attributeName;
         }
 
         public static object ChangeType(object value, Type type)
