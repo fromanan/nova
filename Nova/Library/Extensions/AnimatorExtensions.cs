@@ -24,6 +24,18 @@ namespace Nova.Extensions
             animator.SetIKRotation(goal, target.rotation);
         }
         
+        public static void SetIK(this Animator animator, AvatarIKGoal goal, Vector3 position, float weight)
+        {
+            animator.SetIKPositionWeight(goal, weight);
+            animator.SetIKPosition(goal, position);
+        }
+        
+        public static void SetIK(this Animator animator, AvatarIKGoal goal, Quaternion rotation, float weight)
+        {
+            animator.SetIKRotationWeight(goal, weight);
+            animator.SetIKRotation(goal, rotation);
+        }
+        
         public static void SetIK(this Animator animator, AvatarIKGoal goal, Vector3 position, Quaternion rotation, float weight)
         {
             animator.SetIKPositionWeight(goal, weight);
