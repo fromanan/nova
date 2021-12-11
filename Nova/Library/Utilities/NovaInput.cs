@@ -62,6 +62,16 @@ namespace Nova.Utilities
             Cursor.visible = false;
         }
 
+        public static void LockCursor()
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+        }
+
+        public static void UnlockCursor()
+        {
+            Cursor.lockState = CursorLockMode.None;
+        }
+
         public static void ToggleCursor(bool cursorEnabled)
         {
             Cursor.visible = cursorEnabled;
@@ -90,12 +100,12 @@ namespace Nova.Utilities
         
         public static Vector3 GetMouseInput(Vector2 sensitivity)
         {
-            return new Vector3(-GetAxis(InputAxis.MOUSE_Y) * sensitivity.x, GetAxis(InputAxis.MOUSE_X) * sensitivity.y, 0f);
+            return new Vector3(GetAxis(InputAxis.MOUSE_X) * sensitivity.x, GetAxis(InputAxis.MOUSE_Y) * sensitivity.y, 0f);
         }
         
         public static Vector3 GetMovementInput(Vector2 sensitivity)
         {
-            return new Vector3(GetAxis(InputAxis.VERTICAL) * sensitivity.x, 0f, GetAxis(InputAxis.HORIZONTAL) * sensitivity.y);
+            return new Vector3(GetAxis(InputAxis.HORIZONTAL) * sensitivity.x, 0f, GetAxis(InputAxis.VERTICAL) * sensitivity.y);
         }
 
         public static Vector3 ScreenClampedMouse()
