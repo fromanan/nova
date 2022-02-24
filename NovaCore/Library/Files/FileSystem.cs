@@ -607,5 +607,31 @@ namespace NovaCore.Files
             return SaveToFile(body, $"{TimestampFilename(name)}.{extension}",
                 folderHierarchy.Prepend(Paths.Downloads).ToArray());
         }
+        
+        public static string GetExtension(string filepath)
+        {
+            return GetFileInfo(filepath).Extension.ToLower();
+        }
+        
+        public static bool TestDeserialize<T>(string filepath)
+        {
+            return Serialize(DeserializeFile<T>(filepath)) == File.ReadAllText(filepath);
+        }
+
+        public static bool TestSerialize<T>(string filepath)
+        {
+            T deserialized = DeserializeFile<T>(filepath);
+            string path = Directory.GetParent(filepath)?.ToString() ?? "";
+            try
+            {
+                SerializeToFile(deserialized, "test.json", path);
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+                return false;
+            }
+            return true;
+        }
     }
 }
