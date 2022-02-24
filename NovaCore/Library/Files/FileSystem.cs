@@ -16,7 +16,7 @@ namespace NovaCore.Files
         public static class Paths
         {
             // System Folders
-            public static readonly string Project = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..\\..\\..\\"));
+            public static readonly string Project = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", ".."));
             public static readonly string Build = AppContext.BaseDirectory;
             public static readonly string AppData = Environment.GetFolderPath(SpecialFolder.ApplicationData);
             public static readonly string Common = Environment.GetFolderPath(SpecialFolder.CommonApplicationData);
@@ -48,7 +48,22 @@ namespace NovaCore.Files
         /// <returns></returns>
         public static bool Validate(string filepath)
         {
-            return IsValidFilename(Path.GetFileName(filepath)) && IsValidDirectory(Path.GetDirectoryName(filepath));
+            return IsValidFilename(Path.GetFileName(filepath)) && IsValidDirectory(GetDirectory(filepath));
+        }
+        
+        public static bool ValidateDirectory(string directoryPath)
+        {
+            return IsValidDirectory(directoryPath);
+        }
+
+        public static string GetFileName(string filepath)
+        {
+            return Path.GetFileName(filepath);
+        }
+
+        public static string GetDirectory(string filepath)
+        {
+            return Path.GetDirectoryName(filepath);
         }
 
         /// <summary>
@@ -58,7 +73,28 @@ namespace NovaCore.Files
         /// <returns></returns>
         public static bool Verify(string filename)
         {
-            return Validate(filename) && Directory.Exists(Path.GetDirectoryName(filename)) && File.Exists(filename);
+            return Validate(filename) && Directory.Exists(GetDirectory(filename)) && File.Exists(filename);
+        }
+        
+        public static bool VerifyDirectory(string directoryPath)
+        {
+            return ValidateDirectory(directoryPath) && Directory.Exists(directoryPath);
+        }
+
+        public static void Assert(string filename)
+        {
+            if (!Verify(filename))
+            {
+                throw new ApplicationException("Critical file does not exist");
+            }
+        }
+        
+        public static void AssertDirectory(string directoryPath)
+        {
+            if (!VerifyDirectory(directoryPath))
+            {
+                throw new ApplicationException("Critical directory does not exist");
+            }
         }
 
         public static string BuildPath(params string[] folderHierarchy)
@@ -401,7 +437,7 @@ namespace NovaCore.Files
             return !(EmptyHierarchy(filepaths) || filepaths.Length == 1 && string.IsNullOrEmpty(filepaths[0]));
         }
 
-        // Copies a selected file to the downloads folderwwwwwwwwwwwww
+        // Copies a selected file to the downloads folder
         public static string Download(string filepath)
         {
             string filename = Path.Combine(Paths.Downloads, Path.GetFileName(filepath));
@@ -550,6 +586,26 @@ namespace NovaCore.Files
             {
                 return true;
             }
+        }
+        
+        private static string GetNewestFile(string directory, string extension)
+        {
+            return !Directory.Exists(directory) ? null : new DirectoryInfo(directory)
+                .EnumerateFiles()
+                .Where(f => f.Extension.ToLower() == extension)
+                .OrderByDescending(f => f.CreationTime)
+                .FirstOrDefault()?.FullName;
+        }
+        
+        public static string Save(string body, string name, string extension, params string[] folderHierarchy)
+        {
+            return SaveToFile(body, $"{TimestampFilename(name)}.{extension}", folderHierarchy);
+        }
+        
+        public static string Download(string body, string name, string extension, params string[] folderHierarchy)
+        {
+            return SaveToFile(body, $"{TimestampFilename(name)}.{extension}",
+                folderHierarchy.Prepend(Paths.Downloads).ToArray());
         }
     }
 }
