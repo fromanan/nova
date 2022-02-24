@@ -107,7 +107,7 @@ namespace NovaCore.Files
             return EmptyHierarchy(folderHierarchy) ? filename : Path.Combine(folderHierarchy.Append(filename).ToArray());
         }
 
-        private static bool EmptyHierarchy(string[] folderHierarchy)
+        public static bool EmptyHierarchy(string[] folderHierarchy)
         {
             return folderHierarchy == null || folderHierarchy.Length <= 0;
         }
@@ -588,7 +588,7 @@ namespace NovaCore.Files
             }
         }
         
-        private static string GetNewestFile(string directory, string extension)
+        public static string GetNewestFile(string directory, string extension)
         {
             return !Directory.Exists(directory) ? null : new DirectoryInfo(directory)
                 .EnumerateFiles()
