@@ -168,6 +168,28 @@ namespace NovaCore.Files
             return path;
         }
         
+        public static Process CreateExternalProcess(ProcessStartInfo startInfo)
+        {
+            return new Process { StartInfo = startInfo };
+        }
+
+        public static Process CreateExternalProcess(string path, string arguments = "", bool printResults = true)
+        {
+            return new Process
+            {
+                StartInfo =
+                {
+                    FileName = path,
+                    Arguments = arguments,
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    CreateNoWindow = true
+                    //WindowStyle = ProcessWindowStyle.Hidden,
+                    //CreateNoWindow = false
+                }
+            };
+        }
+        
         public static void RunExternalProcess(string path, string arguments = "", bool printResults = true)
         {
             using (Process process = new Process
