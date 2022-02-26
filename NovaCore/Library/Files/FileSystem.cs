@@ -56,7 +56,7 @@ namespace NovaCore.Files
             return IsValidDirectory(directoryPath);
         }
 
-        public static string GetFileName(string filepath)
+        public static string GetFilename(string filepath)
         {
             return Path.GetFileName(filepath);
         }
@@ -64,6 +64,21 @@ namespace NovaCore.Files
         public static string GetDirectory(string filepath)
         {
             return Path.GetDirectoryName(filepath);
+        }
+        
+        public static string GetExtension(string filepath)
+        {
+            return Path.GetExtension(filepath).Substring(1);
+        }
+
+        public static string GetSimpleFilename(string filepath)
+        {
+            return Path.GetFileNameWithoutExtension(filepath);
+        }
+
+        public static string ChangeExtension(string filepath, string newExtension)
+        {
+            return $"{GetSimpleFilename(filepath)}.{newExtension}";
         }
 
         /// <summary>
@@ -639,12 +654,7 @@ namespace NovaCore.Files
             return SaveToFile(body, $"{TimestampFilename(name)}.{extension}",
                 folderHierarchy.Prepend(Paths.Downloads).ToArray());
         }
-        
-        public static string GetExtension(string filepath)
-        {
-            return GetFileInfo(filepath).Extension.ToLower();
-        }
-        
+
         public static bool TestDeserialize<T>(string filepath)
         {
             return Serialize(DeserializeFile<T>(filepath)) == File.ReadAllText(filepath);
