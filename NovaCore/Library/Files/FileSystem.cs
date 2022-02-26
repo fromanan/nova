@@ -260,12 +260,33 @@ namespace NovaCore.Files
             });
         }
         
+        public static string SaveFileDialogue(FileFilter filter, string directory = null)
+        {
+            return RunFileDialog(new SaveFileDialog
+            {
+                DefaultExt = filter.DefaultExtension, 
+                Filter = filter.ToString(), 
+                InitialDirectory = string.IsNullOrEmpty(directory) ? Paths.Downloads : directory,
+                RestoreDirectory = true
+            });
+        }
+        
         public static string OpenFileDialogue(string defaultExtension = "", string filter = "", string directory = null)
         {
             return RunFileDialog(new OpenFileDialog
             {
                 DefaultExt = defaultExtension,
                 Filter = filter,
+                InitialDirectory = string.IsNullOrEmpty(directory) ? Paths.Downloads : directory
+            });
+        }
+        
+        public static string OpenFileDialogue(FileFilter filter, string directory = null)
+        {
+            return RunFileDialog(new OpenFileDialog
+            {
+                DefaultExt = filter.DefaultExtension,
+                Filter = filter.Representation,
                 InitialDirectory = string.IsNullOrEmpty(directory) ? Paths.Downloads : directory
             });
         }
@@ -277,6 +298,17 @@ namespace NovaCore.Files
                 Multiselect = true,
                 DefaultExt = defaultExtension,
                 Filter = filter,
+                InitialDirectory = string.IsNullOrEmpty(directory) ? Paths.Downloads : directory
+            });
+        }
+        
+        public static string[] OpenMultiFileDialogue(FileFilter filter, string directory = null)
+        {
+            return RunMultiFileDialog(new OpenFileDialog
+            {
+                Multiselect = true,
+                DefaultExt = filter.DefaultExtension,
+                Filter = filter.Representation,
                 InitialDirectory = string.IsNullOrEmpty(directory) ? Paths.Downloads : directory
             });
         }
@@ -379,7 +411,7 @@ namespace NovaCore.Files
             // Filepath was provided
             if (string.IsNullOrEmpty(filepath))
             {
-                filepath = SaveFileDialogue(extension, BasicFileFilter(extension), directory);
+                filepath = SaveFileDialogue(new FileFilter(extension), directory);
                 if (string.IsNullOrEmpty(filepath))
                 {
                     return null;
@@ -405,19 +437,19 @@ namespace NovaCore.Files
             return Path.GetTempFileName();
         }
 
-        public static string BasicFileFilter(string extension) => $"{extension} files (*.{extension})|*.{extension}";
+        public static string BasicFileFilter(string extension) => new FileFilter(extension).ToString();
 
         // TODO: Does not support multiple extensions
         // TODO: Detect file prompt closing, catch the null operator - Verify for this purpose
         public static string LoadFile(string extension, string startDirectory = null)
         {
-            return OpenFileDialogue(extension, BasicFileFilter(extension), startDirectory);
+            return OpenFileDialogue(new FileFilter(extension), startDirectory);
         }
         
         public static string[] LoadFiles(string extension, string startDirectory = null)
         {
             // Return an empty array if file cancelled (for iteration)
-            return OpenMultiFileDialogue(extension, BasicFileFilter(extension), startDirectory) ?? Array.Empty<string>();
+            return OpenMultiFileDialogue(new FileFilter(extension), startDirectory) ?? Array.Empty<string>();
         }
         
         // TODO: Default Filenames
