@@ -168,7 +168,7 @@ namespace NovaCore.Files
             return path;
         }
         
-        public static void RunExternalProcess(string path, string arguments, bool printResults = true)
+        public static void RunExternalProcess(string path, string arguments = "", bool printResults = true)
         {
             using (Process process = new Process
             {
@@ -191,7 +191,7 @@ namespace NovaCore.Files
         }
         
         // https://stackoverflow.com/questions/10788982/is-there-any-async-equivalent-of-process-start
-        public static Task<int> RunExternalProcessAsync(string path, string arguments)
+        public static Task<int> RunExternalProcessAsync(string path, string arguments = "")
         {
             TaskCompletionSource<int> completionSource = new TaskCompletionSource<int>();
             
