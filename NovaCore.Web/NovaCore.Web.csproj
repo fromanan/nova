@@ -53,6 +53,7 @@
         <Compile Include="Library\Extensions\AgilityExtensions.cs" />
         <Compile Include="Library\Extensions\SqliteExtensions.cs" />
         <Compile Include="Library\Interfaces\ICallback.cs" />
+        <Compile Include="Library\Web\NovaTcpListener.cs" />
         <Compile Include="Library\Web\WebDriver.cs" />
         <Compile Include="Library\Web\WebServer.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />

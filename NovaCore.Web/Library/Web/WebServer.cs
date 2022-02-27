@@ -14,7 +14,7 @@ namespace NovaCore.Web
     public abstract class WebServer : IDisposable, ICallback
     {
         protected HttpServer HttpServer;
-        protected TcpListener TcpListener;
+        protected NovaTcpListener TcpListener;
         public readonly int Port;
         
         protected WebServer(int port)
@@ -35,11 +35,12 @@ namespace NovaCore.Web
             HttpServer = new HttpServer(new HttpRequestProvider());
 
             // Begin Listening at Port: [port]
-            TcpListener = new TcpListener(IPAddress.Loopback, Port)
+            TcpListener = new NovaTcpListener(IPAddress.Loopback, Port)
             {
                 Server = { LingerState = new LingerOption(false, 0) }
             };
             
+            // Allow a socket to use an occupied port
             TcpListener.Server.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
 
             // Accept requests from the listener
@@ -59,6 +60,8 @@ namespace NovaCore.Web
             TcpListener.Server.Shutdown(SocketShutdown.Both);
             //TcpListener.Server.Disconnect(true);
         }
+
+        public bool Active => TcpListener.Active;
 
         public static byte[] GetBytes(string s) => Encoding.UTF8.GetBytes(s);
 
