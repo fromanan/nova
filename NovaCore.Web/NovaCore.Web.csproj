@@ -60,13 +60,16 @@
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>
     <ItemGroup>
-      <None Include="External\uhttpsharp.dll" />
       <None Include="packages.config" />
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\NovaCore\NovaCore.csproj">
         <Project>{b98bdb12-7d23-4f51-a60a-816a30c66ef2}</Project>
         <Name>NovaCore</Name>
+      </ProjectReference>
+      <ProjectReference Include="..\uHttpSharp\uhttpsharp\uhttpsharp.csproj">
+        <Project>{3d681959-4da3-4a71-a68b-704d6411d5ea}</Project>
+        <Name>uhttpsharp</Name>
       </ProjectReference>
     </ItemGroup>
     <ItemGroup>
@@ -85,6 +88,9 @@
     </ItemGroup>
     <ItemGroup>
       <Content Include="FodyWeavers.xml" />
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="External" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

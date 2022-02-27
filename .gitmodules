@@ -1,0 +1,3 @@
+[submodule "uHttpSharp"]
+	path = uHttpSharp
+	url = https://github.com/fromanan/uHttpSharp.git
