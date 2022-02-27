@@ -72,7 +72,7 @@ namespace NovaCore.Web
             await Tasks.WaitUntil(() => !TcpListener.Pending());
         }
         
-        protected HttpResponse Close(string response)
+        protected static HttpResponse Close(string response)
         {
             return new HttpResponse(HttpResponseCode.Ok, GetBytes(response), false);
         }
