@@ -55,6 +55,7 @@
         <Compile Include="Library\Interfaces\ICallback.cs" />
         <Compile Include="Library\Web\NovaTcpListener.cs" />
         <Compile Include="Library\Web\WebDriver.cs" />
+        <Compile Include="Library\Web\WebParameter.cs" />
         <Compile Include="Library\Web\WebServer.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>

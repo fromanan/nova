@@ -12,7 +12,6 @@ using RestSharp;
 using Debug = NovaCore.Logging.Debug;
 using HtmlDocument = HtmlAgilityPack.HtmlDocument;
 using Header = System.Collections.Generic.KeyValuePair<string, string>;
-using Parameter = System.Collections.Generic.KeyValuePair<string, string>;
 
 namespace NovaCore.Web
 {
@@ -155,7 +154,7 @@ namespace NovaCore.Web
         }
         
         public static RestRequest BuildSharpRequest(string url, Method method, string contentType, string authorization, 
-            params Parameter[] parameters)
+            params WebParameter[] parameters)
         {
             RestRequest request = new RestRequest(url, method);
 
@@ -164,7 +163,7 @@ namespace NovaCore.Web
             request.AddHeader("Authorization", authorization);
 
             // Parameters
-            foreach (Parameter parameter in parameters)
+            foreach (WebParameter parameter in parameters)
             {
                 request.AddParameter(parameter.Key, parameter.Value);
             }
