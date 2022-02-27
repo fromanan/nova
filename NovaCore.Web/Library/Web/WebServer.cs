@@ -79,5 +79,10 @@ namespace NovaCore.Web
             context.Response = Close($"<b>{errorMessage}</b>");
             throw new Exception(errorMessage);
         }
+        
+        public static bool GetQuery(IHttpContext context, string key, out string value)
+        {
+            return context.Request.QueryString.TryGetByName(key, out value);
+        }
     }
 }
