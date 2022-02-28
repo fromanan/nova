@@ -145,10 +145,7 @@ namespace NovaCore.Web
             request.ContentType = contentType;
             request.Headers.Add("Authorization", authorization);
             request.UserAgent = userAgent;
-            foreach (Header header in extraHeaders)
-            {
-                request.Headers.Add(header.Key, header.Value);
-            }
+            request.AddHeaders(extraHeaders);
             return request;
         }
         
@@ -162,10 +159,7 @@ namespace NovaCore.Web
             request.AddHeader("Authorization", authorization);
 
             // Parameters
-            foreach (WebParameter parameter in parameters)
-            {
-                request.AddParameter(parameter.Key, parameter.Value);
-            }
+            request.AddParameters(parameters);
             
             return request;
         }
