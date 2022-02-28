@@ -56,38 +56,33 @@ namespace NovaCore.Web
         public static void HandleWebException(WebException exception)
         {
             HttpWebResponse response = (HttpWebResponse) exception.Response;
-            switch (response.StatusCode)
+            Debug.LogError(GetStatusCode(response.StatusCode));
+        }
+
+        public static string GetStatusCode(HttpStatusCode statusCode)
+        {
+            switch (statusCode)
             {
                 case HttpStatusCode.BadRequest:
-                    Debug.LogError("Request could not be understood by the server (400)");
-                    break;
+                    return "Request could not be understood by the server (400)";
                 case HttpStatusCode.Unauthorized:
-                    Debug.LogError("Authentication required for request (401)");
-                    break;
+                    return "Authentication required for request (401)";
                 case HttpStatusCode.Forbidden:
-                    Debug.LogError("Server request refused (403)");
-                    break;
+                    return "Server request refused (403)";
                 case HttpStatusCode.NotFound:
-                    Debug.LogError("Page not found (404)");
-                    break;
+                    return "Page not found (404)";
                 case HttpStatusCode.RequestTimeout:
-                    Debug.LogError("Request timed out (408)");
-                    break;
+                    return "Request timed out (408)";
                 case HttpStatusCode.Gone:
-                    Debug.LogError("Requested webpage is no longer available (410)");
-                    break;
+                    return "Requested webpage is no longer available (410)";
                 case HttpStatusCode.Moved:
-                    Debug.LogError("Page has been moved on server (301)");
-                    break;
+                    return "Page has been moved on server (301)";
                 case HttpStatusCode.Redirect:
-                    Debug.LogError("Client request redirected (302)");
-                    break;
+                    return "Client request redirected (302)";
                 case HttpStatusCode.InternalServerError:
-                    Debug.LogError("Client failed to connect due to an internal server error (500)");
-                    break;
+                    return "Client failed to connect due to an internal server error (500)";
                 default:
-                    Debug.LogError($"Uncategorized WebException ({response.StatusCode})");
-                    break;
+                    return $"Uncategorized WebException ({statusCode})";
             }
         }
 
