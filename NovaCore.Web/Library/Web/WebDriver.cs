@@ -11,7 +11,6 @@ using NovaCore.Web.Extensions;
 using RestSharp;
 using Debug = NovaCore.Logging.Debug;
 using HtmlDocument = HtmlAgilityPack.HtmlDocument;
-using Header = System.Collections.Generic.KeyValuePair<string, string>;
 
 namespace NovaCore.Web
 {
@@ -138,7 +137,7 @@ namespace NovaCore.Web
         }
 
         public static HttpWebRequest BuildRequest(string url, string method, string contentType, string authorization, 
-            string userAgent, params Header[] extraHeaders)
+            string userAgent, params WebHeader[] extraHeaders)
         {
             // Create the Request
             HttpWebRequest request = (HttpWebRequest) WebRequest.Create(url);
