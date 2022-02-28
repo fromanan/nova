@@ -123,7 +123,8 @@ namespace NovaCore.Web
         
         public static WebException GenerateException(IRestResponse response)
         {
-            WebException exception = new WebException("API returned non-success response.");
+            string message = $"API returned non-success response | {GetStatusCode(response.StatusCode)}";
+            WebException exception = new WebException(message);
             exception.Data.Add("StatusCode", response.StatusCode);
             exception.Data.Add("StatusDescription", response.StatusDescription);
             exception.Data.Add("ErrorMessage", response.ErrorMessage);
