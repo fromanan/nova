@@ -168,9 +168,9 @@ namespace NovaCore.Web
             CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
             IRestResponse response = await client.ExecuteAsync(request, cancellationTokenSource.Token);
 
-            //await client.PostAsync<RestRequest>(restRequest);
             
             if (cancellationTokenSource.IsCancellationRequested || response.IsSuccessful)
+            //await client.PostAsync<RestRequest>(request, cancellationTokenSource.Token);
                 return response.Content;
             
             Debug.Log($"{response.StatusCode} : {response.StatusDescription}");
@@ -178,7 +178,7 @@ namespace NovaCore.Web
             
             Debug.LogException(GenerateException(response));
 
-            //throw WebDriver.GenerateException(response);
+            //throw GenerateException(response);
             return null;
         }
 
