@@ -162,6 +162,8 @@ namespace NovaCore.Web
         
         public static async Task<string> ExecuteRequest(RestRequest request, string baseUrl)
         {
+            Debug.LogCustom("REQUEST", $"{baseUrl}{request.Resource}");
+            
             RestClient client = new RestClient(baseUrl);
             CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
             IRestResponse response = await client.ExecuteAsync(request, cancellationTokenSource.Token);
