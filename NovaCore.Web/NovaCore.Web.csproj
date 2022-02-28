@@ -49,6 +49,7 @@
     <ItemGroup>
         <Compile Include="Library\Extensions\AgilityExtensions.cs" />
         <Compile Include="Library\Extensions\HttpWebRequestExtensions.cs" />
+        <Compile Include="Library\Extensions\RestRequestExtensions.cs" />
         <Compile Include="Library\Extensions\SqliteExtensions.cs" />
         <Compile Include="Library\Interfaces\ICallback.cs" />
         <Compile Include="Library\Web\NovaTcpListener.cs" />
