@@ -168,14 +168,26 @@ namespace NovaCore.Web
             CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
             IRestResponse response = await client.ExecuteAsync(request, cancellationTokenSource.Token);
 
-            
-            if (cancellationTokenSource.IsCancellationRequested || response.IsSuccessful)
             //await client.PostAsync<RestRequest>(request, cancellationTokenSource.Token);
+
+            if (response.IsSuccessful)
+            {
                 return response.Content;
-            
-            Debug.Log($"{response.StatusCode} : {response.StatusDescription}");
-            Debug.LogError(response.ErrorMessage);
-            
+            }
+
+            if (cancellationTokenSource.IsCancellationRequested)
+            {
+                Debug.LogError("Execution failed (cancellation requested)");
+                return null;
+            }
+
+            //Debug.Log($"Error {(int) response.StatusCode} ({response.StatusCode}) : {response.StatusDescription}");
+
+            if (!string.IsNullOrEmpty(response.ErrorMessage))
+            {
+                Debug.LogError(response.ErrorMessage);
+            }
+
             Debug.LogException(GenerateException(response));
 
             //throw GenerateException(response);
