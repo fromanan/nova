@@ -14,7 +14,7 @@ namespace NovaCore.CLI.Interpreters
         
         public class CommandDictionary : Dictionary<Command, CommandAction> { }
 
-        private static readonly CommandDictionary GlobalCommands = new CommandDictionary
+        private static readonly CommandDictionary GlobalCommands = new()
         {
             { Command.EXIT,         Exit },
             { Command.SWITCH,       Switch },

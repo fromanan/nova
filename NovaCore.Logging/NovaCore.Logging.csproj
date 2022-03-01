@@ -1,82 +1,35 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-        <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-        <ProjectGuid>{4B23170B-AE28-4DFB-B735-624F170FFDB0}</ProjectGuid>
-        <OutputType>Library</OutputType>
-        <AppDesignerFolder>Properties</AppDesignerFolder>
-        <RootNamespace>NovaCore</RootNamespace>
-        <AssemblyName>NovaCore.Logging</AssemblyName>
-        <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-        <FileAlignment>512</FileAlignment>
+        <TargetFramework>net5.0-windows</TargetFramework>
+        <LangVersion>9</LangVersion>
+        <PublishSingleFile>true</PublishSingleFile>
+        <SelfContained>true</SelfContained>
+        <UseWindowsForms>true</UseWindowsForms>
+    </PropertyGroup>
+    <PropertyGroup>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     </PropertyGroup>
     <PropertyGroup>
         <AssemblyOriginatorKeyFile>novacore.logging.snk</AssemblyOriginatorKeyFile>
         <SignAssembly>True</SignAssembly>
     </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-        <PlatformTarget>AnyCPU</PlatformTarget>
-        <DebugSymbols>true</DebugSymbols>
-        <DebugType>full</DebugType>
-        <Optimize>false</Optimize>
-        <OutputPath>bin\Debug\</OutputPath>
-        <DefineConstants>DEBUG;TRACE</DefineConstants>
-        <ErrorReport>prompt</ErrorReport>
-        <WarningLevel>4</WarningLevel>
-    </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-        <PlatformTarget>AnyCPU</PlatformTarget>
-        <DebugType>pdbonly</DebugType>
-        <Optimize>true</Optimize>
-        <OutputPath>bin\Release\</OutputPath>
-        <DefineConstants>TRACE</DefineConstants>
-        <ErrorReport>prompt</ErrorReport>
-        <WarningLevel>4</WarningLevel>
-    </PropertyGroup>
     <ItemGroup>
-        <Reference Include="System" />
-        <Reference Include="System.Core" />
-        <Reference Include="System.Data" />
-        <Reference Include="System.Windows.Forms" />
-        <Reference Include="System.Xml" />
+        <ProjectReference Include="..\NovaCore.Common\NovaCore.Common.csproj">
+            <Project>{afc6569a-503b-41dc-9e14-d40d59bc52e8}</Project>
+            <Name>NovaCore.Common</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\NovaCore.FileSystem\NovaCore.FileSystem.csproj">
+            <Project>{b58ed4cf-195e-46bd-9f18-db3fc60db2ba}</Project>
+            <Name>NovaCore.FileSystem</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\NovaCore.Utilities\NovaCore.Utilities.csproj">
+            <Project>{0fd3bd37-b64b-4985-b629-d4bb4e2e0aae}</Project>
+            <Name>NovaCore.Utilities</Name>
+        </ProjectReference>
     </ItemGroup>
-    <ItemGroup>
-        <Compile Include="Library\Logging\ChannelPalette.cs" />
-        <Compile Include="Library\Logging\ColorPreset.cs" />
-        <Compile Include="Library\Logging\Debug.Config.cs" />
-        <Compile Include="Library\Logging\Debug.cs" />
-        <Compile Include="Library\Logging\Debug.Files.cs" />
-        <Compile Include="Library\Logging\Debug.Logging.cs" />
-        <Compile Include="Library\Logging\Debug.ProgressBars.cs" />
-        <Compile Include="Library\Logging\Debug.Prompts.cs" />
-        <Compile Include="Library\Logging\Debug.Text.cs" />
-        <Compile Include="Library\Logging\LoggingChannel.cs" />
-        <Compile Include="Library\Logging\OutputSink.cs" />
-        <Compile Include="Properties\AssemblyInfo.cs" />
-    </ItemGroup>
-    <ItemGroup>
-      <ProjectReference Include="..\NovaCore.Common\NovaCore.Common.csproj">
-        <Project>{afc6569a-503b-41dc-9e14-d40d59bc52e8}</Project>
-        <Name>NovaCore.Common</Name>
-      </ProjectReference>
-      <ProjectReference Include="..\NovaCore.FileSystem\NovaCore.FileSystem.csproj">
-        <Project>{b58ed4cf-195e-46bd-9f18-db3fc60db2ba}</Project>
-        <Name>NovaCore.FileSystem</Name>
-      </ProjectReference>
-      <ProjectReference Include="..\NovaCore.Utilities\NovaCore.Utilities.csproj">
-        <Project>{0fd3bd37-b64b-4985-b629-d4bb4e2e0aae}</Project>
-        <Name>NovaCore.Utilities</Name>
-      </ProjectReference>
-    </ItemGroup>
-    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-    <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-         Other similar extension points exist, see Microsoft.Common.targets.
-    <Target Name="BeforeBuild">
+    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+      <Exec Command="echo f | xcopy /y &quot;$(TargetPath)&quot; &quot;C:\\Users\\%username%\\Downloads\\Builds\\&quot; /R /F /I" />
     </Target>
-    <Target Name="AfterBuild">
-    </Target>
-    -->
 
 </Project>

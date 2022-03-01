@@ -7,7 +7,8 @@ namespace NovaCore.Logging
     public partial class Debug
     {
         // https://stackoverflow.com/questions/24918768/progress-bar-in-console-application
-        public static void ProgressBar(int progress, int total, ConsoleColor color = ConsoleColor.Green, bool percent = true)
+        public static void ProgressBar(int progress, int total, ConsoleColor color = ConsoleColor.Green, 
+            bool percent = true)
         {
             HideCursor();
             
@@ -76,7 +77,8 @@ namespace NovaCore.Logging
             LineBreak();
         }
 
-        public static async Task<T> ProgressBarTask<T>(int duration, Task<T> task, ConsoleColor color = ConsoleColor.Green)
+        public static async Task<T> ProgressBarTask<T>(int duration, Task<T> task, 
+            ConsoleColor color = ConsoleColor.Green)
         {
             if (task.IsCompleted || task.IsCanceled || task.IsFaulted) return task.Result;
 

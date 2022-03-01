@@ -15,6 +15,6 @@ namespace NovaCore.Logging
 
         public static ConsoleColor InputColor = ConsoleColor.Green;
 
-        public static ChannelPalette ChannelPalette = new ChannelPalette();
+        public static ChannelPalette ChannelPalette = new();
     }
 }

@@ -42,7 +42,7 @@ namespace NovaCore.Logging
         
         public static void Separator(bool lineBreak = false)
         {
-            string separator = new string('=', LINE_LENGTH);
+            string separator = new('=', LINE_LENGTH);
             StandardOutput.WriteLine(lineBreak ? $"{separator}\n" : separator);
         }
 
@@ -59,7 +59,7 @@ namespace NovaCore.Logging
             }
             
             // 50 (default line length) - 2 (outside space) - 2 (brackets) - 2 (inside space) => 44
-            string side = new string('=', (LINE_LENGTH - 6 - headerLength)/2);
+            string side = new('=', (LINE_LENGTH - 6 - headerLength)/2);
 
             StandardOutput.WriteLine(headerLength % 2 == 0
                 ? $"{side} [ {headerName} ] {side}"

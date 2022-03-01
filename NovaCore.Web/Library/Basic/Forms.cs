@@ -8,10 +8,8 @@ namespace NovaCore.Web
     {
         public static string FormPost(string url, NameValueCollection postData)
         {
-            using (WebClient webClient = new WebClient())
-            {
-                return Encoding.ASCII.GetString(webClient.UploadValues(url, postData));
-            }
+            using WebClient webClient = new();
+            return Encoding.ASCII.GetString(webClient.UploadValues(url, postData));
         }
     }
 }

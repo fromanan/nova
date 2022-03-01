@@ -7,7 +7,7 @@ namespace NovaCore.Logging
 {
     public class LoggingChannel : IDisposable
     {
-        public ChannelPalette Palette = new ChannelPalette();
+        public ChannelPalette Palette = new();
         
         public TextWriter Output = TextWriter.Null;
         public TextWriter Info = TextWriter.Null;

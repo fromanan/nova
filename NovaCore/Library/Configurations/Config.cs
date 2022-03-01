@@ -10,7 +10,8 @@ namespace NovaCore.Configurations
     [Serializable]
     public class Config : ConfigFile
     {
-        private string Filepath = FileSystem.CreateFilepath($"{Application.Paths.Root}.config", Application.Paths.Settings);
+        private string Filepath = 
+            FileSystem.CreateFilepath($"{Application.Paths.Root}.config", Application.Paths.Settings);
 
         public override string GetFilepath() => Filepath;
         

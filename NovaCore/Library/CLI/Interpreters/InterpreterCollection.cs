@@ -7,8 +7,7 @@ namespace NovaCore.CLI.Interpreters
 {
     public class InterpreterCollection
     {
-        public readonly Dictionary<MediaSpace.Mode, Interpreter> Interpreters =
-            new Dictionary<MediaSpace.Mode, Interpreter>();
+        public readonly Dictionary<MediaSpace.Mode, Interpreter> Interpreters = new();
 
         public bool InterpreterExists(MediaSpace.Mode mode) => Interpreters.ContainsKey(mode);
 

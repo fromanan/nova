@@ -1,120 +1,63 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0-windows</TargetFramework>
+        <LangVersion>9</LangVersion>
+        <PublishSingleFile>true</PublishSingleFile>
+        <SelfContained>true</SelfContained>
+        <UseWindowsForms>true</UseWindowsForms>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+    </PropertyGroup>
+    
     <PropertyGroup>
         <AssemblyOriginatorKeyFile>novacore.web.snk</AssemblyOriginatorKeyFile>
         <SignAssembly>True</SignAssembly>
     </PropertyGroup>
+
     <PropertyGroup>
-        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-        <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-        <ProjectGuid>{89E92382-C653-4E1A-B873-AAFB5A743939}</ProjectGuid>
         <OutputType>Library</OutputType>
-        <AppDesignerFolder>Properties</AppDesignerFolder>
-        <RootNamespace>NovaCore</RootNamespace>
-        <AssemblyName>NovaCore.Web</AssemblyName>
-        <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-        <FileAlignment>512</FileAlignment>
     </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-        <PlatformTarget>AnyCPU</PlatformTarget>
-        <DebugSymbols>true</DebugSymbols>
-        <DebugType>full</DebugType>
-        <Optimize>false</Optimize>
-        <OutputPath>bin\Debug\</OutputPath>
-        <DefineConstants>DEBUG;TRACE</DefineConstants>
-        <ErrorReport>prompt</ErrorReport>
-        <WarningLevel>4</WarningLevel>
-    </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-        <PlatformTarget>AnyCPU</PlatformTarget>
-        <DebugType>pdbonly</DebugType>
-        <Optimize>true</Optimize>
-        <OutputPath>bin\Release\</OutputPath>
-        <DefineConstants>TRACE</DefineConstants>
-        <ErrorReport>prompt</ErrorReport>
-        <WarningLevel>4</WarningLevel>
-    </PropertyGroup>
+
     <ItemGroup>
-        <Reference Include="HtmlAgilityPack, Version=1.11.37.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a">
-          <HintPath>..\packages\HtmlAgilityPack.1.11.37\lib\Net45\HtmlAgilityPack.dll</HintPath>
-          <Private>True</Private>
-        </Reference>
-        <Reference Include="System" />
-        <Reference Include="System.Core" />
-        <Reference Include="System.Data" />
-        <Reference Include="System.Windows.Forms" />
-        <Reference Include="System.Xml" />
+        <PackageReference Include="CefSharp.OffScreen.NETCore" Version="98.1.210" />
+        <PackageReference Include="HtmlAgilityPack" Version="1.11.42" />
+        <PackageReference Include="Microsoft.Data.Sqlite" Version="7.0.0-preview.1.22076.6" />
+        <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="7.0.0-preview.1.22076.6" />
+        <PackageReference Include="RestSharp" Version="107.3.0" />
+        <PackageReference Include="Selenium.WebDriver" Version="4.1.0" />
+        <PackageReference Include="System.Console" Version="4.3.1" />
     </ItemGroup>
+
     <ItemGroup>
-        <Compile Include="Library\Extensions\AgilityExtensions.cs" />
-        <Compile Include="Library\Extensions\HttpWebRequestExtensions.cs" />
-        <Compile Include="Library\Extensions\RestRequestExtensions.cs" />
-        <Compile Include="Library\Interfaces\ICallback.cs" />
-        <Compile Include="Library\Web\Email.cs" />
-        <Compile Include="Library\Web\Forms.cs" />
-        <Compile Include="Library\Web\Hosts.cs" />
-        <Compile Include="Library\Web\NovaTcpListener.cs" />
-        <Compile Include="Library\Web\WebDriver.cs" />
-        <Compile Include="Library\Web\WebHeader.cs" />
-        <Compile Include="Library\Web\WebParameter.cs" />
-        <Compile Include="Library\Web\WebQuery.cs" />
-        <Compile Include="Library\Web\WebServer.cs" />
-        <Compile Include="Library\Web\WebUtils.cs" />
-        <Compile Include="Properties\AssemblyInfo.cs" />
+        <ProjectReference Include="..\NovaCore\NovaCore.csproj" />
+        <ProjectReference Include="..\NovaCore.Common\NovaCore.Common.csproj">
+            <Project>{afc6569a-503b-41dc-9e14-d40d59bc52e8}</Project>
+            <Name>NovaCore.Common</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\NovaCore.FileSystem\NovaCore.FileSystem.csproj">
+            <Project>{b58ed4cf-195e-46bd-9f18-db3fc60db2ba}</Project>
+            <Name>NovaCore.FileSystem</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\NovaCore.Logging\NovaCore.Logging.csproj">
+            <Project>{4b23170b-ae28-4dfb-b735-624f170ffdb0}</Project>
+            <Name>NovaCore.Logging</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\NovaCore.Utilities\NovaCore.Utilities.csproj">
+            <Project>{0fd3bd37-b64b-4985-b629-d4bb4e2e0aae}</Project>
+            <Name>NovaCore.Utilities</Name>
+        </ProjectReference>
+        <ProjectReference Include="..\uHttpSharp\uhttpsharp\uhttpsharp.csproj">
+            <Project>{3d681959-4da3-4a71-a68b-704d6411d5ea}</Project>
+            <Name>uhttpsharp</Name>
+        </ProjectReference>
     </ItemGroup>
-    <ItemGroup>
-      <None Include="packages.config" />
-    </ItemGroup>
-    <ItemGroup>
-      <ProjectReference Include="..\NovaCore.Common\NovaCore.Common.csproj">
-        <Project>{afc6569a-503b-41dc-9e14-d40d59bc52e8}</Project>
-        <Name>NovaCore.Common</Name>
-      </ProjectReference>
-      <ProjectReference Include="..\NovaCore.FileSystem\NovaCore.FileSystem.csproj">
-        <Project>{b58ed4cf-195e-46bd-9f18-db3fc60db2ba}</Project>
-        <Name>NovaCore.FileSystem</Name>
-      </ProjectReference>
-      <ProjectReference Include="..\NovaCore.Logging\NovaCore.Logging.csproj">
-        <Project>{4b23170b-ae28-4dfb-b735-624f170ffdb0}</Project>
-        <Name>NovaCore.Logging</Name>
-      </ProjectReference>
-      <ProjectReference Include="..\NovaCore.Utilities\NovaCore.Utilities.csproj">
-        <Project>{0fd3bd37-b64b-4985-b629-d4bb4e2e0aae}</Project>
-        <Name>NovaCore.Utilities</Name>
-      </ProjectReference>
-      <ProjectReference Include="..\uHttpSharp\uhttpsharp\uhttpsharp.csproj">
-        <Project>{3d681959-4da3-4a71-a68b-704d6411d5ea}</Project>
-        <Name>uhttpsharp</Name>
-      </ProjectReference>
-    </ItemGroup>
-    <ItemGroup>
-        <PackageReference Include="Costura.Fody" Version="5.7.0">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; compile; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
-        <PackageReference Include="Fody" Version="6.6.0">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; compile; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
-        <PackageReference Include="HtmlAgilityPack" Version="1.11.37" />
-        <PackageReference Include="Microsoft.Data.Sqlite" Version="5.0.10" />
-        <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="5.0.10" />
-        <PackageReference Include="RestSharp" Version="106.12.0" />
-    </ItemGroup>
-    <ItemGroup>
-      <Content Include="FodyWeavers.xml" />
-    </ItemGroup>
-    <ItemGroup>
-      <Folder Include="External" />
-    </ItemGroup>
-    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-    <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-         Other similar extension points exist, see Microsoft.Common.targets.
-    <Target Name="BeforeBuild">
+
+    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+      <Exec Command="echo f | xcopy /y &quot;$(TargetPath)&quot; &quot;C:\\Users\\%username%\\Downloads\\Builds&quot; /R /F /I" />
     </Target>
-    <Target Name="AfterBuild">
-    </Target>
-    -->
 
 </Project>

@@ -21,8 +21,8 @@
 	<s:String x:Key="/Default/Environment/AssemblyExplorer/XmlDocument/@EntryValue">&lt;AssemblyExplorer&gt;&#xD;
   &lt;Assembly Path="D:\Source\Nova\packages\Unity3D.SDK.2021.1.14.1\lib\UnityEditor.dll" /&gt;&#xD;
 &lt;/AssemblyExplorer&gt;</s:String>
-	<s:String x:Key="/Default/Environment/Hierarchy/Build/BuildTool/CustomBuildToolPath/@EntryValue">C:\Users\fromanan\AppData\Local\JetBrains\BuildTools\MSBuild\Current\Bin\MSBuild.exe</s:String>
-	<s:Int64 x:Key="/Default/Environment/Hierarchy/Build/BuildTool/MsbuildVersion/@EntryValue">1048576</s:Int64>
+	<s:String x:Key="/Default/Environment/Hierarchy/Build/BuildTool/CustomBuildToolPath/@EntryValue">C:\Program Files\dotnet\sdk\6.0.102\MSBuild.dll</s:String>
+	
 	
 	<s:Boolean x:Key="/Default/UnloadedProject/UnloadedProjects/=3099d215_002D7155_002D4ee7_002D8006_002D0d76e3b072c9_0023Nova/@EntryIndexedValue">True</s:Boolean>
 	

@@ -26,7 +26,7 @@ namespace NovaCore.Logging
         {
             StandardOutput.WriteLine($"Are you sure you want to {action}? [Y/N]");
             string input = Input().ToUpper();
-            return input == "Y" || input == "YE" || input == "YES";
+            return input is "Y" or "YE" or "YES";
         }
         
         public static void Notification(string title, string body)

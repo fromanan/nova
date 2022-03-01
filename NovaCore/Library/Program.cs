@@ -15,7 +15,7 @@ namespace NovaCore
             
             await Init();
 
-            using (Terminal terminal = new Terminal())
+            using (Terminal terminal = new())
             {
                 terminal.Run();
             }

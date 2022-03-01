@@ -29,11 +29,11 @@ namespace NovaCore.Files
         
         public string Errors { get; private set; }
         
-        private readonly TaskCompletionSource<int> CompletionSource = new TaskCompletionSource<int>();
+        private readonly TaskCompletionSource<int> CompletionSource = new();
         
         public NovaProcess(string filepath, string args = "")
         {
-            Process = FileSystem.CreateExternalProcess(filepath, args, false);
+            Process = FileSystem.CreateExternalProcess(filepath, args);
         }
         
         public NovaProcess(ProcessStartInfo startInfo)

@@ -16,26 +16,7 @@ namespace NovaCore.Web
 {
     public static class WebDriver
     {
-        public static readonly Logger Logger = new Logger();
-        
-        // Used to load a scripted/dynamic webpage
-        public static HtmlDocument OpenBrowser(string address)
-        {
-            return LoadWeb(OpenWeb(), address);
-        }
-
-        public static bool WaitForPageLoaded(object browser)
-        {
-            System.Windows.Forms.Application.DoEvents();
-            return ((WebBrowser) browser).ReadyState == WebBrowserReadyState.Complete;
-        }
-
-        public static HtmlWeb OpenWeb() => new HtmlWeb();
-
-        public static HtmlDocument LoadWeb(HtmlWeb web, string address)
-        {
-            return web.LoadFromBrowser(address, WaitForPageLoaded);
-        }
+        public static readonly Logger Logger = new ();
 
         // Used for loading basic (static) webpages or making queries
         public static string Request(string address)
@@ -44,7 +25,7 @@ namespace NovaCore.Web
             try
             {
                 HttpWebResponse response = (HttpWebResponse) request.GetResponse();
-                //Debug.LogInfo("Request successful");
+                //Logger.LogInfo("Request successful");
                 return RequestToString(response);
             }
             catch (WebException exception)
@@ -54,10 +35,14 @@ namespace NovaCore.Web
             }
         }
 
-        // TODO: Return response?
         public static void HandleWebException(WebException exception)
         {
             HttpWebResponse response = (HttpWebResponse) exception.Response;
+            if (response is null)
+            {
+                Logger.LogWarning("Could not parse exception as HttpWebResponse");
+                return;
+            }
             Logger.LogError(GetStatusCode(response.StatusCode));
         }
 
@@ -102,31 +87,22 @@ namespace NovaCore.Web
 
         public static HtmlDocument CreateDocument(string body)
         {
-            HtmlDocument htmlDoc = new HtmlDocument();
+            HtmlDocument htmlDoc = new ();
             htmlDoc.LoadHtml(body);
             return htmlDoc;
         }
 
         public static string RequestToString(HttpWebResponse response)
         {
-            using (Stream receiveStream = response.GetResponseStream())
-            {
-                if (receiveStream == null)
-                {
-                    Logger.LogException("System failed to receive response stream from request");
-                    return null;
-                }
-                using (StreamReader reader = OpenStreamReader(receiveStream, response.CharacterSet))
-                {
-                    return reader.ReadToEnd();
-                }
-            }
+            using Stream receiveStream = response.GetResponseStream();
+            using StreamReader reader = OpenStreamReader(receiveStream, response.CharacterSet);
+            return reader.ReadToEnd();
         }
         
-        public static WebException GenerateException(IRestResponse response)
+        public static WebException GenerateException(RestResponse response)
         {
             string message = $"API returned non-success response | {GetStatusCode(response.StatusCode)}";
-            WebException exception = new WebException(message);
+            WebException exception = new (message);
             exception.Data.Add("StatusCode", response.StatusCode);
             exception.Data.Add("StatusDescription", response.StatusDescription);
             exception.Data.Add("ErrorMessage", response.ErrorMessage);
@@ -150,7 +126,7 @@ namespace NovaCore.Web
         public static RestRequest BuildSharpRequest(string url, Method method, string contentType, string authorization, 
             params WebParameter[] parameters)
         {
-            RestRequest request = new RestRequest(url, method);
+            RestRequest request = new (url, method);
 
             // Headers
             request.AddHeader("Content-Type", contentType);
@@ -161,17 +137,27 @@ namespace NovaCore.Web
             
             return request;
         }
-        
+
         public static async Task<string> ExecuteRequest(RestRequest request, string baseUrl)
         {
             Logger.LogCustom("REQUEST", $"{baseUrl}{request.Resource}");
-            
-            RestClient client = new RestClient(baseUrl);
-            CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-            IRestResponse response = await client.ExecuteAsync(request, cancellationTokenSource.Token);
+            RestClient client = new(baseUrl);
+            return await RetrieveResponse(client, request);
+        }
+        
+        public static async Task<string> ExecuteRequest(RestClient client, RestRequest request)
+        {
+            Logger.LogCustom("REQUEST", $"{client.BuildUri(request)}");
+            return await RetrieveResponse(client, request);
+        }
+
+        private static async Task<string> RetrieveResponse(RestClient client, RestRequest request)
+        {
+            CancellationTokenSource cancellationTokenSource = new();
+            RestResponse response = await client.ExecuteAsync(request, cancellationTokenSource.Token);
 
             //await client.PostAsync<RestRequest>(request, cancellationTokenSource.Token);
-
+            
             if (response.IsSuccessful)
             {
                 return response.Content;
@@ -183,7 +169,7 @@ namespace NovaCore.Web
                 return null;
             }
 
-            //Debug.Log($"Error {(int) response.StatusCode} ({response.StatusCode}) : {response.StatusDescription}");
+            //Logger.Log($"Error {(int) response.StatusCode} ({response.StatusCode}) : {response.StatusDescription}");
 
             if (!string.IsNullOrEmpty(response.ErrorMessage))
             {
@@ -199,6 +185,27 @@ namespace NovaCore.Web
         public static readonly string DefaultContentType = "application/x-www-form-urlencoded";
 
         #region Deprecated
+        
+        // Used to load a scripted/dynamic webpage
+        public static HtmlDocument OpenBrowser(string address)
+        {
+            return LoadWeb(OpenWeb(), address);
+        }
+
+        public static bool WaitForPageLoaded(object browser)
+        {
+            System.Windows.Forms.Application.DoEvents();
+            return ((WebBrowser) browser).ReadyState == WebBrowserReadyState.Complete;
+        }
+
+        public static HtmlWeb OpenWeb() => new ();
+        
+        [Obsolete("Html Agility Pack removed support for LoadFromBrowser method, this method is no longer functional")]
+        public static HtmlDocument LoadWeb(HtmlWeb web, string address)
+        {
+            throw new NotImplementedException();
+            //return web.LoadFromBrowser(address, WaitForPageLoaded);
+        }
         
         // Currently does nothing, built for reddit page stripping
         [Obsolete("Function only returns body content (does not clean page).", false)]
@@ -223,20 +230,19 @@ namespace NovaCore.Web
             // Standard browser requires a single-threaded application run environment
             FileSystem.RunSTA(() =>
             {
-                using (WebBrowser browser = CreateBrowser())
-                {
-                    // Navigate to page
-                    browser.Navigate(address);
+                using WebBrowser browser = CreateBrowser();
+                
+                // Navigate to page
+                browser.Navigate(address);
                     
-                    // Wait for page to load
-                    while (browser.ReadyState != WebBrowserReadyState.Complete)
-                        System.Windows.Forms.Application.DoEvents();
+                // Wait for page to load
+                while (browser.ReadyState != WebBrowserReadyState.Complete)
+                    System.Windows.Forms.Application.DoEvents();
 
-                    // Get response
-                    response = browser.Document?.DomDocument.ToString();
+                // Get response
+                response = browser.Document?.DomDocument.ToString();
 
-                    Logger.Log(response);
-                }
+                Logger.Log(response);
             });
 
             return response;

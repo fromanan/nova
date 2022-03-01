@@ -32,7 +32,7 @@ namespace NovaCore
         
         public static string Copyright()
         {
-            StringBuilder buffer = new StringBuilder();
+            StringBuilder buffer = new();
             buffer.AppendLine($"{AppInfo.ProductName}, Version {AppInfo.ProductVersion}");
             buffer.AppendLine($"Copyright {AppInfo.CompanyName} ({DateTime.Now.Year}). All rights reserved.");
             return buffer.ToString();

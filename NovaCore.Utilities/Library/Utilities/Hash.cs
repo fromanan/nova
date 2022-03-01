@@ -9,26 +9,20 @@ namespace NovaCore.Utilities
         // Simplified using LINQ
         public static string Sha256(string value)
         {
-            using (SHA256 sha256 = SHA256.Create())
-            {
-                return Utils.ByteString(sha256.ComputeHash(Encoding.UTF8.GetBytes(value)));
-            }
+            using SHA256 sha256 = SHA256.Create();
+            return Utils.ByteString(sha256.ComputeHash(Encoding.UTF8.GetBytes(value)));
         }
         
         public static string Sha512(string value)
         {
-            using (SHA512 sha512 = SHA512.Create())
-            {
-                return Utils.ByteString(sha512.ComputeHash(Encoding.UTF8.GetBytes(value)));
-            }
+            using SHA512 sha512 = SHA512.Create();
+            return Utils.ByteString(sha512.ComputeHash(Encoding.UTF8.GetBytes(value)));
         }
 
         public static string SimpleHash(string input)
         {
-            using (MD5 md5 = MD5.Create())
-            {
-                return Utils.ByteString(md5.ComputeHash(Encoding.ASCII.GetBytes(input)));
-            }
+            using MD5 md5 = MD5.Create();
+            return Utils.ByteString(md5.ComputeHash(Encoding.ASCII.GetBytes(input)));
         }
         
         public static string SaltedHash(string text, string salt)

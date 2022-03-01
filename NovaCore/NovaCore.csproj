@@ -1,10 +1,16 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net472</TargetFramework>
-        <LangVersion>7.3</LangVersion>
+        <TargetFramework>net5.0-windows</TargetFramework>
+        <LangVersion>9</LangVersion>
         <PublishSingleFile>true</PublishSingleFile>
         <SelfContained>true</SelfContained>
+        <UseWindowsForms>true</UseWindowsForms>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -13,29 +19,18 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Reference Include="System.ComponentModel.DataAnnotations" />
-      <Reference Include="System.Web" />
-      <Reference Include="System.Windows.Forms" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+        <PackageReference Include="System.Runtime" Version="4.3.1" />
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Costura.Fody" Version="5.6.0">
-        <PrivateAssets>all</PrivateAssets>
-        <!--<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>-->
-      </PackageReference>
-      <PackageReference Include="Fody" Version="6.5.3">
-        <PrivateAssets>all</PrivateAssets>
-        <!--<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>-->
-      </PackageReference>
-      <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-      <PackageReference Include="System.Runtime" Version="4.3.1" />
+        <ProjectReference Include="..\NovaCore.FileSystem\NovaCore.FileSystem.csproj" />
+        <ProjectReference Include="..\NovaCore.Logging\NovaCore.Logging.csproj" />
+        <ProjectReference Include="..\NovaCore.Utilities\NovaCore.Utilities.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <ProjectReference Include="..\NovaCore.FileSystem\NovaCore.FileSystem.csproj" />
-      <ProjectReference Include="..\NovaCore.Logging\NovaCore.Logging.csproj" />
-      <ProjectReference Include="..\NovaCore.Utilities\NovaCore.Utilities.csproj" />
-      <ProjectReference Include="..\NovaCore.Web\NovaCore.Web.csproj" />
-    </ItemGroup>
+    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+      <Exec Command="echo f | xcopy /y &quot;$(TargetPath)&quot; &quot;C:\\Users\\%username%\\Downloads\\Builds&quot; /R /F /I" />
+    </Target>
 
 </Project>

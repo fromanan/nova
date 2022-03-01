@@ -8,7 +8,6 @@ using NovaCore.Common;
 using NovaCore.Files;
 using NovaCore.Logging;
 using NovaCore.Utilities;
-using NovaCore.Web.Interfaces;
 using uhttpsharp;
 using uhttpsharp.Listeners;
 using uhttpsharp.RequestProviders;
@@ -16,14 +15,14 @@ using HttpResponse = uhttpsharp.HttpResponse;
 
 namespace NovaCore.Web
 {
-    public abstract class WebServer : IDisposable, ICallback
+    public abstract class WebServer : IDisposable
     {
         protected HttpServer HttpServer;
         protected NovaTcpListener TcpListener;
         public readonly int Port;
         public readonly Logger Logger;
 
-        public readonly StringWriter ServerLog = new StringWriter();
+        public readonly StringWriter ServerLog = new();
         public readonly LoggingChannel ServerLoggingChannel;
 
         protected WebServer(int port, Logger logger = null)
@@ -102,7 +101,7 @@ namespace NovaCore.Web
             return new HttpResponse(HttpResponseCode.Ok, GetBytes(response), false);
         }
 
-        protected void Die(IHttpContext context, string errorMessage)
+        protected static void Die(IHttpContext context, string errorMessage)
         {
             context.Response = Close($"<b>{errorMessage}</b>");
             throw new Exception(errorMessage);

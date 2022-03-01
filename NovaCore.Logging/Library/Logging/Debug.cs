@@ -11,19 +11,21 @@ namespace NovaCore.Logging
     public static partial class Debug
     {
         // Standard Streams
-        public static readonly TextReader StandardInput = Console.In;
-        public static readonly TextWriter StandardOutput = Console.Out;
-        public static readonly TextWriter StandardError = Console.Error;
+        public static TextReader StandardInput { get; private set; } = Console.In;
+        
+        public static TextWriter StandardOutput { get; private set; } = Console.Out;
+        
+        public static TextWriter StandardError { get; private set; } = Console.Error;
         
         // Output Pipelines
-        private static LoggingChannel PrimaryChannel = new LoggingChannel(StandardOutput);
+        private static LoggingChannel PrimaryChannel = new(StandardOutput);
         
         // Class Properties
         private static int count; //< Number of commands executed
         private static bool redirected;
 
         // Exception Stack
-        private static readonly Stack<Exception> ExceptionStack = new Stack<Exception>();
+        private static readonly Stack<Exception> ExceptionStack = new();
         
         public enum Mode
         {
@@ -36,7 +38,7 @@ namespace NovaCore.Logging
             NO_ERRORS       //< Logs, Warnings
         }
 
-        public static readonly Dictionary<Mode, LogType[]> Includes = new Dictionary<Mode, LogType[]>
+        public static readonly Dictionary<Mode, LogType[]> Includes = new()
         {
             { Mode.MINIMAL,     new [] { LogType.Log, LogType.Info } },
             { Mode.SILENT,      new [] { LogType.Log } },
@@ -66,6 +68,12 @@ namespace NovaCore.Logging
                     GetExcludedLogTypes(debugMode).ForEach(Suppress);
                     break;
             }
+        }
+
+        public static void Init()
+        {
+            Windowing.CreateConsole();
+            StandardOutput = Console.Out;
         }
         
         public static void Suppress(LogType logType)

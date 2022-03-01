@@ -7,8 +7,8 @@ namespace NovaCore
     {
         public static class Data
         {
-            public static Config Config = new Config();
-            public static readonly InterpreterCollection InterpreterCollection = new InterpreterCollection();
+            public static Config Config = new();
+            public static readonly InterpreterCollection InterpreterCollection = new();
 
             public static void LoadAll()
             {

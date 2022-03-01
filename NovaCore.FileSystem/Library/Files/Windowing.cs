@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Runtime.InteropServices;
 
 namespace NovaCore.Files
@@ -46,5 +47,45 @@ namespace NovaCore.Files
         
         [DllImport("kernel32.dll", SetLastError=true, ExactSpelling=true)]
         public static extern bool FreeConsole();
+        
+        [DllImport("kernel32.dll")]
+        public static extern IntPtr GetStdHandle(int nStdHandle);
+
+        [DllImport("kernel32.dll")]
+        public static extern int SetStdHandle(int nStdHandle, IntPtr hHandle);
+        
+        public static void CreateConsole()
+        {
+            AllocConsole();
+
+            // stdout's handle seems to always be equal to 7
+            IntPtr defaultStdout = new IntPtr(7);
+            IntPtr currentStdout = GetStdHandle(STD_OUTPUT_HANDLE);
+
+            // reset stdout
+            if (currentStdout != defaultStdout)
+            {
+                SetStdHandle(STD_OUTPUT_HANDLE, defaultStdout);
+            }
+
+            // reopen stdout
+            TextWriter writer = new StreamWriter(Console.OpenStandardOutput())
+            {
+                AutoFlush = true
+            };
+            Console.SetOut(writer);
+        }
+
+        // P/Invoke required:
+        public const uint STD_OUTPUT_HANDLE = 0xFFFFFFF5;
+        
+        [DllImport("kernel32.dll")]
+        public static extern IntPtr GetStdHandle(uint nStdHandle);
+        
+        [DllImport("kernel32.dll")]
+        public static extern void SetStdHandle(uint nStdHandle, IntPtr handle);
+        
+        [DllImport("kernel32")]
+        public static extern bool AllocConsole();
     }
 }

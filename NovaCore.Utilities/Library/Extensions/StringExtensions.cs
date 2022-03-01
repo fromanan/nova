@@ -12,13 +12,13 @@ namespace NovaCore.Extensions
         // Return everything after a substring
         public static string After(this string str, string substr)
         {
-            return str.Substring(str.IndexOf(substr, StringComparison.Ordinal) + substr.Length);
+            return str[(str.IndexOf(substr, StringComparison.Ordinal) + substr.Length)..];
         }
 
         public static string Before(this string str, string substr)
         {
             int loc = str.IndexOf(substr, StringComparison.Ordinal);
-            return loc > 0 ? str.Substring(0, loc) : string.Empty;
+            return loc > 0 ? str[..loc] : string.Empty;
         }
 
         public static string Between(this string str, string frontSubstr, string backSubstr)
@@ -43,13 +43,13 @@ namespace NovaCore.Extensions
         public static bool IsEnclosedBy(this string str, string frontSubstr, string backSubstr)
         {
             return str.Length >= frontSubstr.Length + backSubstr.Length &&
-                   str.Substring(0, frontSubstr.Length) == frontSubstr &&
+                   str[..frontSubstr.Length] == frontSubstr &&
                    str.Substring(str.Length - backSubstr.Length, backSubstr.Length) == backSubstr;
         }
 
         public static bool StartsWith(this string str, string substr)
         {
-            return str.Length >= substr.Length && str.Substring(0, substr.Length) == substr;
+            return str.Length >= substr.Length && str[..substr.Length] == substr;
         }
 
         public static bool EndsWith(this string str, string substr)
@@ -71,13 +71,13 @@ namespace NovaCore.Extensions
         
         public static string Truncate(this string value, int maxChars)
         {
-            return value.Length <= maxChars ? value : value.Substring(0, maxChars) + "...";
+            return value.Length <= maxChars ? value : value[..maxChars] + "...";
         }
 
         // https://stackoverflow.com/questions/541954/how-would-you-count-occurrences-of-a-string-actually-a-char-within-a-string
         public static int CountOccurrences(this string str, string substr)
         {
-            return str.Select((c, i) => str.Substring(i)).Count(sub => sub.StartsWith(substr));
+            return str.Select((c, i) => str[i..]).Count(sub => sub.StartsWith(substr));
         }
         
         public static int CountOccurrences(this string str, char c)

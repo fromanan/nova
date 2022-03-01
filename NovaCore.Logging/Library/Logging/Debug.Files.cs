@@ -7,7 +7,7 @@ namespace NovaCore.Logging
     {
         private static int streamCount;
         
-        public static readonly Dictionary<int, TextWriter> Streams = new Dictionary<int, TextWriter>();
+        public static readonly Dictionary<int, TextWriter> Streams = new();
 
         public static T GetStream<T>(int streamNumber) where T : TextWriter
         {
@@ -24,7 +24,7 @@ namespace NovaCore.Logging
         
         public static StreamWriter OpenStream(string filepath)
         {
-            StreamWriter stream = new StreamWriter(filepath);
+            StreamWriter stream = new(filepath);
             Streams[streamCount] = stream;
             streamCount++;
             return stream;

@@ -53,7 +53,7 @@ namespace NovaCore.Files
 
             if (Environment.OSVersion.Version.Major >= 6)
             {
-                Reflector reflector = new Reflector("System.Windows.Forms");
+                Reflector reflector = new("System.Windows.Forms");
 
                 Type typeIFileDialog = reflector.GetType("FileDialogNative.IFileDialog");
                 
@@ -205,7 +205,7 @@ namespace NovaCore.Files
             {
                 Type type = GetType(typeName);
                 FieldInfo fieldInfo = type.GetField(name);
-                return fieldInfo.GetValue(null);
+                return fieldInfo?.GetValue(null);
             }
         }
     }

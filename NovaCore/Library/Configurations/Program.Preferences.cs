@@ -12,15 +12,15 @@ namespace NovaCore
         [Serializable]
         public sealed class Preferences : ConfigFile
         {
-            public static Preferences Instance { get; private set; } = new Preferences();
+            public static Preferences Instance { get; private set; } = new();
             
             public override string GetFilepath() =>  Path.Combine(Application.Paths.Preferences, "preferences.json");
             
-            [JsonProperty("index")] private Dictionary<string, PrefType> Index = new Dictionary<string, PrefType>();
-            [JsonProperty("strings")] private Dictionary<string, string> StringEntries = new Dictionary<string, string>();
-            [JsonProperty("floats")] private Dictionary<string, float> FloatEntries = new Dictionary<string, float>();
-            [JsonProperty("ints")] private Dictionary<string, int> IntEntries = new Dictionary<string, int>();
-            [JsonProperty("entries")] private Dictionary<string, Entry> Entries = new Dictionary<string, Entry>();
+            [JsonProperty("index")] private Dictionary<string, PrefType> Index = new();
+            [JsonProperty("strings")] private Dictionary<string, string> StringEntries = new();
+            [JsonProperty("floats")] private Dictionary<string, float> FloatEntries = new();
+            [JsonProperty("ints")] private Dictionary<string, int> IntEntries = new();
+            [JsonProperty("entries")] private Dictionary<string, Entry> Entries = new();
             
             public enum PrefType
             {
@@ -154,10 +154,8 @@ namespace NovaCore
             [Serializable]
             public sealed class Entry //: IJsonSerializable
             {
-                [JsonProperty("properties")] public Dictionary<string, string> Properties = new Dictionary<string, string>();
+                [JsonProperty("properties")] public Dictionary<string, string> Properties = new();
                 
-                
-
                 public static Entry Encode(object data)
                 {
                     return FileSystem.Deserialize<Entry>(FileSystem.Serialize(data));

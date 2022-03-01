@@ -67,7 +67,7 @@ namespace NovaCore.Extensions
         
         public static string FormatTable(this DataTable dataTable, int colLength, int count = 0, int start = 0)
         {
-            StringBuilder buffer = new StringBuilder();
+            StringBuilder buffer = new();
             
             // Print Headers
             buffer.AppendLine(dataTable.FormatColumns(colLength));
@@ -112,7 +112,7 @@ namespace NovaCore.Extensions
 
             foreach (DataColumn column in dataRow.Table.Columns)
             {
-                if (GetProperty(typeof(T), column.ColumnName) is PropertyInfo property && 
+                if (GetProperty(typeof(T), column.ColumnName) is { } property && 
                     dataRow[column] != DBNull.Value && dataRow[column].ToString() != "NULL")
                 {
                     property.SetValue(item, ChangeType(dataRow[column], property.PropertyType), null);
@@ -127,7 +127,7 @@ namespace NovaCore.Extensions
             return type.GetProperty(attributeName) ?? type.GetProperties().FirstOrDefault(p => Sigma(p, attributeName));
         }
 
-        private static bool Sigma(PropertyInfo propertyInfo, string attributeName)
+        private static bool Sigma(ICustomAttributeProvider propertyInfo, string attributeName)
         {
             return propertyInfo.IsDefined(typeof(DisplayAttribute), false) &&
                    propertyInfo.GetCustomAttributes(typeof(DisplayAttribute), false)

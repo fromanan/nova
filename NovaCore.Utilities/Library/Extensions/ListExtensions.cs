@@ -6,7 +6,7 @@ namespace NovaCore.Extensions
 {
     public static class ListExtensions
     {
-        private static readonly Random Random = new Random();
+        private static readonly Random Random = new();
 
         public static void Shuffle<T>(this IList<T> list)
         {
@@ -20,7 +20,7 @@ namespace NovaCore.Extensions
         }
     
         // Returns a shuffled version of the list
-        public static IList<T> Shuffled<T>(this IList<T> list)
+        public static IList<T> Shuffled<T>(this IEnumerable<T> list)
         {
             IList<T> newList = list.ToList();
             int n = newList.Count;
