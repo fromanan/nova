@@ -27,6 +27,7 @@
         <ProjectReference Include="..\NovaCore.FileSystem\NovaCore.FileSystem.csproj" />
         <ProjectReference Include="..\NovaCore.Logging\NovaCore.Logging.csproj" />
         <ProjectReference Include="..\NovaCore.Utilities\NovaCore.Utilities.csproj" />
+        <ProjectReference Include="..\NovaCore.Web\NovaCore.Web.csproj" />
     </ItemGroup>
 
     <Target Name="PostBuild" AfterTargets="PostBuildEvent">
