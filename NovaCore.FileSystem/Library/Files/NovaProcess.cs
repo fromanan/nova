@@ -30,7 +30,7 @@ namespace NovaCore.Files
         public string Errors { get; private set; }
         
         private readonly TaskCompletionSource<int> CompletionSource = new();
-        
+
         public NovaProcess(string filepath, string args = "")
         {
             Process = FileSystem.CreateExternalProcess(filepath, args);
@@ -40,6 +40,15 @@ namespace NovaCore.Files
         {
             Process = FileSystem.CreateExternalProcess(startInfo);
         }
+        
+        public NovaProcess(Process process)
+        {
+            Process = process;
+        }
+        
+        public static implicit operator Process(NovaProcess n) => n.Process;
+        
+        public static explicit operator NovaProcess(Process p) => new(p);
         
         private void GetResult() => Result = Process.StandardOutput.ReadToEnd();
         

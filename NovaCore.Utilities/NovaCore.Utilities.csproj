@@ -5,6 +5,7 @@
         <PublishSingleFile>true</PublishSingleFile>
         <SelfContained>true</SelfContained>
         <UseWindowsForms>true</UseWindowsForms>
+        <RootNamespace>NovaCore</RootNamespace>
     </PropertyGroup>
     <PropertyGroup>
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>

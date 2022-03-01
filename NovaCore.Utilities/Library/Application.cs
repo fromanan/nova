@@ -10,7 +10,7 @@ namespace NovaCore
 {
     public static class Application
     {
-        public static readonly Logger Logger = new Logger();
+        public static readonly Logger Logger = new();
 
         private static char Separator = Path.PathSeparator;
         

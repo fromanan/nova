@@ -16,7 +16,7 @@ namespace NovaCore.Web
 {
     public static class WebDriver
     {
-        public static readonly Logger Logger = new ();
+        public static readonly Logger Logger = new();
 
         // Used for loading basic (static) webpages or making queries
         public static string Request(string address)
