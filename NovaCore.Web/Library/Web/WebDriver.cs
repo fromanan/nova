@@ -6,16 +6,18 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using HtmlAgilityPack;
+using NovaCore.Common;
 using NovaCore.Files;
 using NovaCore.Web.Extensions;
 using RestSharp;
-using Debug = NovaCore.Logging.Debug;
 using HtmlDocument = HtmlAgilityPack.HtmlDocument;
 
 namespace NovaCore.Web
 {
     public static class WebDriver
     {
+        public static readonly Logger Logger = new Logger();
+        
         // Used to load a scripted/dynamic webpage
         public static HtmlDocument OpenBrowser(string address)
         {
@@ -24,7 +26,7 @@ namespace NovaCore.Web
 
         public static bool WaitForPageLoaded(object browser)
         {
-            Application.DoEvents();
+            System.Windows.Forms.Application.DoEvents();
             return ((WebBrowser) browser).ReadyState == WebBrowserReadyState.Complete;
         }
 
@@ -56,7 +58,7 @@ namespace NovaCore.Web
         public static void HandleWebException(WebException exception)
         {
             HttpWebResponse response = (HttpWebResponse) exception.Response;
-            Debug.LogError(GetStatusCode(response.StatusCode));
+            Logger.LogError(GetStatusCode(response.StatusCode));
         }
 
         public static string GetStatusCode(HttpStatusCode statusCode)
@@ -70,7 +72,7 @@ namespace NovaCore.Web
                 case HttpStatusCode.Forbidden:
                     return "Server request refused (403)";
                 case HttpStatusCode.NotFound:
-                    return "Page not found (404)";
+                    return "Resource not found (404)";
                 case HttpStatusCode.RequestTimeout:
                     return "Request timed out (408)";
                 case HttpStatusCode.Gone:
@@ -111,7 +113,7 @@ namespace NovaCore.Web
             {
                 if (receiveStream == null)
                 {
-                    Debug.LogException("System failed to receive response stream from request");
+                    Logger.LogException("System failed to receive response stream from request");
                     return null;
                 }
                 using (StreamReader reader = OpenStreamReader(receiveStream, response.CharacterSet))
@@ -162,7 +164,7 @@ namespace NovaCore.Web
         
         public static async Task<string> ExecuteRequest(RestRequest request, string baseUrl)
         {
-            Debug.LogCustom("REQUEST", $"{baseUrl}{request.Resource}");
+            Logger.LogCustom("REQUEST", $"{baseUrl}{request.Resource}");
             
             RestClient client = new RestClient(baseUrl);
             CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
@@ -177,7 +179,7 @@ namespace NovaCore.Web
 
             if (cancellationTokenSource.IsCancellationRequested)
             {
-                Debug.LogError("Execution failed (cancellation requested)");
+                Logger.LogError("Execution failed (cancellation requested)");
                 return null;
             }
 
@@ -185,10 +187,10 @@ namespace NovaCore.Web
 
             if (!string.IsNullOrEmpty(response.ErrorMessage))
             {
-                Debug.LogError(response.ErrorMessage);
+                Logger.LogError(response.ErrorMessage);
             }
 
-            Debug.LogException(GenerateException(response));
+            Logger.LogException(GenerateException(response));
 
             //throw GenerateException(response);
             return null;
@@ -228,12 +230,12 @@ namespace NovaCore.Web
                     
                     // Wait for page to load
                     while (browser.ReadyState != WebBrowserReadyState.Complete)
-                        Application.DoEvents();
+                        System.Windows.Forms.Application.DoEvents();
 
                     // Get response
                     response = browser.Document?.DomDocument.ToString();
 
-                    Debug.Log(response);
+                    Logger.Log(response);
                 }
             });
 

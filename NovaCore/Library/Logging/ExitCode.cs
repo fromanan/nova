@@ -1,4 +1,0 @@
-namespace NovaCore.Logging
-{
-    
-}

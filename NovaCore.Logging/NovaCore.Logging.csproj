@@ -2,19 +2,19 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
     <PropertyGroup>
-        <AssemblyOriginatorKeyFile>novacore.web.snk</AssemblyOriginatorKeyFile>
-        <SignAssembly>True</SignAssembly>
-    </PropertyGroup>
-    <PropertyGroup>
         <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
         <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-        <ProjectGuid>{89E92382-C653-4E1A-B873-AAFB5A743939}</ProjectGuid>
+        <ProjectGuid>{4B23170B-AE28-4DFB-B735-624F170FFDB0}</ProjectGuid>
         <OutputType>Library</OutputType>
         <AppDesignerFolder>Properties</AppDesignerFolder>
         <RootNamespace>NovaCore</RootNamespace>
-        <AssemblyName>NovaCore.Web</AssemblyName>
+        <AssemblyName>NovaCore.Logging</AssemblyName>
         <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
         <FileAlignment>512</FileAlignment>
+    </PropertyGroup>
+    <PropertyGroup>
+        <AssemblyOriginatorKeyFile>novacore.logging.snk</AssemblyOriginatorKeyFile>
+        <SignAssembly>True</SignAssembly>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
         <PlatformTarget>AnyCPU</PlatformTarget>
@@ -36,10 +36,6 @@
         <WarningLevel>4</WarningLevel>
     </PropertyGroup>
     <ItemGroup>
-        <Reference Include="HtmlAgilityPack, Version=1.11.37.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a">
-          <HintPath>..\packages\HtmlAgilityPack.1.11.37\lib\Net45\HtmlAgilityPack.dll</HintPath>
-          <Private>True</Private>
-        </Reference>
         <Reference Include="System" />
         <Reference Include="System.Core" />
         <Reference Include="System.Data" />
@@ -47,24 +43,18 @@
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="Library\Extensions\AgilityExtensions.cs" />
-        <Compile Include="Library\Extensions\HttpWebRequestExtensions.cs" />
-        <Compile Include="Library\Extensions\RestRequestExtensions.cs" />
-        <Compile Include="Library\Interfaces\ICallback.cs" />
-        <Compile Include="Library\Web\Email.cs" />
-        <Compile Include="Library\Web\Forms.cs" />
-        <Compile Include="Library\Web\Hosts.cs" />
-        <Compile Include="Library\Web\NovaTcpListener.cs" />
-        <Compile Include="Library\Web\WebDriver.cs" />
-        <Compile Include="Library\Web\WebHeader.cs" />
-        <Compile Include="Library\Web\WebParameter.cs" />
-        <Compile Include="Library\Web\WebQuery.cs" />
-        <Compile Include="Library\Web\WebServer.cs" />
-        <Compile Include="Library\Web\WebUtils.cs" />
+        <Compile Include="Library\Logging\ChannelPalette.cs" />
+        <Compile Include="Library\Logging\ColorPreset.cs" />
+        <Compile Include="Library\Logging\Debug.Config.cs" />
+        <Compile Include="Library\Logging\Debug.cs" />
+        <Compile Include="Library\Logging\Debug.Files.cs" />
+        <Compile Include="Library\Logging\Debug.Logging.cs" />
+        <Compile Include="Library\Logging\Debug.ProgressBars.cs" />
+        <Compile Include="Library\Logging\Debug.Prompts.cs" />
+        <Compile Include="Library\Logging\Debug.Text.cs" />
+        <Compile Include="Library\Logging\LoggingChannel.cs" />
+        <Compile Include="Library\Logging\OutputSink.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
-    </ItemGroup>
-    <ItemGroup>
-      <None Include="packages.config" />
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\NovaCore.Common\NovaCore.Common.csproj">
@@ -75,38 +65,10 @@
         <Project>{b58ed4cf-195e-46bd-9f18-db3fc60db2ba}</Project>
         <Name>NovaCore.FileSystem</Name>
       </ProjectReference>
-      <ProjectReference Include="..\NovaCore.Logging\NovaCore.Logging.csproj">
-        <Project>{4b23170b-ae28-4dfb-b735-624f170ffdb0}</Project>
-        <Name>NovaCore.Logging</Name>
-      </ProjectReference>
       <ProjectReference Include="..\NovaCore.Utilities\NovaCore.Utilities.csproj">
         <Project>{0fd3bd37-b64b-4985-b629-d4bb4e2e0aae}</Project>
         <Name>NovaCore.Utilities</Name>
       </ProjectReference>
-      <ProjectReference Include="..\uHttpSharp\uhttpsharp\uhttpsharp.csproj">
-        <Project>{3d681959-4da3-4a71-a68b-704d6411d5ea}</Project>
-        <Name>uhttpsharp</Name>
-      </ProjectReference>
-    </ItemGroup>
-    <ItemGroup>
-        <PackageReference Include="Costura.Fody" Version="5.7.0">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; compile; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
-        <PackageReference Include="Fody" Version="6.6.0">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; compile; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
-        <PackageReference Include="HtmlAgilityPack" Version="1.11.37" />
-        <PackageReference Include="Microsoft.Data.Sqlite" Version="5.0.10" />
-        <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="5.0.10" />
-        <PackageReference Include="RestSharp" Version="106.12.0" />
-    </ItemGroup>
-    <ItemGroup>
-      <Content Include="FodyWeavers.xml" />
-    </ItemGroup>
-    <ItemGroup>
-      <Folder Include="External" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
