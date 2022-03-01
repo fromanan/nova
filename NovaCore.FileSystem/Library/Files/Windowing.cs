@@ -40,7 +40,8 @@ namespace NovaCore.Files
         public static extern IntPtr FindWindowByCaption(IntPtr zeroOnly, string lpWindowName);
         
         [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern bool AttachConsole(uint dwProcessId);
+        //public static extern bool AttachConsole(uint dwProcessId);
+        public static extern bool AttachConsole(int pid);
         
         [DllImport("kernel32.dll")]
         public static extern IntPtr GetConsoleWindow();
