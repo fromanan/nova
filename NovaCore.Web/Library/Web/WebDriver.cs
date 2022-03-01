@@ -187,6 +187,7 @@ namespace NovaCore.Web
         #region Deprecated
         
         // Used to load a scripted/dynamic webpage
+        [Obsolete("Html Agility Pack removed support for LoadFromBrowser method, this method is no longer functional")]
         public static HtmlDocument OpenBrowser(string address)
         {
             return LoadWeb(OpenWeb(), address);

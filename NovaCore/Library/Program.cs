@@ -9,11 +9,11 @@ namespace NovaCore
 {
     partial class Program
     {
-        public static async Task Main(string[] args)
+        public static void Main(string[] args)
         {
             //StartupBeep();
             
-            await Init();
+            Init();
 
             using (Terminal terminal = new())
             {
@@ -24,7 +24,7 @@ namespace NovaCore
         }
         
         // TODO: Show Progress Bar
-        public static async Task Init()
+        public static void Init()
         {
             Debug.Clear();
             
