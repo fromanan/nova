@@ -63,7 +63,7 @@ namespace NovaCore.Files
             return completionSource.Task;
         }
 
-        public static void RunSTA(ThreadStart threadStart)
+        public static Thread RunSTA(ThreadStart threadStart)
         {
             Thread thread = new(threadStart);
             if (!CheckValidOS())
@@ -75,6 +75,7 @@ namespace NovaCore.Files
             #pragma warning restore CA1416
             thread.Start();
             thread.Join();
+            return thread;
         }
         
         /*public static async Task RunSTAAsync(ThreadStart threadStart)

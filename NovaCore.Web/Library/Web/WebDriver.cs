@@ -48,29 +48,19 @@ namespace NovaCore.Web
 
         public static string GetStatusCode(HttpStatusCode statusCode)
         {
-            switch (statusCode)
+            return statusCode switch
             {
-                case HttpStatusCode.BadRequest:
-                    return "Request could not be understood by the server (400)";
-                case HttpStatusCode.Unauthorized:
-                    return "Authentication required for request (401)";
-                case HttpStatusCode.Forbidden:
-                    return "Server request refused (403)";
-                case HttpStatusCode.NotFound:
-                    return "Resource not found (404)";
-                case HttpStatusCode.RequestTimeout:
-                    return "Request timed out (408)";
-                case HttpStatusCode.Gone:
-                    return "Requested webpage is no longer available (410)";
-                case HttpStatusCode.Moved:
-                    return "Page has been moved on server (301)";
-                case HttpStatusCode.Redirect:
-                    return "Client request redirected (302)";
-                case HttpStatusCode.InternalServerError:
-                    return "Client failed to connect due to an internal server error (500)";
-                default:
-                    return $"Uncategorized WebException ({statusCode})";
-            }
+                HttpStatusCode.BadRequest => "Request could not be understood by the server (400)",
+                HttpStatusCode.Unauthorized => "Authentication required for request (401)",
+                HttpStatusCode.Forbidden => "Server request refused (403)",
+                HttpStatusCode.NotFound => "Resource not found (404)",
+                HttpStatusCode.RequestTimeout => "Request timed out (408)",
+                HttpStatusCode.Gone => "Requested webpage is no longer available (410)",
+                HttpStatusCode.Moved => "Page has been moved on server (301)",
+                HttpStatusCode.Redirect => "Client request redirected (302)",
+                HttpStatusCode.InternalServerError => "Client failed to connect due to an internal server error (500)",
+                _ => $"Uncategorized WebException ({statusCode})"
+            };
         }
 
         public static StreamReader OpenStreamReader(Stream responseStream, string characterSet = null)

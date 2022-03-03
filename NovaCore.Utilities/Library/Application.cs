@@ -12,10 +12,13 @@ namespace NovaCore
     {
         public static readonly Logger Logger = new();
 
-        private static char Separator = Path.PathSeparator;
+        private static readonly char Separator = Path.PathSeparator;
         
         public static class Paths
         {
+            // System Path
+            private static readonly string AppData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            
             // Project Specific
             public static readonly string Root = AppInfo.ProductName.Remove(" ");
             public static readonly string Build = AppContext.BaseDirectory;
@@ -27,7 +30,6 @@ namespace NovaCore
             public static readonly string Resources = Path.Combine(Project, "resources");
             public static readonly string External = Path.Combine(Project, "External");
             public static readonly string Downloads = Path.Combine(KnownFolders.GetPath(KnownFolder.Downloads), Root);
-            private static readonly string AppData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
         }
         
         public static string Copyright()
@@ -55,7 +57,7 @@ namespace NovaCore
         public static void Restart()
         {
             RestartEvent.Invoke();
-            System.Windows.Forms.Application.Restart();
+            App.Restart();
             Exit(ExitCode.Restart);
         }
         
