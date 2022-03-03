@@ -245,6 +245,45 @@ namespace NovaCore.Logging
             logger.OnLogCustomF += LogCustom;
             logger.OnLogCustomFC += LogCustom;
         }
+        
+        public void UnsubscribeLogger(Logger logger)
+        {
+            // Logging
+            logger.OnLog -= Log;
+            logger.OnLogF -= Log;
+            logger.OnLogD -= Log;
+            
+            // Info
+            logger.OnLogInfo -= LogInfo;
+            logger.OnLogInfoF -= LogInfo;
+            
+            // Warning
+            logger.OnLogWarning -= LogWarning;
+            logger.OnLogWarningF -= LogWarning;
+            
+            // Error
+            logger.OnLogError -= LogError;
+            logger.OnLogErrorF -= LogError;
+            
+            // Exception
+            logger.OnLogException -= LogException;
+            logger.OnLogExceptionF -= LogException;
+            logger.OnLogExceptionE -= LogException;
+            
+            // Critical
+            logger.OnLogCritical -= LogCritical;
+            logger.OnLogCriticalF -= LogCritical;
+            
+            // Crash
+            logger.OnLogCrash -= LogCrash;
+            logger.OnLogCrashF -= LogCrash;
+            
+            // Custom
+            logger.OnLogCustom -= LogCustom;
+            logger.OnLogCustomC -= LogCustom;
+            logger.OnLogCustomF -= LogCustom;
+            logger.OnLogCustomFC -= LogCustom;
+        }
 
         private FileStream FileHandle;
         private StreamWriter StreamWriter;

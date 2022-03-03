@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using NovaCore.Common;
 using NovaCore.Files;
 using NovaCore.Utilities;
 
@@ -19,6 +20,8 @@ namespace NovaCore.Logging
         
         // Output Pipelines
         private static LoggingChannel PrimaryChannel = new(StandardOutput);
+        
+        // Default Channel?
         
         // Class Properties
         private static int count; //< Number of commands executed
@@ -74,6 +77,16 @@ namespace NovaCore.Logging
         {
             Windowing.CreateConsole();
             StandardOutput = Console.Out;
+        }
+
+        public static void SubscribeToDefault(Logger logger)
+        {
+            PrimaryChannel.SubscribeLogger(logger);
+        }
+        
+        public static void UnsubscribeFromDefault(Logger logger)
+        {
+            PrimaryChannel.UnsubscribeLogger(logger);
         }
         
         public static void Suppress(LogType logType)
