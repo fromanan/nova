@@ -17,6 +17,10 @@ namespace NovaCore.Web
     public static class WebDriver
     {
         public static readonly Logger Logger = new();
+        
+        public const string CONTENT_TYPE_FORM = "application/x-www-form-urlencoded";
+        public const string CONTENT_TYPE_JSON = "application/json";
+        public const string DEFAULT_CONTENT_TYPE = CONTENT_TYPE_FORM;
 
         // Used for loading basic (static) webpages or making queries
         public static string Request(string address)
@@ -24,7 +28,7 @@ namespace NovaCore.Web
             HttpWebRequest request = (HttpWebRequest) WebRequest.Create(address);
             try
             {
-                HttpWebResponse response = (HttpWebResponse) request.GetResponse();
+                HttpWebResponse response = request.GetResponse() as HttpWebResponse;
                 //Logger.LogInfo("Request successful");
                 return RequestToString(response);
             }
@@ -37,8 +41,7 @@ namespace NovaCore.Web
 
         public static void HandleWebException(WebException exception)
         {
-            HttpWebResponse response = (HttpWebResponse) exception.Response;
-            if (response is null)
+            if (exception.Response is not HttpWebResponse response)
             {
                 Logger.LogWarning("Could not parse exception as HttpWebResponse");
                 return;
@@ -77,7 +80,7 @@ namespace NovaCore.Web
 
         public static HtmlDocument CreateDocument(string body)
         {
-            HtmlDocument htmlDoc = new ();
+            HtmlDocument htmlDoc = new();
             htmlDoc.LoadHtml(body);
             return htmlDoc;
         }
@@ -113,8 +116,8 @@ namespace NovaCore.Web
             return request;
         }
         
-        public static RestRequest BuildSharpRequest(string url, Method method, string contentType, string authorization, 
-            params WebParameter[] parameters)
+        public static RestRequest BuildSharpRequest(string url, Method method, 
+            string contentType = DEFAULT_CONTENT_TYPE, string authorization = "", params WebParameter[] parameters)
         {
             RestRequest request = new (url, method);
 
@@ -172,8 +175,6 @@ namespace NovaCore.Web
             return null;
         }
 
-        public static readonly string DefaultContentType = "application/x-www-form-urlencoded";
-
         #region Deprecated
         
         // Used to load a scripted/dynamic webpage
@@ -189,7 +190,7 @@ namespace NovaCore.Web
             return ((WebBrowser) browser).ReadyState == WebBrowserReadyState.Complete;
         }
 
-        public static HtmlWeb OpenWeb() => new ();
+        public static HtmlWeb OpenWeb() => new();
         
         [Obsolete("Html Agility Pack removed support for LoadFromBrowser method, this method is no longer functional")]
         public static HtmlDocument LoadWeb(HtmlWeb web, string address)
@@ -228,7 +229,9 @@ namespace NovaCore.Web
                     
                 // Wait for page to load
                 while (browser.ReadyState != WebBrowserReadyState.Complete)
+                {
                     System.Windows.Forms.Application.DoEvents();
+                }
 
                 // Get response
                 response = browser.Document?.DomDocument.ToString();
