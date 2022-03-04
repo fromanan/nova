@@ -45,6 +45,14 @@ namespace NovaCore.Logging
             }
         }
         
+        public void Log(string message, ConsoleColor color)
+        {
+            using (new ColorPreset(color))
+            {
+                Output.WriteLine(message);
+            }
+        }
+        
         public void Log(object message)
         {
             using (new ColorPreset(Palette.DefaultColor))
@@ -211,6 +219,7 @@ namespace NovaCore.Logging
         {
             // Logging
             logger.OnLog += Log;
+            logger.OnLogC += Log;
             logger.OnLogF += Log;
             logger.OnLogD += Log;
             
@@ -250,6 +259,7 @@ namespace NovaCore.Logging
         {
             // Logging
             logger.OnLog -= Log;
+            logger.OnLogC -= Log;
             logger.OnLogF -= Log;
             logger.OnLogD -= Log;
             

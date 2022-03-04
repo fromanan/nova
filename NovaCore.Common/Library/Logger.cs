@@ -10,6 +10,8 @@ namespace NovaCore.Common
 
         public delegate void LogEvent(string message);
         
+        public delegate void LogEventColored(string message, ConsoleColor color);
+        
         public delegate void LogFormattableEvent(IFormattable message);
         
         public delegate void LogObjectEvent(object obj);
@@ -28,13 +30,25 @@ namespace NovaCore.Common
 
         public event LogEvent OnLog = delegate { };
         
+        public event LogEventColored OnLogC = delegate { };
+        
         public event LogFormattableEvent OnLogF = delegate { };
         
         public event LogObjectEvent OnLogD = delegate { };
 
+        public void LineBreak()
+        {
+            OnLog.Invoke("\n");
+        }
+
         public void Log(string message)
         {
             OnLog.Invoke(message);
+        }
+        
+        public void Log(string message, ConsoleColor color)
+        {
+            OnLogC.Invoke(message, color);
         }
         
         public void Log(IFormattable message)
