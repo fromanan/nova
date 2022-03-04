@@ -1,10 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>net5.0-windows</TargetFramework>
         <LangVersion>9</LangVersion>
         <PublishSingleFile>true</PublishSingleFile>
         <SelfContained>true</SelfContained>
-        <UseWindowsForms>true</UseWindowsForms>
+        <RootNamespace>NovaCore</RootNamespace>
+        <TargetFrameworks>net5.0;net5.0-windows</TargetFrameworks>
     </PropertyGroup>
     <PropertyGroup>
         <AssemblyOriginatorKeyFile>novacore.filesystem.snk</AssemblyOriginatorKeyFile>
@@ -32,6 +32,9 @@
         <Project>{0fd3bd37-b64b-4985-b629-d4bb4e2e0aae}</Project>
         <Name>NovaCore.Utilities</Name>
       </ProjectReference>
+    </ItemGroup>
+    <ItemGroup>
+      <PackageReference Include="Microsoft.Win32.Registry" Version="6.0.0-preview.5.21301.5" />
     </ItemGroup>
     <Target Name="PostBuild" AfterTargets="PostBuildEvent">
       <Exec Command="echo f | xcopy /y &quot;$(TargetPath)&quot; &quot;C:\\Users\\%username%\\Downloads\\Builds&quot; /R /F /I" />

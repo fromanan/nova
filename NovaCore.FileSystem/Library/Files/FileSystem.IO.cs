@@ -19,65 +19,12 @@ namespace NovaCore.Files
         {
             return File.ReadAllText(filepath);
         }
-
-        public static string CreateFile(string extension = "", string filepath = "", string directory = null)
-        {
-            // Filepath was provided
-            if (string.IsNullOrEmpty(filepath))
-            {
-                filepath = SaveFileDialogue(new FileFilter(extension), directory);
-                if (string.IsNullOrEmpty(filepath))
-                {
-                    return null;
-                }
-                File.Create(filepath).Close();
-                return filepath;
-            }
-            
-            // File exists
-            // TODO: Return the existing filename?
-            if (Validate(filepath))
-            {
-                return null; 
-            }
-            
-            File.Create(filepath).Close();
-            
-            return Validate(filepath) ? filepath : null;
-        }
-
+        
         public static string CreateTempFile()
         {
             return Path.GetTempFileName();
         }
 
-        public static string BasicFileFilter(string extension) => new FileFilter(extension).ToString();
-
-        // TODO: Does not support multiple extensions
-        // TODO: Detect file prompt closing, catch the null operator - Verify for this purpose
-        public static string LoadFile(string extension, string startDirectory = null)
-        {
-            return OpenFileDialogue(new FileFilter(extension), startDirectory);
-        }
-        
-        public static string[] LoadFiles(string extension, string startDirectory = null)
-        {
-            // Return an empty array if file cancelled (for iteration)
-            return OpenMultiFileDialogue(new FileFilter(extension), startDirectory) ?? Array.Empty<string>();
-        }
-        
-        // TODO: Default Filenames
-
-        public static string[] LoadJson(string startDirectory = null)
-        {
-            return LoadFiles("json", startDirectory);
-        }
-
-        public static string[] LoadTxt(string startDirectory = null)
-        {
-            return LoadFiles("txt", startDirectory);
-        }
-        
         public static bool LoadSuccessful(string[] filepaths)
         {
             return !(EmptyHierarchy(filepaths) || filepaths.Length == 1 && string.IsNullOrEmpty(filepaths[0]));

@@ -1,16 +1,12 @@
-using System;
 using System.IO;
 using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using HtmlAgilityPack;
 using NovaCore.Common;
-using NovaCore.Files;
 using NovaCore.Web.Extensions;
 using RestSharp;
-using HtmlDocument = HtmlAgilityPack.HtmlDocument;
 
 namespace NovaCore.Web
 {
@@ -53,16 +49,16 @@ namespace NovaCore.Web
         {
             return statusCode switch
             {
-                HttpStatusCode.BadRequest => "Request could not be understood by the server (400)",
-                HttpStatusCode.Unauthorized => "Authentication required for request (401)",
-                HttpStatusCode.Forbidden => "Server request refused (403)",
-                HttpStatusCode.NotFound => "Resource not found (404)",
-                HttpStatusCode.RequestTimeout => "Request timed out (408)",
-                HttpStatusCode.Gone => "Requested webpage is no longer available (410)",
-                HttpStatusCode.Moved => "Page has been moved on server (301)",
-                HttpStatusCode.Redirect => "Client request redirected (302)",
-                HttpStatusCode.InternalServerError => "Client failed to connect due to an internal server error (500)",
-                _ => $"Uncategorized WebException ({statusCode})"
+                HttpStatusCode.BadRequest           => "Request could not be understood by the server (400)",
+                HttpStatusCode.Unauthorized         => "Authentication required for request (401)",
+                HttpStatusCode.Forbidden            => "Server request refused (403)",
+                HttpStatusCode.NotFound             => "Resource not found (404)",
+                HttpStatusCode.RequestTimeout       => "Request timed out (408)",
+                HttpStatusCode.Gone                 => "Requested webpage is no longer available (410)",
+                HttpStatusCode.Moved                => "Page has been moved on server (301)",
+                HttpStatusCode.Redirect             => "Client request redirected (302)",
+                HttpStatusCode.InternalServerError  => "Client failed to connect due to an internal server error (500)",
+                _                                   => $"Uncategorized WebException ({statusCode})"
             };
         }
 
@@ -174,74 +170,5 @@ namespace NovaCore.Web
             //throw GenerateException(response);
             return null;
         }
-
-        #region Deprecated
-        
-        // Used to load a scripted/dynamic webpage
-        [Obsolete("Html Agility Pack removed support for LoadFromBrowser method, this method is no longer functional")]
-        public static HtmlDocument OpenBrowser(string address)
-        {
-            return LoadWeb(OpenWeb(), address);
-        }
-
-        public static bool WaitForPageLoaded(object browser)
-        {
-            Application.DoEvents();
-            return ((WebBrowser) browser).ReadyState == WebBrowserReadyState.Complete;
-        }
-
-        public static HtmlWeb OpenWeb() => new();
-        
-        [Obsolete("Html Agility Pack removed support for LoadFromBrowser method, this method is no longer functional")]
-        public static HtmlDocument LoadWeb(HtmlWeb web, string address)
-        {
-            throw new NotImplementedException();
-            //return web.LoadFromBrowser(address, WaitForPageLoaded);
-        }
-        
-        // Currently does nothing, built for reddit page stripping
-        [Obsolete("Function only returns body content (does not clean page).", false)]
-        public static string CreateAndParse(string address)
-        {
-            return CreateDocument(Request(address)).Strip().GetBody().OuterHtml;
-        }
-        
-        // Old method for single-threaded, default browser functionality
-        [Obsolete("Outdated function for cleaning full Reddit pages.", false)]
-        public static WebBrowser CreateBrowser()
-        {
-            return new WebBrowser {ScrollBarsEnabled = false, ScriptErrorsSuppressed = true};
-        }
-
-        // Vanilla CSharp Browser
-        [Obsolete("No longer supported. Use \"OpenBrowser\" method instead.", false)]
-        public static string QueryBrowser(string address)
-        {
-            string response = null;
-            
-            // Standard browser requires a single-threaded application run environment
-            FileSystem.RunSTA(() =>
-            {
-                using WebBrowser browser = CreateBrowser();
-                
-                // Navigate to page
-                browser.Navigate(address);
-                    
-                // Wait for page to load
-                while (browser.ReadyState != WebBrowserReadyState.Complete)
-                {
-                    Application.DoEvents();
-                }
-
-                // Get response
-                response = browser.Document?.DomDocument.ToString();
-
-                Logger.Log(response);
-            });
-
-            return response;
-        }
-        
-        #endregion
     }
 }

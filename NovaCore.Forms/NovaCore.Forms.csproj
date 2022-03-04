@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0-windows</TargetFramework>
+        <Nullable>enable</Nullable>
+        <LangVersion>9</LangVersion>
+        <PublishSingleFile>true</PublishSingleFile>
+        <SelfContained>true</SelfContained>
+        <UseWindowsForms>true</UseWindowsForms>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\NovaCore.Logging\NovaCore.Logging.csproj" />
+      <ProjectReference Include="..\NovaCore.Utilities\NovaCore.Utilities.csproj" />
+      <ProjectReference Include="..\NovaCore.Web\NovaCore.Web.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="HtmlAgilityPack" Version="1.11.42" />
+    </ItemGroup>
+
+    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+      <Exec Command="echo f | xcopy /y &quot;$(TargetPath)&quot; &quot;C:\\Users\\%username%\\Downloads\\Builds&quot; /R /F /I" />
+    </Target>
+
+</Project>

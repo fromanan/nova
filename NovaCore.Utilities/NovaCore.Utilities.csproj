@@ -1,11 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>net5.0-windows</TargetFramework>
         <LangVersion>9</LangVersion>
         <PublishSingleFile>true</PublishSingleFile>
         <SelfContained>true</SelfContained>
-        <UseWindowsForms>true</UseWindowsForms>
         <RootNamespace>NovaCore</RootNamespace>
+        <TargetFrameworks>net5.0;net5.0-windows</TargetFrameworks>
     </PropertyGroup>
     <PropertyGroup>
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>

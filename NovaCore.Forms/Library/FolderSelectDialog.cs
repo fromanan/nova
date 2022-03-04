@@ -3,7 +3,8 @@ using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 
-namespace NovaCore.Files
+#pragma warning disable CS8600, CS8603, CS8625, CS8618
+namespace NovaCore.Forms
 {
     // https://stackoverflow.com/questions/12261598/browse-multiple-folders-using-folderbrowserdialog-in-windows-application
     public class FolderSelectDialog
@@ -24,7 +25,7 @@ namespace NovaCore.Files
         public string InitialDirectory
         {
             get => dialog.InitialDirectory;
-            set => dialog.InitialDirectory = string.IsNullOrEmpty(value) ? FileSystem.Paths.Downloads : value;
+            set => dialog.InitialDirectory = string.IsNullOrEmpty(value) ? Files.FileSystem.Paths.Downloads : value;
         }
         public string Title
         {
@@ -210,3 +211,4 @@ namespace NovaCore.Files
         }
     }
 }
+#pragma warning restore CS8600, CS8603, CS8625, CS8618
