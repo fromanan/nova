@@ -62,7 +62,7 @@ namespace NovaCore.Files
 
             return completionSource.Task;
         }
-
+        
         public static Thread RunSTA(ThreadStart threadStart)
         {
             Thread thread = new(threadStart);

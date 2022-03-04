@@ -120,7 +120,7 @@ namespace NovaCore.Logging
 
         public static T OpenBuffer<T>(bool redirect = true) where T : TextWriter, new()
         {
-            T buffer = new T();
+            T buffer = new();
             
             if (redirect)
             {
@@ -151,7 +151,7 @@ namespace NovaCore.Logging
 
         private static string FileHeader()
         {
-            StringBuilder buffer = new StringBuilder();
+            StringBuilder buffer = new();
             buffer.AppendLine($"{AppInfo.ProductName} Version: {AppInfo.ProductVersion}");
             buffer.AppendLine($"Application started at: {DateTime.Now:G}");
             return buffer.ToString();
@@ -173,7 +173,7 @@ namespace NovaCore.Logging
             // Track First Chance Exceptions
             AppDomain.CurrentDomain.FirstChanceException += (sender, e) =>
             {
-                if (e?.Exception == null) return;
+                if (e?.Exception is null) return;
                 ExceptionStack.Push(e.Exception);
                 ExceptionWriter.WriteLine(ExceptionHeader);
                 ExceptionWriter.WriteLine(e.Exception);
@@ -183,7 +183,7 @@ namespace NovaCore.Logging
             // Track Unhandled Exceptions
             AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
             {
-                if (e?.ExceptionObject == null) return;
+                if (e.ExceptionObject == null) return;
                 ExceptionStack.Push(e.ExceptionObject as Exception);
                 ExceptionWriter.WriteLine(ExceptionHeader);
                 ExceptionWriter.WriteLine(e.ExceptionObject);    
