@@ -1,45 +1,78 @@
 ﻿using System;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Debug = NovaCore.Logging.Debug;
+using NovaCore.Common;
 
 namespace NovaCore.CLI
 {
     public class Terminal : IDisposable
     {
+        public readonly Logger Logger = new();
+        
         public delegate void CommandEvent(string cmd, int argc, string[] argv);
 
-        public static CommandEvent OnCommandBroadcast = delegate {  };
-        
-        public static Action OnInstanceClose;
+        public CommandEvent OnCommandBroadcast = delegate {  };
 
         public bool ReceiveInput { get; private set; } = true;
+        
+        public int LineCount { get; private set; }
+        
+        public static ConsoleColor InputColor = ConsoleColor.Green;
 
         public Terminal()
         {
-            Initialize();
+            Init();
+        }
+        
+        public Terminal(Logger logger)
+        {
+            Logger = logger;
+            Init();
         }
         
         public void Dispose() { }
 
-        private void Initialize()
+        private void Init()
         {
-            OnInstanceClose += CloseInstance;
+            NovaApp.ShutdownEvent += Close;
         }
 
         public void Run()
         {
-            while (ReceiveInput) Input();
+            while (ReceiveInput) GetLine();
         }
 
-        private void CloseInstance()
+        public void Close()
         {
             ReceiveInput = false;
         }
 
-        private static void Input()
+        private void GetLine()
         {
-            Parse(Debug.Prompt("Please enter a command"));
+            Parse(Prompt("Please enter a command"));
+        }
+        
+        public string Prompt(string message, bool useCount = true)
+        {
+            Logger.Log(useCount ? $"< {LineCount++} > [{message}]" : $"{message}:");
+            string input = Console.ReadLine();
+            Logger.LineBreak();
+            return input;
+        }
+
+        public static string Input(string message = "> ")
+        {
+            Console.WriteLine(message);
+            Console.ForegroundColor = InputColor;
+            string input = Console.ReadLine();
+            Console.ResetColor();
+            return input;
+        }
+
+        public bool Confirm(string action)
+        {
+            Logger.Log($"Are you sure you want to {action}? [Y/N]");
+            return Input().ToUpper() is "Y" or "YE" or "YES";
         }
         
         private static string Sanitize(string input)
@@ -59,7 +92,7 @@ namespace NovaCore.CLI
                 .SelectMany(element => element).ToArray();*/
         }
 
-        private static void Parse(string input)
+        private void Parse(string input)
         {
             // Ignore a blank input
             if (string.IsNullOrWhiteSpace(input))
@@ -71,7 +104,7 @@ namespace NovaCore.CLI
             string sanitizedInput = Sanitize(input);
             if (string.IsNullOrWhiteSpace(sanitizedInput))
             {
-                Debug.LogError("Failed to Parse Command");
+                Logger.LogError("Failed to Parse Command");
                 return;
             }
             
@@ -79,7 +112,7 @@ namespace NovaCore.CLI
             string[] tokens = Tokenize(sanitizedInput);
             if (tokens == null)
             {
-                Debug.LogError("Failed to Tokenize Command");
+                Logger.LogError("Failed to Tokenize Command");
                 return;
             }
 
