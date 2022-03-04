@@ -1,14 +1,14 @@
 ﻿using System;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Text;
-using System.Windows.Forms;
-using NovaCore.Common;
+using Microsoft.Win32.SafeHandles;
+using NovaCore.CLI;
 using NovaCore.Extensions;
-using NovaCore.Utilities;
 
-namespace NovaCore
+namespace NovaCore.Common
 {
-    public class NovaApplication
+    public static class NovaApp
     {
         public static readonly Logger Logger = new();
 
@@ -39,6 +39,48 @@ namespace NovaCore
             buffer.AppendLine($"Copyright {AppInfo.CompanyName} ({DateTime.Now.Year}). All rights reserved.");
             return buffer.ToString();
         }
+
+        public static Terminal CurrentTerminal;
+
+        public static void OpenTerminal()
+        {
+            CurrentTerminal = new Terminal(Logger);
+            CurrentTerminal.Run();
+            CurrentTerminal.Close();
+            CurrentTerminal = null;
+        }
+
+        public static void Init()
+        {
+            // Shutdown Events
+            AppDomain.CurrentDomain.ProcessExit += OnExit;
+            Console.CancelKeyPress += OnCancel;
+            
+            InitEvent.Invoke();
+        }
+        
+        public static void Validate()
+        {
+            ValidateEvent.Invoke();
+        }
+
+        public static void Save()
+        {
+            SaveEvent.Invoke();
+        }
+
+        public static void Load()
+        {
+            LoadEvent.Invoke();
+        }
+        
+        // Standard Shutdown Procedure for Application
+        public static void Close()
+        {
+            Save();
+            Shutdown();
+            Logger.LogInfo($"{AppInfo.ProductName} Closed ({DateTime.Now:G})");
+        }
         
         // Safe Exit of Program (Events are called)
         public static void Shutdown()
@@ -53,14 +95,54 @@ namespace NovaCore
             ExitEvent.Invoke();
             Environment.Exit((int)exitCode);
         }
+
+        public static void Crash(string message = null, Exception exception = null)
+        {
+            Environment.FailFast(message, exception);
+        }
         
         public static void Restart()
         {
             RestartEvent.Invoke();
-            Application.Restart();
             Exit(ExitCode.Restart);
         }
         
+        // Corresponds to the ProcessExit event
+        private static void OnExit(object sender, EventArgs e)
+        {
+            Shutdown();
+        }
+
+        private static void OnCancel(object sender, EventArgs e)
+        {
+            CancelEvent.Invoke();   
+        }
+        
+        [DllImport("kernel32.dll", SetLastError = true)]
+        //public static extern bool AttachConsole(uint dwProcessId);
+        public static extern bool AttachConsole(int pid);
+        
+        [DllImport("kernel32")]
+        public static extern bool AllocConsole();
+        
+        [DllImport("kernel32.dll")]
+        public static extern IntPtr GetStdHandle(int nStdHandle);
+        
+        public static bool RunAsConsole()
+        {
+            // Check if Console exists, if not, attach it
+            return AttachConsole(-1) || AllocConsole();
+        }
+
+        public static IntPtr StandardOutputHandle => GetStdHandle(-11);
+        
+        public static SafeFileHandle StandardOutputHandleSafe => new(GetStdHandle(-11), false);
+
+        public static StreamWriter GetConsoleWriter()
+        {
+            return new StreamWriter(new FileStream(StandardOutputHandleSafe, FileAccess.Write));
+        }
+
         public static event Action InitEvent = delegate {  };
         
         public static event Action ValidateEvent = delegate {  };
@@ -74,5 +156,7 @@ namespace NovaCore
         public static event Action LoadEvent = delegate {  };
         
         public static event Action RestartEvent = delegate {  };
+        
+        public static event Action CancelEvent = delegate {  };
     }
 }

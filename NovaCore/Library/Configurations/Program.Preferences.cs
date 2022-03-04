@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
+using NovaCore.Common;
 using NovaCore.Configurations;
 using NovaCore.Files;
 
@@ -14,7 +15,7 @@ namespace NovaCore
         {
             public static Preferences Instance { get; private set; } = new();
             
-            public override string GetFilepath() =>  Path.Combine(NovaApplication.Paths.Preferences, "preferences.json");
+            public override string GetFilepath() =>  Path.Combine(NovaApp.Paths.Preferences, "preferences.json");
             
             [JsonProperty("index")] private Dictionary<string, PrefType> Index = new();
             [JsonProperty("strings")] private Dictionary<string, string> StringEntries = new();

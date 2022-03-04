@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using NovaCore.Common;
 using NovaCore.Files;
-using NovaCore.Utilities;
 
 namespace NovaCore.Logging
 {
@@ -161,11 +160,11 @@ namespace NovaCore.Logging
         public static void TrackExceptions()
         {
             // Ensure Log Folder Exists
-            FileSystem.CreateFolder(NovaApplication.Paths.Log);
+            FileSystem.CreateFolder(NovaApp.Paths.Log);
 
             // Create Exception Log in Files
             string filename = $"{FileSystem.TimestampFilename("exception")}.log";
-            string filepath = Path.Combine(NovaApplication.Paths.Log, filename);
+            string filepath = Path.Combine(NovaApp.Paths.Log, filename);
             ExceptionWriter = File.AppendText(filepath);
             
             // Write the Header

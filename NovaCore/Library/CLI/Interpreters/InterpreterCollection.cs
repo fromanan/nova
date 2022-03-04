@@ -53,7 +53,7 @@ namespace NovaCore.CLI.Interpreters
             CurrentMediaSpace = newMode;
             CreateNewInterpreterInstance(newMode);
             GetActiveInterpreter().Enable();
-            Program.Save();
+            NovaApp.Save();
         }
         
         public void CreateNewInterpreterInstance(MediaSpace.Mode mode)

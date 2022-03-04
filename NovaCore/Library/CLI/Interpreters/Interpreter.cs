@@ -35,14 +35,14 @@ namespace NovaCore.CLI.Interpreters
         public void Enable()
         {
             //Debug.LogInfo($"{Mode()} interpreter has been enabled!");
-            Terminal.OnCommandBroadcast += Interpret;
+            NovaApp.CurrentTerminal.OnCommandBroadcast += Interpret;
             Start();
         }
 
         public void Disable()
         {
-            //Debug.LogInfo($"{Mode()} interpreter has been disabled!");
-            Terminal.OnCommandBroadcast -= Interpret;
+            //Logger.LogInfo($"{Mode()} interpreter has been disabled!");
+            NovaApp.CurrentTerminal.OnCommandBroadcast -= Interpret;
         }
 
         protected virtual void Start() { }
@@ -102,8 +102,8 @@ namespace NovaCore.CLI.Interpreters
         {
             if (argc == 0)
             {
-                Program.Save();
-                Debug.LogInfo("Saved all files");
+                NovaApp.Save();
+                Logger.LogInfo("Saved all files");
             }
             else
             {
