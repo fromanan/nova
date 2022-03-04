@@ -25,7 +25,7 @@ namespace NovaCore.Files
         
         public static T DeserializeFile<T>(string filename)
         {
-            return JsonConvert.DeserializeObject<T>(File.ReadAllText(filename), DefaultSerializerSettings);
+            return JsonConvert.DeserializeObject<T>(ReadFile(filename), DefaultSerializerSettings);
         }
 
         public static T Deserialize<T>(string data)
@@ -38,25 +38,40 @@ namespace NovaCore.Files
             return JsonConvert.SerializeObject(data, DefaultSerializerSettings);
         }
         
+        /// <summary>
+        /// Deserializes form a filepath first, then attempts to serialize it
+        ///     and compares contents to the original file read
+        /// </summary>
+        /// <param name="filepath"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public static bool TestDeserialize<T>(string filepath)
         {
-            return Serialize(DeserializeFile<T>(filepath)) == File.ReadAllText(filepath);
+            return Serialize(DeserializeFile<T>(filepath)) == ReadFile(filepath);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="filepath"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public static bool TestSerialize<T>(string filepath)
         {
-            T deserialized = DeserializeFile<T>(filepath);
-            string path = Directory.GetParent(filepath)?.ToString() ?? "";
+            string contents = ReadFile(filepath);
+            T deserialized = Deserialize<T>(contents);
             try
             {
-                SerializeToFile(deserialized, "test.json", path);
-            }
-            catch (Exception e)
-            {
-                Logger.LogException(e);
+                SerializeToFile(deserialized, CreateTempFile());
+                if (ReadFile(filepath) == contents) return true;
+                Logger.LogError("Deserialization passed, but information was lost when re-serializing data");
                 return false;
             }
-            return true;
+            catch (Exception exception)
+            {
+                Logger.LogException(exception);
+                return false;
+            }
         }
     }
 }
