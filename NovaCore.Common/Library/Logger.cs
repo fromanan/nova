@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using NovaCore.Extensions;
 
 namespace NovaCore.Common
 {
@@ -48,12 +49,12 @@ namespace NovaCore.Common
         
         public void Log(params string[] messages)
         {
-            OnLog.Invoke(string.Join("\n", messages));
+            OnLog.Invoke(messages.Merge("\n"));
         }
 
         public void Log(params IFormattable[] messages)
         {
-            OnLog.Invoke(string.Join("\n", messages.Select(s => s.ToString())));
+            OnLog.Invoke(messages.Select(s => s.ToString()).Merge("\n"));
         }
         
         // Log Info Events
@@ -72,6 +73,16 @@ namespace NovaCore.Common
             OnLogInfoF.Invoke(message);
         }
         
+        public void LogInfo(params string[] messages)
+        {
+            OnLogInfo.Invoke(messages.Merge("\n"));
+        }
+
+        public void LogInfo(params IFormattable[] messages)
+        {
+            OnLogInfo.Invoke(messages.Select(s => s.ToString()).Merge("\n"));
+        }
+        
         // Log Warning Events
         
         public event LogEvent OnLogWarning = delegate { };
@@ -88,6 +99,16 @@ namespace NovaCore.Common
             OnLogWarningF.Invoke(message);
         }
         
+        public void LogWarning(params string[] messages)
+        {
+            OnLogWarning.Invoke(messages.Merge("\n"));
+        }
+
+        public void LogWarning(params IFormattable[] messages)
+        {
+            OnLogWarning.Invoke(messages.Select(s => s.ToString()).Merge("\n"));
+        }
+        
         // Log Error Events
         
         public event LogEvent OnLogError = delegate { };
@@ -102,6 +123,16 @@ namespace NovaCore.Common
         public void LogError(IFormattable message)
         {
             OnLogErrorF.Invoke(message);
+        }
+        
+        public void LogError(params string[] messages)
+        {
+            OnLogError.Invoke(messages.Merge("\n"));
+        }
+
+        public void LogError(params IFormattable[] messages)
+        {
+            OnLogError.Invoke(messages.Select(s => s.ToString()).Merge("\n"));
         }
         
         // Log Exception Events
@@ -127,6 +158,16 @@ namespace NovaCore.Common
             OnLogExceptionE.Invoke(exception);
         }
         
+        public void LogException(params string[] messages)
+        {
+            OnLogException.Invoke(messages.Merge("\n"));
+        }
+
+        public void LogException(params IFormattable[] messages)
+        {
+            OnLogException.Invoke(messages.Select(s => s.ToString()).Merge("\n"));
+        }
+        
         // Log Critical Events
         
         public event LogEvent OnLogCritical = delegate { };
@@ -143,6 +184,16 @@ namespace NovaCore.Common
             OnLogCriticalF.Invoke(message);
         }
         
+        public void LogCritical(params string[] messages)
+        {
+            OnLogCritical.Invoke(messages.Merge("\n"));
+        }
+
+        public void LogCritical(params IFormattable[] messages)
+        {
+            OnLogCritical.Invoke(messages.Select(s => s.ToString()).Merge("\n"));
+        }
+        
         // Log Crash Events
         
         public event LogEvent OnLogCrash = delegate { };
@@ -157,6 +208,16 @@ namespace NovaCore.Common
         public void LogCrash(IFormattable message)
         {
             OnLogCrashF.Invoke(message);
+        }
+        
+        public void LogCrash(params string[] messages)
+        {
+            OnLogCrash.Invoke(messages.Merge("\n"));
+        }
+
+        public void LogCrash(params IFormattable[] messages)
+        {
+            OnLogCrash.Invoke(messages.Select(s => s.ToString()).Merge("\n"));
         }
         
         // Log Custom Events
@@ -187,6 +248,16 @@ namespace NovaCore.Common
         public void LogCustom(string tag, IFormattable message, ConsoleColor color)
         {
             OnLogCustomFC.Invoke(tag, message, color);
+        }
+        
+        public void LogCustom(string tag, params string[] messages)
+        {
+            OnLogCustom.Invoke(tag, messages.Merge("\n"));
+        }
+
+        public void LogCustom(string tag, params IFormattable[] messages)
+        {
+            OnLogCustom.Invoke(tag, messages.Select(s => s.ToString()).Merge("\n"));
         }
 
         public void Dispose()
