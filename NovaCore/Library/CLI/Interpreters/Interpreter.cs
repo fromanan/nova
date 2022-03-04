@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using NovaCore.Common;
 using NovaCore.Core;
 using Debug = NovaCore.Logging.Debug;
 
@@ -10,6 +11,8 @@ namespace NovaCore.CLI.Interpreters
 {
     public abstract class Interpreter
     {
+        public static readonly Logger Logger = new();
+        
         public delegate void CommandAction(int argc, string[] argv);
         
         public class CommandDictionary : Dictionary<Command, CommandAction> { }
@@ -87,11 +90,11 @@ namespace NovaCore.CLI.Interpreters
             }
             else
             {
-                Debug.LogError($"Unrecognised command: \"{cmd}\"");
-                Debug.Log("Type \"HELP\" to see a list of valid commands");
+                Logger.LogError($"Unrecognised command: \"{cmd}\"");
+                Logger.Log("Type \"HELP\" to see a list of valid commands");
             }
             
-            Debug.LineBreak();
+            Logger.LineBreak();
         }
 
         protected abstract void Invoke(Command command, int argc, string[] argv);
@@ -115,8 +118,7 @@ namespace NovaCore.CLI.Interpreters
         {
             if (Debug.Confirm("exit"))
             {
-                Application.Shutdown();
-                //Program.Exit(ExitCode.Normal);
+                NovaApp.Shutdown();
             }
         }
 
@@ -148,32 +150,32 @@ namespace NovaCore.CLI.Interpreters
         
         public static void Usage(string message)
         {
-            Debug.LogCustom("USAGE", message, ConsoleColor.DarkYellow);
+            Logger.LogCustom("USAGE", message, ConsoleColor.DarkYellow);
         }
 
         protected static void Invalid(string additionalInfo = null, [CallerLineNumber] int lineNumber = 0, 
             [CallerFilePath] string filepath = "")
         {
-            Debug.LogError($"Command failed (line {lineNumber} in \"{Path.GetFileName(filepath)}\")");
+            Logger.LogError($"Command failed (line {lineNumber} in \"{Path.GetFileName(filepath)}\")");
             if (additionalInfo != null)
             {
-                Debug.Log($"Additional information: {additionalInfo}");
+                Logger.Log($"Additional information: {additionalInfo}");
             }
         }
         
         protected static void DeprecatedWarning()
         {
-            Debug.LogWarning("This method has been deprecated and will be removed in a future version");
+            Logger.LogWarning("This method has been deprecated and will be removed in a future version");
         }
 
         protected static void Unimplemented(int argc, string[] argv)
         {
-            Debug.LogWarning("Command not implemented in this MediaSpace");
+            Logger.LogWarning("Command not implemented in this MediaSpace");
         }
 
         protected static void WrongMediaSpace(int argc, string[] argv)
         {
-            Debug.LogWarning($"This MediaSpace ({Program.Data.Config.MediaSpaceMode}) is not configured for this command. Please switch MediaSpaces using the SWITCH command and try again.");
+            Logger.LogWarning($"This MediaSpace ({Program.Data.Config.MediaSpaceMode}) is not configured for this command. Please switch MediaSpaces using the SWITCH command and try again.");
         }
     }
 }

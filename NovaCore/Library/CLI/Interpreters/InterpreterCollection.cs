@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using NovaCore.Common;
 using NovaCore.Core;
 using Debug = NovaCore.Logging.Debug;
 
@@ -20,7 +21,7 @@ namespace NovaCore.CLI.Interpreters
         public Interpreter GetActiveInterpreter()
         {
             if (InterpreterExists(CurrentMediaSpace)) return Interpreters[CurrentMediaSpace];
-            Debug.LogCritical("Active interpreter not found");
+            Interpreter.Logger.LogCritical("Active interpreter not found");
             return null;
         }
 
@@ -28,8 +29,10 @@ namespace NovaCore.CLI.Interpreters
 
         public void Init()
         {
+            Debug.SubscribeToDefault(Interpreter.Logger);
+            
             // Startup message
-            Debug.LogInfo($"Global MediaSpace set to \"{CurrentMediaSpace}\"");
+            Interpreter.Logger.LogInfo($"Global MediaSpace set to \"{CurrentMediaSpace}\"");
             
             // Create the initial loaded interpreter
             CreateNewInterpreterInstance(CurrentMediaSpace);
@@ -45,10 +48,10 @@ namespace NovaCore.CLI.Interpreters
         {
             if (newMode == CurrentMediaSpace)
             {
-                Debug.LogWarning($"Global MediaSpace is already \"{newMode}\"");
+                Interpreter.Logger.LogWarning($"Global MediaSpace is already \"{newMode}\"");
                 return;
             }
-            Debug.LogInfo($"Switching global MediaSpace mode to \"{newMode}\"");
+            Interpreter.Logger.LogInfo($"Switching global MediaSpace mode to \"{newMode}\"");
             GetActiveInterpreter().Disable();
             CurrentMediaSpace = newMode;
             CreateNewInterpreterInstance(newMode);
