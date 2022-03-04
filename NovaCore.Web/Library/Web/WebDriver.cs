@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
 using NovaCore.Common;
+using NovaCore.Files;
 using NovaCore.Web.Extensions;
 using RestSharp;
 
@@ -169,6 +170,29 @@ namespace NovaCore.Web
 
             //throw GenerateException(response);
             return null;
+        }
+        
+        /// <summary>
+        /// Retrieves an API response and deserializes it as a JSON
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="request"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        private static async Task<T> RetrieveResponse<T>(RestClient client, RestRequest request)
+        {
+            return Deserialize<T>(await RetrieveResponse(client, request));
+        }
+        
+        /// <summary>
+        /// Deserializes a JSON formatted file into an object of class T, wrapper for FileSystem/JsonDeserialize
+        /// </summary>
+        /// <param name="body"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static T Deserialize<T>(string body)
+        {
+            return FileSystem.Deserialize<T>(body);
         }
     }
 }
