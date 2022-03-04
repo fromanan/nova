@@ -1,14 +1,14 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using System.Windows.Forms;
 using NovaCore.Common;
 using NovaCore.Extensions;
 using NovaCore.Utilities;
-using App = System.Windows.Forms.Application;
 
 namespace NovaCore
 {
-    public static class Application
+    public class NovaApplication
     {
         public static readonly Logger Logger = new();
 
@@ -57,7 +57,7 @@ namespace NovaCore
         public static void Restart()
         {
             RestartEvent.Invoke();
-            App.Restart();
+            Application.Restart();
             Exit(ExitCode.Restart);
         }
         

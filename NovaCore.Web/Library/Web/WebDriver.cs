@@ -186,7 +186,7 @@ namespace NovaCore.Web
 
         public static bool WaitForPageLoaded(object browser)
         {
-            System.Windows.Forms.Application.DoEvents();
+            Application.DoEvents();
             return ((WebBrowser) browser).ReadyState == WebBrowserReadyState.Complete;
         }
 
@@ -230,7 +230,7 @@ namespace NovaCore.Web
                 // Wait for page to load
                 while (browser.ReadyState != WebBrowserReadyState.Complete)
                 {
-                    System.Windows.Forms.Application.DoEvents();
+                    Application.DoEvents();
                 }
 
                 // Get response

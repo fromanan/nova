@@ -14,7 +14,7 @@ namespace NovaCore
         {
             public static Preferences Instance { get; private set; } = new();
             
-            public override string GetFilepath() =>  Path.Combine(Application.Paths.Preferences, "preferences.json");
+            public override string GetFilepath() =>  Path.Combine(NovaApplication.Paths.Preferences, "preferences.json");
             
             [JsonProperty("index")] private Dictionary<string, PrefType> Index = new();
             [JsonProperty("strings")] private Dictionary<string, string> StringEntries = new();

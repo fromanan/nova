@@ -161,11 +161,11 @@ namespace NovaCore.Logging
         public static void TrackExceptions()
         {
             // Ensure Log Folder Exists
-            FileSystem.CreateFolder(Application.Paths.Log);
+            FileSystem.CreateFolder(NovaApplication.Paths.Log);
 
             // Create Exception Log in Files
             string filename = $"{FileSystem.TimestampFilename("exception")}.log";
-            string filepath = Path.Combine(Application.Paths.Log, filename);
+            string filepath = Path.Combine(NovaApplication.Paths.Log, filename);
             ExceptionWriter = File.AppendText(filepath);
             
             // Write the Header

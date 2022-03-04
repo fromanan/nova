@@ -106,7 +106,7 @@ namespace NovaCore.Logging
                 PrimaryChannel.Write(LogType.Exception, message);
                 if (exit)
                 {
-                    Application.Exit(ExitCode.Error);
+                    NovaApplication.Exit(ExitCode.Error);
                 }
             }
         }
@@ -118,7 +118,7 @@ namespace NovaCore.Logging
                 PrimaryChannel.Write(LogType.Exception, message);
                 if (exit)
                 {
-                    Application.Exit(ExitCode.Error);
+                    NovaApplication.Exit(ExitCode.Error);
                 }
             }
         }
@@ -130,7 +130,7 @@ namespace NovaCore.Logging
                 PrimaryChannel.Write(LogType.Exception, exception.Message);
                 if (exit)
                 {
-                    Application.Exit(ExitCode.Error);
+                    NovaApplication.Exit(ExitCode.Error);
                 }
             }
         }
@@ -142,7 +142,7 @@ namespace NovaCore.Logging
                 PrimaryChannel.Write(LogType.Critical, message);
                 if (exit)
                 {
-                    Application.Exit(ExitCode.Critical);
+                    NovaApplication.Exit(ExitCode.Critical);
                 }
             }
         }
@@ -154,7 +154,7 @@ namespace NovaCore.Logging
                 PrimaryChannel.Write(LogType.Critical, message);
                 if (exit)
                 {
-                    Application.Exit(ExitCode.Critical);
+                    NovaApplication.Exit(ExitCode.Critical);
                 }
             }
         }
@@ -164,7 +164,7 @@ namespace NovaCore.Logging
             using (new ColorPreset(ChannelPalette.CrashColor))
             {
                 PrimaryChannel.Write(LogType.Crash, message);
-                Application.Exit(ExitCode.Crash);
+                NovaApplication.Exit(ExitCode.Crash);
             }
         }
         
@@ -173,7 +173,7 @@ namespace NovaCore.Logging
             using (new ColorPreset(ChannelPalette.CrashColor))
             {
                 PrimaryChannel.Write(LogType.Crash, message);
-                Application.Exit(ExitCode.Crash);
+                NovaApplication.Exit(ExitCode.Crash);
             }
         }
 

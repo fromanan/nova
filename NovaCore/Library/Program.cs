@@ -1,5 +1,4 @@
 using System;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using NovaCore.CLI;
 using NovaCore.Files;
@@ -28,7 +27,7 @@ namespace NovaCore
         {
             Debug.Clear();
             
-            Debug.Log(Application.Copyright(), ConsoleColor.Cyan);
+            Debug.Log(NovaApplication.Copyright(), ConsoleColor.Cyan);
 
             Debug.Header("Initializing");
 
@@ -63,7 +62,7 @@ namespace NovaCore
             // If none running, shutdown
             //Debug.LogInfo("Program Terminating - Reason: User Keyboard Interrupt\n");
             //ShutdownBeep();
-            Application.Exit(ExitCode.User);
+            NovaApplication.Exit(ExitCode.User);
         }
 
         private static void Focus()

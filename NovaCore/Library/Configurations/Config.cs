@@ -10,8 +10,8 @@ namespace NovaCore.Configurations
     [Serializable]
     public class Config : ConfigFile
     {
-        private string Filepath = 
-            FileSystem.CreateFilepath($"{Application.Paths.Root}.config", Application.Paths.Settings);
+        private readonly string Filepath = 
+            FileSystem.CreateFilepath($"{NovaApplication.Paths.Root}.config", NovaApplication.Paths.Settings);
 
         public override string GetFilepath() => Filepath;
         
@@ -22,7 +22,7 @@ namespace NovaCore.Configurations
         public MediaSpace.Mode MediaSpaceMode = MediaSpace.Mode.GENERAL;
 
         [JsonProperty("default_save_path")]
-        public string DefaultSavePath = Path.Combine(FileSystem.Paths.Downloads, Application.Paths.Root);
+        public string DefaultSavePath = Path.Combine(FileSystem.Paths.Downloads, NovaApplication.Paths.Root);
 
         [JsonProperty("update_number")] 
         public string UpdateNumber;
@@ -41,7 +41,7 @@ namespace NovaCore.Configurations
         public void SetDefaultSavePath(string savePath = null)
         {
             DefaultSavePath = string.IsNullOrEmpty(savePath) ? 
-                Path.Combine(FileSystem.Paths.Downloads, Application.Paths.Root) :
+                Path.Combine(FileSystem.Paths.Downloads, NovaApplication.Paths.Root) :
                 savePath;
         }
     }
