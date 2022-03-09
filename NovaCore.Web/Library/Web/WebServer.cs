@@ -115,7 +115,8 @@ namespace NovaCore.Web
         public void SaveServerLogs()
         {
             string filepath = FileSystem.SaveToFile(ServerLog.ToString(),
-                $"{FileSystem.TimestampFilename("server")}.log", FileSystem.Paths.Downloads);
+                $"{FileSystem.TimestampFilename("server")}.log",
+                FileSystem.Paths.Downloads, "Server Logs");
             FileSystem.ShowFileLocation(filepath);
         }
     }
