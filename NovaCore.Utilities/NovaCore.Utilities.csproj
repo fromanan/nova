@@ -50,6 +50,9 @@
     <ItemGroup>
       <None Include="packages.config" />
     </ItemGroup>
+    <ItemGroup>
+      <PackageReference Include="Microsoft.Data.Sqlite" Version="7.0.0-preview.1.22076.6" />
+    </ItemGroup>
     <Target Name="PostBuild" AfterTargets="PostBuildEvent">
       <Exec Command="echo f | xcopy /y &quot;$(TargetPath)&quot; &quot;C:\\Users\\%username%\\Downloads\\Builds&quot; /R /F /I" />
     </Target>
