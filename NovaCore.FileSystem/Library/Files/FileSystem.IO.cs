@@ -10,7 +10,7 @@ namespace NovaCore.Files
         // Returns a token to verify that the file saved to the correct location
         public static string SaveToFile(string body, string filename, params string[] folderHierarchy)
         {
-            string path = BuildFilepath(filename, folderHierarchy);
+            string path = CreateFilepath(filename, folderHierarchy);
             File.WriteAllText(path, body);
             return path;
         }
