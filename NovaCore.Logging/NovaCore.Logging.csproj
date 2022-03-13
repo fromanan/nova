@@ -28,7 +28,7 @@
         </ProjectReference>
     </ItemGroup>
     <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-      <Exec Command="echo f | xcopy /y &quot;$(TargetPath)&quot; &quot;C:\\Users\\%username%\\Downloads\\Builds\\&quot; /R /F /I" />
+      <Exec Command="echo f | xcopy /R /F /I /Y &quot;$(TargetPath)&quot; &quot;%userprofile%\\Downloads\\Builds\\&quot;" />
     </Target>
 
 </Project>
