@@ -130,8 +130,9 @@ namespace NovaCore.Web
 
         public static async Task<string> ExecuteRequest(RestRequest request, string baseUrl)
         {
-            Logger.LogCustom("REQUEST", $"{baseUrl}{request.Resource}");
+            //Logger.LogCustom("REQUEST", $"{baseUrl}{request.Resource}");
             RestClient client = new(baseUrl);
+            Logger.LogCustom("REQUEST", request.Formatted(client));
             return await RetrieveResponse(client, request);
         }
         
@@ -145,6 +146,10 @@ namespace NovaCore.Web
         {
             CancellationTokenSource cancellationTokenSource = new();
             RestResponse response = await client.ExecuteAsync(request, cancellationTokenSource.Token);
+
+            Logger.LogCustom("RESPONSE", response.Formatted());
+            
+            //Logger.Log(response.Formatted());
 
             //await client.PostAsync<RestRequest>(request, cancellationTokenSource.Token);
             
@@ -169,7 +174,7 @@ namespace NovaCore.Web
             Logger.LogException(GenerateException(response));
 
             //throw GenerateException(response);
-            return null;
+            return response.Content;
         }
         
         /// <summary>
