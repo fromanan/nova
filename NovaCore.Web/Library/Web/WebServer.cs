@@ -37,7 +37,7 @@ namespace NovaCore.Web
             // Log Warning if Port Overlaps
             if (!WebUtils.IsPortAvailable(port))
             {
-                Logger.LogWarning("Possible TCP port overlap with authentication server");
+                Logger.LogWarning("Possible TCP port overlap with web server");
             }
 
             // Start the HttpServer
@@ -74,16 +74,19 @@ namespace NovaCore.Web
             HttpServer.Start();
         }
 
-        public void StopServer() => HttpServer.Dispose();
-
         public void Close()
         {
+            Logger.LogInfo("Closing server...");
             HttpServer.CloseServer();
             //TcpListener.Server.Shutdown(SocketShutdown.Both);
             //TcpListener.Server.Disconnect(true);
         }
 
-        public void CloseAllConnections() => HttpServer.CloseAllConnections();
+        public void CloseAllConnections()
+        {
+            Logger.LogWarning("User requested close of all connections may lead to errors");
+            HttpServer.CloseAllConnections();
+        }
 
         public bool Serving => HttpServer.Serving;
 
@@ -96,14 +99,26 @@ namespace NovaCore.Web
             await Tasks.WaitUntil(() => !Serving);
         }
 
-        protected static HttpResponse Close(string response)
+        public void WaitForClose()
         {
-            return new HttpResponse(HttpResponseCode.Ok, GetBytes(response), false);
+            HttpServer.WaitForClose();
         }
 
-        protected static void Die(IHttpContext context, string errorMessage)
+        public static HttpResponse PostResponse(HttpResponseCode code, string response = null, bool keepConnectionAlive = false)
         {
-            context.Response = Close($"<b>{errorMessage}</b>");
+            return new HttpResponse(code, response ?? "", keepConnectionAlive);
+            //return new HttpResponse(code, response, true);
+        }
+
+        protected static HttpResponse Close(HttpResponseCode code = HttpResponseCode.Ok, string response = null)
+        {
+            return PostResponse(code, response);
+            //return new HttpResponse(HttpResponseCode.Ok, GetBytes(response), false);
+        }
+
+        protected static void Die(IHttpContext context, string errorMessage, HttpResponseCode code)
+        {
+            context.Response = PostResponse(code, $"<b>{errorMessage}</b>");
             throw new Exception(errorMessage);
         }
 
@@ -112,12 +127,21 @@ namespace NovaCore.Web
             return context.Request.QueryString.TryGetByName(key, out value);
         }
 
-        public void SaveServerLogs()
+        public void SaveServerLogs(bool showFile = false, bool openFile = false)
         {
             string filepath = FileSystem.SaveToFile(ServerLog.ToString(),
                 $"{FileSystem.TimestampFilename("server")}.log",
                 FileSystem.Paths.Downloads, "Server Logs");
-            FileSystem.ShowFileLocation(filepath);
+            
+            if (showFile)
+            {
+                FileSystem.ShowFileLocation(filepath);
+            }
+
+            if (openFile)
+            {
+                FileSystem.OpenWithDefaultProgram(filepath);
+            }
         }
     }
 }
