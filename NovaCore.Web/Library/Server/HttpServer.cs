@@ -19,7 +19,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Win32.SafeHandles;
 using NovaCore.Common;
 using uhttpsharp.Clients;
 using uhttpsharp.Listeners;
@@ -37,6 +39,8 @@ namespace uhttpsharp
         private readonly IList<HttpClientHandler> clientHandlers = new List<HttpClientHandler>();
 
         public readonly Logger Logger;
+        
+        private readonly AutoResetEvent ServerStoppedHandle = new(false);
 
         public HttpServer(IHttpRequestProvider requestProvider, Logger logger = null)
         {
@@ -85,7 +89,9 @@ namespace uhttpsharp
                 }
             }
 
-            CloseAllConnections();
+            await Task.Run(CloseAllConnections);
+
+            ServerStoppedHandle.Set();
 
             // Logger.InfoFormat("Embedded uhttpserver stopped.");
             Logger.LogInfo("Embedded uhttpserver stopped.");
@@ -100,6 +106,13 @@ namespace uhttpsharp
         {
             isActive = false;
         }
+
+        public void WaitForClose()
+        {
+            ServerStoppedHandle.WaitOne();
+        }
+
+        public SafeWaitHandle ServerWaitHandle => ServerStoppedHandle.SafeWaitHandle;
 
         public bool Serving => !clientHandlers.Any(c => c.Client.Connected);
 
