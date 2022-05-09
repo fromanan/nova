@@ -12,14 +12,14 @@ namespace NovaCore.Web
             
         public string Path;
             
-        public List<WebQuery> Queries;
+        public IEnumerable<WebQuery> Queries;
 
         public Url(string protocol, string domain, string path, params WebQuery[] queries)
         {
             Protocol = protocol;
             Domain = domain;
             Path = path;
-            Queries = queries.ToList();
+            Queries = queries;
         }
 
         public static WebQuery Query(string key, string value)
