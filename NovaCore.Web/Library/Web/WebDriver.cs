@@ -128,23 +128,26 @@ namespace NovaCore.Web
             return request;
         }
 
-        public static async Task<string> ExecuteRequest(RestRequest request, string baseUrl)
+        public static async Task<string> ExecuteRequestAsync(RestRequest request, string baseUrl, 
+            CancellationTokenSource cancellationTokenSource = null)
         {
             //Logger.LogCustom("REQUEST", $"{baseUrl}{request.Resource}");
             RestClient client = new(baseUrl);
             Logger.LogCustom("REQUEST", request.Formatted(client));
-            return await RetrieveResponse(client, request);
+            return await RetrieveResponseAsync(client, request);
         }
         
-        public static async Task<string> ExecuteRequest(RestClient client, RestRequest request)
+        public static async Task<string> ExecuteRequestAsync(RestClient client, RestRequest request, 
+            CancellationTokenSource cancellationTokenSource = null)
         {
             Logger.LogCustom("REQUEST", $"{client.BuildUri(request)}");
-            return await RetrieveResponse(client, request);
+            return await RetrieveResponseAsync(client, request);
         }
 
-        private static async Task<string> RetrieveResponse(RestClient client, RestRequest request)
+        private static async Task<string> RetrieveResponseAsync(RestClient client, RestRequest request, 
+            CancellationTokenSource cancellationTokenSource = null)
         {
-            CancellationTokenSource cancellationTokenSource = new();
+            cancellationTokenSource ??= new CancellationTokenSource();
             RestResponse response = await client.ExecuteAsync(request, cancellationTokenSource.Token);
 
             Logger.LogCustom("RESPONSE", response.Formatted());
@@ -176,7 +179,7 @@ namespace NovaCore.Web
             //throw GenerateException(response);
             return response.Content;
         }
-        
+
         /// <summary>
         /// Retrieves an API response and deserializes it as a JSON
         /// </summary>
@@ -184,9 +187,9 @@ namespace NovaCore.Web
         /// <param name="request"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        private static async Task<T> RetrieveResponse<T>(RestClient client, RestRequest request)
+        private static async Task<T> RetrieveResponseAsync<T>(RestClient client, RestRequest request)
         {
-            return Deserialize<T>(await RetrieveResponse(client, request));
+            return Deserialize<T>(await RetrieveResponseAsync(client, request));
         }
         
         /// <summary>

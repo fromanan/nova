@@ -5,19 +5,19 @@ namespace NovaCore.Logging
 {
     public partial class Debug
     {
-        public static double ElapsedMilliseconds(DateTime startTime)
+        public static double ElapsedMilliseconds(DateTime startTime, DateTime? endTime = null)
         {
-            return (DateTime.Now - startTime).TotalMilliseconds;
+            return ((endTime ?? DateTime.Now) - startTime).TotalMilliseconds;
         }
         
-        public static double ElapsedSeconds(DateTime startTime)
+        public static double ElapsedSeconds(DateTime startTime, DateTime? endTime = null)
         {
-            return (DateTime.Now - startTime).TotalSeconds;
+            return ((endTime ?? DateTime.Now) - startTime).TotalSeconds;
         }
         
-        public static void Timestamp(DateTime startTime)
+        public static void Timestamp(DateTime startTime, DateTime? endTime = null)
         {
-            StandardOutput.WriteLine($"Time Elapsed: {ElapsedSeconds(startTime):F2} seconds");
+            StandardOutput.WriteLine($"Time Elapsed: {ElapsedSeconds(startTime, endTime):F2} seconds");
         }
         
         public static void LineBreak()

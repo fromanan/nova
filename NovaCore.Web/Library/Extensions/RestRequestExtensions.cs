@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using NovaCore.Extensions;
 using RestSharp;
 
 namespace NovaCore.Web.Extensions
@@ -64,6 +66,83 @@ namespace NovaCore.Web.Extensions
             }
 
             return builder.ToString();
+        }
+        
+        public static RestRequest AddHeader(this RestRequest request, WebHeader header)
+        {
+            return request.AddHeader(header.Key, header.Value);
+        }
+        
+        public static RestRequest AddHeader(this RestRequest request, KeyValuePair<string, string> header)
+        {
+            return request.AddHeader(header.Key, header.Value);
+        }
+        
+        public static RestRequest AddHeaders(this RestRequest request, params KeyValuePair<string, string>[] headers)
+        {
+            foreach (KeyValuePair<string, string> header in headers) 
+            {
+                request.AddHeader(header.Key, header.Value);
+            }
+
+            return request;
+        }
+        
+        public static RestRequest AddHeaders(this RestRequest request, params WebHeader[] headers)
+        {
+            foreach (WebHeader header in headers) 
+            {
+                request.AddHeader(header.Key, header.Value);
+            }
+
+            return request;
+        }
+
+        private const string _COOKIES_KEY = "Cookies";
+
+        public static bool HasHeader(this RestRequest request, WebHeader header)
+        {
+            return request.Parameters.Exists(new HeaderParameter(header.Key, header.Value));
+        }
+        
+        public static bool HasCookies(this RestRequest request)
+        {
+            return request.Parameters.Exists(new HeaderParameter(_COOKIES_KEY, null));
+        }
+        
+        public static bool HasCookie(this RestRequest request, KeyValuePair<string, string> cookie)
+        {
+            return request.Parameters.Exists(new HeaderParameter(cookie.Key, cookie.Value));
+        }
+
+        public static WebHeader GetHeader(this RestRequest request, string headerName)
+        {
+            var parameter = request.Parameters.TryFind(headerName);
+            return parameter is null ? null : new WebHeader(parameter.Name, parameter.Value as string);
+        }
+
+        public static RestRequest AddCookie(this RestRequest request, KeyValuePair<string, string> cookie)
+        {
+            if (!request.HasCookies())
+            {
+                return request.AddHeader(cookie);
+            }
+
+            WebHeader cookies = request.GetHeader(_COOKIES_KEY);
+            return request.AddOrUpdateHeader(_COOKIES_KEY, $"{cookies.Value};{cookie.Key}={cookie.Value}");
+        }
+        
+        public static RestRequest AddCookies(this RestRequest request, params KeyValuePair<string, string>[] cookiesToAdd)
+        {
+            string cookiesToAddString = cookiesToAdd.Select(c => $"{c.Key}={c.Value}").Merge(";");
+            
+            if (!request.HasCookies())
+            {
+                return request.AddHeader(_COOKIES_KEY, cookiesToAddString);
+            }
+
+            WebHeader cookies = request.GetHeader(_COOKIES_KEY);
+            return request.AddOrUpdateHeader(_COOKIES_KEY, $"{cookies.Value};{cookiesToAddString}");
         }
     }
 }

@@ -100,5 +100,15 @@ namespace NovaCore.Extensions
         {
             return str?.IndexOf(substring, stringComparison) >= 0;
         }
+        
+        public static bool HasValue(this string str)
+        {
+            return !string.IsNullOrEmpty(str);
+        }
+
+        public static bool IsNull(this string str)
+        {
+            return string.IsNullOrEmpty(str);
+        }
     }
 }

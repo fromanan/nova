@@ -22,11 +22,6 @@ namespace NovaCore.Web
             Queries = queries;
         }
 
-        public static WebQuery Query(string key, string value)
-        {
-            return new WebQuery(key, value);
-        }
-
         public string QueryString => 
             string.Join("&", Queries.Select(query => $"{query.Key}={query.Value}"));
             
