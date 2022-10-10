@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
-namespace NovaCore.Extensions
+namespace NovaCore.Common.Extensions
 {
     public static class IEnumerableExtensions
     {
@@ -17,6 +19,20 @@ namespace NovaCore.Extensions
         public static string MergeQuotes<T>(this IEnumerable<T> enumerable, string separator = ", ")
         {
             return $"\"{enumerable.Merge($"\"{separator}\"")}\"";
+        }
+        
+        public static void ForEach<T>(this IEnumerable<T> enumerable, Action<T> action)
+        {
+            foreach (T element in enumerable)
+            {
+                action.Invoke(element);
+            }
+        }
+        
+        // TODO: Extend into different generator types
+        public static IEnumerable<T> Repeat<T>(Func<T> generator, int n)
+        {
+            return Enumerable.Range(0, n).Select(x => generator.Invoke());
         }
     }
 }

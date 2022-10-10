@@ -13,6 +13,13 @@
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
         <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     </PropertyGroup>
+    <ItemGroup>
+      <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="7.0.0-preview.1.22076.6" />
+      <PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.1" />
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="External" />
+    </ItemGroup>
     <Target Name="PostBuild" AfterTargets="PostBuildEvent">
       <Exec Command="echo f | xcopy /R /F /I /Y &quot;$(TargetPath)&quot; &quot;%userprofile%\\Downloads\\Builds\\&quot;" />
     </Target>

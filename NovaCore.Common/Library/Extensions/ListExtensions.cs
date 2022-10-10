@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using NovaCore.Common.Utilities;
 
-namespace NovaCore.Extensions
+namespace NovaCore.Common.Extensions
 {
     public static class ListExtensions
     {
@@ -32,6 +33,12 @@ namespace NovaCore.Extensions
             }
 
             return newList;
+        }
+        
+        // Used for cycling through a list continuously
+        public static int CycleList(int index, int delta, int length)
+        {
+            return NovaMath.WrappedClamp(index + delta, length);
         }
     }
 }

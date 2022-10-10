@@ -1,8 +1,8 @@
 using System;
 using System.Linq;
 using System.Text;
-using NovaCore.Extensions;
-using NovaCore.Logging;
+using NovaCore.Common;
+using NovaCore.Common.Extensions;
 using uhttpsharp;
 
 namespace NovaCore.Web.Extensions
@@ -54,12 +54,12 @@ namespace NovaCore.Web.Extensions
         
         public static void PrintRequest(this IHttpContext context, ConsoleColor color)
         {
-            Debug.Log(context.FormatRequest(), color:color);
+            Output.WriteLine(context.FormatRequest(), color:color);
         }
 
         public static void PrintResponse(this IHttpContext context, ConsoleColor color)
         {
-            Debug.Log(context.FormatResponse(), color:color);
+            Output.WriteLine(context.FormatResponse(), color:color);
         }
     }
 }

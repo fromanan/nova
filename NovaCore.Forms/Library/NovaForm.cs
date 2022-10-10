@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
+using NovaCore.Common.Debugging;
 using NovaCore.Files;
-using NovaCore.Logging;
 
 namespace NovaCore.Forms
 {

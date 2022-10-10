@@ -1,6 +1,7 @@
 using System;
 using System.IO;
-using NovaCore.Common;
+using NovaCore.Common.Utilities;
+using Logger = NovaCore.Common.Logging.Logger;
 
 namespace NovaCore.Files
 {
@@ -8,7 +9,7 @@ namespace NovaCore.Files
     {
         public static readonly Logger Logger = new();
 
-        public static bool CheckValidOS()
+        public static bool IsPlatformValidOS()
         {
             switch (Environment.OSVersion.Platform)
             {
@@ -26,25 +27,14 @@ namespace NovaCore.Files
             }
         }
 
-        // DateTime.Now:yyyyMMddHHmmssffff?
-        public static string Timestamp()
-        {
-            return $"{DateTime.Now:yyyyMMddHHmmss}";
-        }
-
         public static string TimestampFilename(string prefix = "", string separator = "_")
         {
-            return $"{prefix}{separator}{Timestamp()}";
-        }
-
-        public static string Guid()
-        {
-            return $"{System.Guid.NewGuid()}";
+            return $"{prefix}{separator}{Text.Timestamp()}";
         }
 
         public static string GuidFilename(string prefix = "", string separator = "_")
         {
-            return $"{prefix}{separator}{Guid()}";
+            return $"{prefix}{separator}{Text.Guid()}";
         }
 
         public static FileInfo GetFileInfo(string filepath)

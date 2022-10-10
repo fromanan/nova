@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using NovaCore.Common;
+using Logger = NovaCore.Common.Logging.Logger;
 
 namespace NovaCore.Threading
 {
@@ -112,7 +113,7 @@ namespace NovaCore.Threading
 
             Task t = Task.Run(() => 
             {
-                //Capture the thread
+                //Capture the executing thread
                 thread = Thread.CurrentThread;
 
                 //Simulate work (usually from 3rd party code)
@@ -126,9 +127,9 @@ namespace NovaCore.Threading
             Thread.Sleep(10);
 
             //Cancel the task by aborting the thread
-            #pragma warning disable CS0618
+            /*#pragma warning disable CS0618
             thread.Abort();
-            #pragma warning restore CS0618
+            #pragma warning restore CS0618*/
         }
 
         private void BeginDispatching()

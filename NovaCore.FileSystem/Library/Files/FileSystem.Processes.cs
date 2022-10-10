@@ -66,7 +66,7 @@ namespace NovaCore.Files
         public static Thread RunSTA(ThreadStart threadStart)
         {
             Thread thread = new(threadStart);
-            if (!CheckValidOS())
+            if (!IsPlatformValidOS())
             {
                 throw new PlatformNotSupportedException("RunSTA is not supported on Non-Windows systems");
             }

@@ -4,14 +4,14 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-using NovaCore.Common;
+using NovaCore.Common.Utilities;
 using NovaCore.Files;
-using NovaCore.Logging;
-using NovaCore.Utilities;
 using uhttpsharp;
 using uhttpsharp.Listeners;
 using uhttpsharp.RequestProviders;
 using HttpResponse = uhttpsharp.HttpResponse;
+using Logger = NovaCore.Common.Logging.Logger;
+using LoggingChannel = NovaCore.Common.Logging.LoggingChannel;
 
 namespace NovaCore.Web
 {
@@ -23,7 +23,7 @@ namespace NovaCore.Web
         public readonly Logger Logger;
 
         public readonly StringWriter ServerLog = new();
-        public readonly LoggingChannel ServerLoggingChannel;
+        public readonly Common.Logging.LoggingChannel ServerLoggingChannel;
 
         protected WebServer(int port, Logger logger = null)
         {

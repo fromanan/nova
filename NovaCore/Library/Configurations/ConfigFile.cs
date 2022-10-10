@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using Newtonsoft.Json;
+using NovaCore.Common.Debugging;
 using NovaCore.Files;
-using Debug = NovaCore.Logging.Debug;
 
 namespace NovaCore.Configurations
 {

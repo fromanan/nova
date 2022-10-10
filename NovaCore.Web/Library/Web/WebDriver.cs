@@ -8,6 +8,7 @@ using NovaCore.Common;
 using NovaCore.Files;
 using NovaCore.Web.Extensions;
 using RestSharp;
+using Logger = NovaCore.Common.Logging.Logger;
 
 namespace NovaCore.Web
 {

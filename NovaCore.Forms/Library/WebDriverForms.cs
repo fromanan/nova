@@ -2,6 +2,7 @@
 using System.Windows.Forms;
 using HtmlAgilityPack;
 using NovaCore.Common;
+using NovaCore.Common.Logging;
 using NovaCore.Files;
 using NovaCore.Web;
 using NovaCore.Web.Extensions;

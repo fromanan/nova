@@ -26,6 +26,7 @@ using NovaCore.Common;
 using uhttpsharp.Clients;
 using uhttpsharp.Listeners;
 using uhttpsharp.RequestProviders;
+using Logger = NovaCore.Common.Logging.Logger;
 
 namespace uhttpsharp
 {
