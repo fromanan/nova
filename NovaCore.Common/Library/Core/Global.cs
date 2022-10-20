@@ -157,5 +157,9 @@ namespace NovaCore.Common
                 return ConfigurationManager.AppSettings.Get(key);
             }
         }
+        
+        public static string ShutdownMessage => $"{AppInfo.ProductName} Closed ({DateTime.Now:G})";
+        
+        public static string ProgramExitMessage(ExitCode exitCode) => $"Program Terminating | Exit Code: {(int)exitCode} ({exitCode.ToString()})";
     }
 }

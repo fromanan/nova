@@ -5,7 +5,7 @@ using Microsoft.Win32.SafeHandles;
 
 namespace NovaCore.Common
 {
-    public static class NovaConsole
+    public static partial class Input
     {
         [DllImport("kernel32.dll", SetLastError = true)]
         //public static extern bool AttachConsole(uint dwProcessId);
@@ -25,7 +25,7 @@ namespace NovaCore.Common
 
         public static IntPtr StandardOutputHandle => GetStdHandle(-11);
         
-        public static SafeFileHandle StandardOutputHandleSafe => new(GetStdHandle(-11), false);
+        public static SafeFileHandle StandardOutputHandleSafe => new(StandardOutputHandle, false);
 
         public static StreamWriter GetConsoleWriter()
         {

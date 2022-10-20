@@ -5,7 +5,7 @@ using Logger = NovaCore.Common.Logging.Logger;
 
 namespace NovaCore.Common
 {
-    public static class Input
+    public static partial class Input
     {
         public static TextReader StandardInput { get; private set; } = Console.In;
         
