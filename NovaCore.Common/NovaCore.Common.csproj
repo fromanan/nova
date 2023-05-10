@@ -3,7 +3,7 @@
         <LangVersion>9</LangVersion>
         <PublishSingleFile>true</PublishSingleFile>
         <SelfContained>true</SelfContained>
-        <TargetFrameworks>net5.0;net5.0-windows</TargetFrameworks>
+        <TargetFrameworks>net6.0;net6.0-windows</TargetFrameworks>
     </PropertyGroup>
     <PropertyGroup>
         <AssemblyOriginatorKeyFile>novacore.common.snk</AssemblyOriginatorKeyFile>

@@ -4,7 +4,7 @@
         <LangVersion>9</LangVersion>
         <PublishSingleFile>true</PublishSingleFile>
         <SelfContained>true</SelfContained>
-        <TargetFrameworks>net5.0;net5.0-windows</TargetFrameworks>
+        <TargetFrameworks>net6.0;net6.0-windows</TargetFrameworks>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -38,14 +38,6 @@
         <ProjectReference Include="..\NovaCore.FileSystem\NovaCore.FileSystem.csproj">
             <Project>{b58ed4cf-195e-46bd-9f18-db3fc60db2ba}</Project>
             <Name>NovaCore.FileSystem</Name>
-        </ProjectReference>
-        <ProjectReference Include="..\NovaCore.Logging\NovaCore.Logging.csproj">
-            <Project>{4b23170b-ae28-4dfb-b735-624f170ffdb0}</Project>
-            <Name>NovaCore.Logging</Name>
-        </ProjectReference>
-        <ProjectReference Include="..\NovaCore.Utilities\NovaCore.Utilities.csproj">
-            <Project>{0fd3bd37-b64b-4985-b629-d4bb4e2e0aae}</Project>
-            <Name>NovaCore.Utilities</Name>
         </ProjectReference>
     </ItemGroup>
 

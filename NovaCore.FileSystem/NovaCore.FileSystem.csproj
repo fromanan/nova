@@ -4,7 +4,7 @@
         <PublishSingleFile>true</PublishSingleFile>
         <SelfContained>true</SelfContained>
         <RootNamespace>NovaCore</RootNamespace>
-        <TargetFrameworks>net5.0;net5.0-windows</TargetFrameworks>
+        <TargetFrameworks>net6.0;net6.0-windows</TargetFrameworks>
     </PropertyGroup>
     <PropertyGroup>
         <AssemblyOriginatorKeyFile>novacore.filesystem.snk</AssemblyOriginatorKeyFile>
@@ -27,10 +27,6 @@
       <ProjectReference Include="..\NovaCore.Common\NovaCore.Common.csproj">
         <Project>{afc6569a-503b-41dc-9e14-d40d59bc52e8}</Project>
         <Name>NovaCore.Common</Name>
-      </ProjectReference>
-      <ProjectReference Include="..\NovaCore.Utilities\NovaCore.Utilities.csproj">
-        <Project>{0fd3bd37-b64b-4985-b629-d4bb4e2e0aae}</Project>
-        <Name>NovaCore.Utilities</Name>
       </ProjectReference>
     </ItemGroup>
     <ItemGroup>
