@@ -4,6 +4,11 @@
         <PublishSingleFile>true</PublishSingleFile>
         <SelfContained>true</SelfContained>
         <TargetFrameworks>net6.0;net6.0-windows</TargetFrameworks>
+        <Title>NovaCore.Common</Title>
+        <Authors>Froman Interactive Media</Authors>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <PackageProjectUrl>https://github.com/fromanan/nova</PackageProjectUrl>
+        <NeutralLanguage>en</NeutralLanguage>
     </PropertyGroup>
     <PropertyGroup>
         <AssemblyOriginatorKeyFile>novacore.common.snk</AssemblyOriginatorKeyFile>
@@ -21,7 +26,7 @@
       <Folder Include="External" />
     </ItemGroup>
     <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-      <Exec Command="echo f | xcopy /R /F /I /Y &quot;$(TargetPath)&quot; &quot;%userprofile%\\Downloads\\Builds\\&quot;" />
+      <Exec Command="echo f | xcopy /R /F /I /Y &quot;$(TargetPath)&quot; &quot;%userprofile%\Downloads\Builds\&quot;&#xA;echo f | xcopy /R /F /I /Y &quot;$(TargetDir)..\*.nupkg&quot; &quot;X:\Packages\&quot;" />
     </Target>
 
 </Project>
