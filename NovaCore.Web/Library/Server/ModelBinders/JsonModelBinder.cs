@@ -2,53 +2,50 @@
 using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using uhttpsharp.Headers;
+using NovaCore.Web.Server.Headers;
+using NovaCore.Web.Server.Interfaces;
 
-namespace uhttpsharp.ModelBinders
+namespace NovaCore.Web.Server.ModelBinders;
+
+public class JsonModelBinder : IModelBinder
 {
-    public class JsonModelBinder : IModelBinder
+    private readonly JsonSerializer _serializer;
+
+    public JsonModelBinder(JsonSerializer serializer)
     {
-        private readonly JsonSerializer serializer;
+        _serializer = serializer;
+    }
 
-        public JsonModelBinder(JsonSerializer serializer)
-        {
-            this.serializer = serializer;
-        }
-
-        public JsonModelBinder() : this(JsonSerializer.CreateDefault()) { }
+    public JsonModelBinder() :
+        this(JsonSerializer.CreateDefault())
+    {
+    }
         
-        public T Get<T>(byte[] raw, string prefix)
-        {
-            string rawDecoded = Encoding.UTF8.GetString(raw);
+    public T Get<T>(byte[] raw, string prefix)
+    {
+        string rawDecoded = Encoding.UTF8.GetString(raw);
 
-            if (raw.Length == 0)
-            {
-                return default;
-            }
+        if (raw.Length == 0)
+            return default;
 
-            if (prefix == null && typeof(T) == typeof(string))
-            {
-                return (T)(object)rawDecoded;
-            }
+        if (prefix is null && typeof(T) == typeof(string))
+            return (T)(object)rawDecoded;
 
-            JToken jToken = JToken.Parse(rawDecoded);
+        JToken jToken = JToken.Parse(rawDecoded);
 
-            if (prefix != null)
-            {
-                jToken = jToken.SelectToken(prefix);
-            }
+        if (prefix is not null)
+            jToken = jToken.SelectToken(prefix);
 
-            return jToken.ToObject<T>(serializer);
-        }
+        return jToken is not null ? jToken.ToObject<T>(_serializer) : default;
+    }
         
-        public T Get<T>(IHttpHeaders headers)
-        {
-            throw new NotSupportedException();
-        }
+    public T Get<T>(IHttpHeaders headers)
+    {
+        throw new NotSupportedException();
+    }
         
-        public T Get<T>(IHttpHeaders headers, string prefix)
-        {
-            throw new NotSupportedException();
-        }
+    public T Get<T>(IHttpHeaders headers, string prefix)
+    {
+        throw new NotSupportedException();
     }
 }

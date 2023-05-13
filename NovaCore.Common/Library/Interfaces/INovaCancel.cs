@@ -1,7 +1,6 @@
-namespace NovaCore.Common
+namespace NovaCore.Common.Interfaces;
+
+public interface INovaCancel : INova
 {
-    public interface INovaCancel : INova
-    {
-        void OnCancel();
-    }
+    void OnCancel();
 }

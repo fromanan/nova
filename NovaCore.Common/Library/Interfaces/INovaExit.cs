@@ -1,7 +1,6 @@
-namespace NovaCore.Common
+namespace NovaCore.Common.Interfaces;
+
+public interface INovaExit : INova
 {
-    public interface INovaExit : INova
-    {
-        void OnExit(ExitCode exitCode);
-    }
+    void OnExit(ExitCode exitCode);
 }

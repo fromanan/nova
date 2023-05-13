@@ -1,75 +1,77 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using NovaCore.Web.Server.Interfaces;
 
-namespace uhttpsharp.Handlers
+namespace NovaCore.Web.Server.Handlers;
+
+public class SessionHandler<TSession> : IHttpRequestHandler
 {
-    public class SessionHandler<TSession> : IHttpRequestHandler
+    private const string _SESSION_ID = "SESSID";
+        
+    private readonly Func<TSession> _sessionFactory;
+        
+    private readonly TimeSpan _expiration;
+
+    private readonly Random _randomGenerator = new();
+        
+    private readonly ConcurrentDictionary<string, SessionHolder> _sessions = new();
+
+    public SessionHandler(Func<TSession> sessionFactory, TimeSpan expiration)
     {
-        private readonly Func<TSession> sessionFactory;
-        private readonly TimeSpan expiration;
+        _sessionFactory = sessionFactory;
+        _expiration = expiration;
+    }
 
-        private static readonly Random RandomGenerator = new();
-
-        private class SessionHolder
+    public Task Handle(IHttpContext context, Func<Task> next)
+    {
+        if (!context.Cookies.TryGetByName(_SESSION_ID, out string sessId))
         {
-            private readonly TSession session;
+            sessId = _randomGenerator.Next().ToString(CultureInfo.InvariantCulture);
+            context.Cookies.Upsert(_SESSION_ID, sessId);
+        }
 
-            public TSession Session
+        SessionHolder sessionHolder = _sessions.GetOrAdd(sessId, CreateSession);
+
+        if (DateTime.Now - sessionHolder.LastAccessTime > _expiration)
+        {
+            sessionHolder = CreateSession(sessId);
+            _sessions.AddOrUpdate(sessId, sessionHolder, (sessionId, oldSession) => sessionHolder);
+        }
+
+        context.State.Session = sessionHolder.Session;
+
+        return next();
+    }
+
+    private SessionHolder CreateSession(string sessionId)
+    {
+        return new SessionHolder(_sessionFactory());
+    }
+
+    #region Embedded Types
+
+    private struct SessionHolder
+    {
+        private readonly TSession _session;
+
+        public TSession Session
+        {
+            get
             {
-                get
-                {
-                    LastAccessTime = DateTime.Now;
-                    return session;
-                }
-            }
-
-            public DateTime LastAccessTime { get; private set; } = DateTime.Now;
-
-            public SessionHolder(TSession session)
-            {
-                this.session = session;
+                LastAccessTime = DateTime.Now;
+                return _session;
             }
         }
 
-        private readonly ConcurrentDictionary<string, SessionHolder> sessions = new();
+        public DateTime LastAccessTime { get; private set; } = DateTime.Now;
 
-        public SessionHandler(Func<TSession> sessionFactory, TimeSpan expiration)
+        public SessionHolder(TSession session)
         {
-            this.sessionFactory = sessionFactory;
-            this.expiration = expiration;
-        }
-
-        private const string SessionID = "SESSID";
-
-        public Task Handle(IHttpContext context, Func<Task> next)
-        {
-            if (!context.Cookies.TryGetByName(SessionID, out string sessId))
-            {
-                sessId = RandomGenerator.Next().ToString(CultureInfo.InvariantCulture);
-                context.Cookies.Upsert(SessionID, sessId);
-            }
-
-            SessionHolder sessionHolder = sessions.GetOrAdd(sessId, CreateSession);
-
-            if (DateTime.Now - sessionHolder.LastAccessTime > expiration)
-            {
-                sessionHolder = CreateSession(sessId);
-                sessions.AddOrUpdate(sessId, sessionHolder, (sessionId, oldSession) => sessionHolder);
-            }
-
-            context.State.Session = sessionHolder.Session;
-
-            return next();
-        }
-
-        private SessionHolder CreateSession(string sessionId)
-        {
-            return new SessionHolder(sessionFactory());
+            _session = session;
         }
     }
+
+    #endregion
 }

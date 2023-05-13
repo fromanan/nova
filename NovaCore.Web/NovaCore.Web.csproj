@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <LangVersion>9</LangVersion>
+        <LangVersion>10</LangVersion>
         <PublishSingleFile>true</PublishSingleFile>
         <SelfContained>true</SelfContained>
         <TargetFrameworks>net6.0;net6.0-windows</TargetFrameworks>
@@ -10,6 +10,10 @@
         <Authors>Froman Interactive Media</Authors>
         <PackageProjectUrl>https://github.com/fromanan/nova</PackageProjectUrl>
         <NeutralLanguage>en</NeutralLanguage>
+    </PropertyGroup>
+    
+    <PropertyGroup>
+        <NoWarn>SYSLIB0014</NoWarn>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -44,6 +48,30 @@
             <Project>{b58ed4cf-195e-46bd-9f18-db3fc60db2ba}</Project>
             <Name>NovaCore.FileSystem</Name>
         </ProjectReference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Update="Library\Server\ServerMessages.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>ServerMessages.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Text.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Text.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Library\Server\ServerMessages.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>ServerMessages.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Text.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Text.resx</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <Target Name="PostBuild" AfterTargets="PostBuildEvent">

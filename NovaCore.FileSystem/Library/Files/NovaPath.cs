@@ -1,7 +1,6 @@
-﻿namespace NovaCore.Files
+﻿namespace NovaCore.Files;
+
+public class NovaPath
 {
-    public class NovaPath
-    {
         
-    }
 }

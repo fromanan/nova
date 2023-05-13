@@ -1,43 +1,42 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 
-namespace NovaCore.Threading
+namespace NovaCore.Threading;
+
+public class NovaTask
 {
-    public class NovaTask
+    private Task Task;
+    public CancellationTokenSource TokenSource { get; private set; } = new();
+    public CancellationToken Token { get; private set; }
+
+    public NovaTask()
     {
-        private Task Task;
-        public CancellationTokenSource TokenSource { get; private set; } = new();
-        public CancellationToken Token { get; private set; }
-
-        public NovaTask()
-        {
-            Token = TokenSource.Token;
-        }
+        Token = TokenSource.Token;
+    }
         
-        public NovaTask(Task task)
-        {
-            Task = task;
-            Token = TokenSource.Token;
-        }
+    public NovaTask(Task task)
+    {
+        Task = task;
+        Token = TokenSource.Token;
+    }
 
-        public void Run()
+    public void Run()
+    {
+        if (Task is not null)
         {
-            if (Task is not null)
+            Task.Start();
+        }
+        else
+        {
+            Task = Task.Run(() => 
             {
-                Task.Start();
-            }
-            else
-            {
-                Task = Task.Run(() => 
-                {
                 
-                }, Token);
-            }
+            }, Token);
         }
+    }
 
-        public void Cancel()
-        {
-            TokenSource.Cancel();
-        }
+    public void Cancel()
+    {
+        TokenSource.Cancel();
     }
 }

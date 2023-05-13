@@ -1,39 +1,30 @@
 ﻿using System.IO;
 using System.Net;
 using System.Net.Sockets;
+using NovaCore.Web.Server.Interfaces;
 
-namespace uhttpsharp.Clients
+namespace NovaCore.Web.Server.Clients;
+
+public readonly struct TcpClientAdapter : IClient
 {
-    public class TcpClientAdapter : IClient
+    private readonly TcpClient _client;
+    
+    private readonly NetworkStream _stream;
+    
+    public Stream Stream => _stream;
+
+    public bool Connected => _client.Connected;
+    
+    public EndPoint RemoteEndPoint => _client.Client.RemoteEndPoint;
+
+    public TcpClientAdapter(TcpClient client)
     {
-        private readonly TcpClient client;
-        private readonly NetworkStream stream;
+        _client = client;
+        _stream = _client.GetStream();
+    }
 
-        public TcpClientAdapter(TcpClient client)
-        {
-            this.client = client;
-            stream = this.client.GetStream();
-
-            // The next lines are commented out because they caused exceptions, 
-            // They have been added because .net doesn't allow me to wait for data (ReadAsyncBlock).
-            // Instead, I've added Task.Delay in MyStreamReader.ReadBuffer when
-            // Read returns without data.
-
-            // See https://github.com/Code-Sharp/uHttpSharp/issues/14
-
-            // Read Timeout of one second.
-            // _stream.ReadTimeout = 1000;
-        }
-
-        public Stream Stream => stream;
-
-        public bool Connected => client.Connected;
-
-        public void Close()
-        {
-            client.Close();
-        }
-
-        public EndPoint RemoteEndPoint => client.Client.RemoteEndPoint;
+    public void Close()
+    {
+        _client.Close();
     }
 }

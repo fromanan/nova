@@ -1,11 +1,11 @@
 using System;
 
-namespace uhttpsharp.Attributes
+namespace NovaCore.Web.Server.Attributes
 {
     /// <summary>
     /// Marks a controller method argmuent 
     /// as an argument that may be null.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false, Inherited = false)]
+    [AttributeUsage(AttributeTargets.Parameter)]
     public class NullableAttribute : Attribute { }
 }

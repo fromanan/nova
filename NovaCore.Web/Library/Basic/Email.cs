@@ -1,44 +1,22 @@
 using System.Net.Mail;
 
-namespace NovaCore.Web
+namespace NovaCore.Web;
+
+public record Email(string Sender, string Recipient, string Subject, string Body)
 {
-    public class Email
+    public void Send(string host = "localhost", int port = Hosts.DefaultPort)
     {
-        public readonly MailAddress Sender;
-        public readonly MailAddress Recipient;
-        public readonly string Subject;
-        public readonly string Body;
-
-        public Email(string sender, string recipient)
+        MailMessage mailMessage = new()
         {
-            Sender = new MailAddress(sender);
-            Recipient = new MailAddress(recipient);
-        }
+            From = new MailAddress(Sender), 
+            Subject = Subject,
+            IsBodyHtml = true, 
+            Body = Body,
+            To = { new MailAddress(Recipient) }
+        };
+
+        using SmtpClient client = new(host, port);
         
-        public Email(string sender, string recipient, string subject, string body)
-        {
-            Subject = subject;
-            Body = body;
-            Sender = new MailAddress(sender);
-            Recipient = new MailAddress(recipient);
-        }
-
-        public MailMessage Generate()
-        {
-            MailMessage mailMessage = new()
-            {
-                From = Sender, 
-                Subject = Subject,
-                IsBodyHtml = true, 
-                Body = Body
-            };
-            mailMessage.To.Add(Recipient);
-            return mailMessage;
-        }
-
-        public static void SendEmail(Email email)
-        {
-            new SmtpClient("localhost", 587).Send(email.Generate());
-        }
+        client.Send(mailMessage);
     }
 }

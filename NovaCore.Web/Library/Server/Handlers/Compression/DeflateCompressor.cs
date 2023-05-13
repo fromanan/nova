@@ -1,16 +1,16 @@
 using System.Threading.Tasks;
+using NovaCore.Web.Server.Interfaces;
 
-namespace uhttpsharp.Handlers.Compression
+namespace NovaCore.Web.Server.Handlers.Compression;
+
+public class DeflateCompressor : ICompressor
 {
-    public class DeflateCompressor : ICompressor
-    {
-        public static readonly ICompressor Default = new DeflateCompressor();
+    public static readonly ICompressor Default = new DeflateCompressor();
 
-        public string Name => "deflate";
+    public string Name => "deflate";
         
-        public Task<IHttpResponse> Compress(IHttpResponse response)
-        {
-            return CompressedResponse.CreateDeflate(response);
-        }
+    public Task<IHttpResponse> Compress(IHttpResponse response)
+    {
+        return CompressedResponse.CreateDeflate(response);
     }
 }

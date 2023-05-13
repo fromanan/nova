@@ -1,30 +1,20 @@
 ﻿using System;
-using uhttpsharp.Headers;
+using NovaCore.Web.Server.Headers;
+using NovaCore.Web.Server.Interfaces;
 
-namespace uhttpsharp.RequestProviders
+namespace NovaCore.Web.Server.RequestProviders;
+
+internal record HttpRequestMethodDecorator(IHttpRequest Child, HttpMethods Method) : IHttpRequest
 {
-    internal class HttpRequestMethodDecorator : IHttpRequest
-    {
-        private readonly IHttpRequest child;
+    public IHttpHeaders Headers => Child.Headers;
 
-        public HttpRequestMethodDecorator(IHttpRequest child, HttpMethods method)
-        {
-            this.child = child;
-            Method = method;
-        }
+    public string Protocol => Child.Protocol;
 
-        public IHttpHeaders Headers => child.Headers;
+    public Uri Uri => Child.Uri;
 
-        public HttpMethods Method { get; }
+    public string[] RequestParameters => Child.RequestParameters;
 
-        public string Protocol => child.Protocol;
+    public IHttpPost Post => Child.Post;
 
-        public Uri Uri => child.Uri;
-
-        public string[] RequestParameters => child.RequestParameters;
-
-        public IHttpPost Post => child.Post;
-
-        public IHttpHeaders QueryString => child.QueryString;
-    }
+    public IHttpHeaders QueryString => Child.QueryString;
 }

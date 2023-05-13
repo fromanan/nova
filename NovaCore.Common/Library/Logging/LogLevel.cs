@@ -1,14 +1,13 @@
-namespace NovaCore.Common.Logging
+namespace NovaCore.Common.Logging;
+
+public enum LogLevel
 {
-    public enum LogLevel
-    {
-        Log, 
-        Info, 
-        Warning, 
-        Error, 
-        Exception, 
-        Critical, 
-        Crash,
-        Custom
-    }
+    Log, 
+    Info, 
+    Warning, 
+    Error, 
+    Exception, 
+    Critical, 
+    Crash,
+    Custom
 }

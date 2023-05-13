@@ -22,6 +22,11 @@
   &lt;Assembly Path="D:\Source\Nova\packages\Unity3D.SDK.2021.1.14.1\lib\UnityEditor.dll" /&gt;&#xD;
 &lt;/AssemblyExplorer&gt;</s:String>
 	<s:String x:Key="/Default/Environment/Hierarchy/Build/BuildTool/CustomBuildToolPath/@EntryValue">C:\Program Files\dotnet\sdk\6.0.102\MSBuild.dll</s:String>
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=NovaCore_002ECommon_002FLibrary_002FCLI_002FConsoleMessages/@EntryIndexedValue">False</s:Boolean>
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=NovaCore_002ECommon_002FResources_002FMessages/@EntryIndexedValue">False</s:Boolean>
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=NovaCore_002EWeb_002FLibrary_002FServer_002FServerMessages/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=NovaCore_002EWeb_002FResources_002FText/@EntryIndexedValue">False</s:Boolean>
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/Initialized/@EntryValue">True</s:Boolean>
 	
 	
 	<s:Boolean x:Key="/Default/UnloadedProject/UnloadedProjects/=3099d215_002D7155_002D4ee7_002D8006_002D0d76e3b072c9_0023Nova/@EntryIndexedValue">True</s:Boolean>

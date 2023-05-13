@@ -1,128 +1,121 @@
-/*
- * Copyright (C) 2011 uhttpsharp project - http://github.com/raistlinthewiz/uhttpsharp
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
-
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
-
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- */
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Win32.SafeHandles;
-using NovaCore.Common;
-using uhttpsharp.Clients;
-using uhttpsharp.Listeners;
-using uhttpsharp.RequestProviders;
+using NovaCore.Common.Extensions;
+using NovaCore.Web.Server.Extensions;
+using NovaCore.Web.Server.Handlers;
+using NovaCore.Web.Server.Interfaces;
 using Logger = NovaCore.Common.Logging.Logger;
 
-namespace uhttpsharp
+namespace NovaCore.Web.Server;
+
+public sealed class HttpServer : IDisposable
 {
-    public sealed class HttpServer : IDisposable
+    private readonly IList<IHttpRequestHandler> _handlers = new List<IHttpRequestHandler>();
+    private readonly IList<IHttpListener> _listeners = new List<IHttpListener>();
+    private readonly IList<HttpClientHandler> _clientHandlers = new List<HttpClientHandler>();
+    
+    private readonly IHttpRequestProvider _requestProvider;
+
+    private readonly AutoResetEvent _serverStoppedHandle = new(false);
+
+    public readonly Logger Logger;
+    
+    public SafeWaitHandle ServerWaitHandle => _serverStoppedHandle.SafeWaitHandle;
+
+    private readonly CancellationTokenSource _cancellationTokenSource = new();
+
+    public bool Active => !_cancellationTokenSource.IsCancellationRequested;
+
+    public bool Serving => !_clientHandlers.Any(c => c.Client.Connected);
+
+    public HttpServer(IHttpRequestProvider requestProvider, Logger logger = null)
     {
-        private bool isActive;
+        _requestProvider = requestProvider;
+        Logger = logger ?? new Logger();
+    }
 
-        private readonly IList<IHttpRequestHandler> handlers = new List<IHttpRequestHandler>();
-        private readonly IList<IHttpListener> listeners = new List<IHttpListener>();
-        private readonly IHttpRequestProvider requestProvider;
-        private readonly IList<HttpClientHandler> clientHandlers = new List<HttpClientHandler>();
+    public void Use(IHttpRequestHandler handler)
+    {
+        _handlers.Add(handler);
+    }
 
-        public readonly Logger Logger;
+    public void Use(IHttpListener listener)
+    {
+        _listeners.Add(listener);
+    }
+
+    public void Start()
+    {
+        _listeners.ForEach(AddListener);
         
-        private readonly AutoResetEvent ServerStoppedHandle = new(false);
+        // Logger.InfoFormat(ServerMessages.Started);
+        Logger.LogInfo(ServerMessages.Started);
+    }
 
-        public HttpServer(IHttpRequestProvider requestProvider, Logger logger = null)
+    private void AddListener(IHttpListener listener)
+    {
+        void ListenTask() { Listen(listener); }
+        Task.Factory.StartNew(ListenTask);
+    }
+
+    private async void Listen(IHttpListener listener)
+    {
+        Func<IHttpContext, Task> aggregatedHandler = _handlers.Aggregate();
+        while (Active)
         {
-            this.requestProvider = requestProvider;
-            Logger = logger ?? new Logger();
+            try { await CreateClientHandler(listener, aggregatedHandler).ContextIndependent(); }
+            catch (Exception ex) { HandleClientException(ex); }
         }
 
-        public void Use(IHttpRequestHandler handler)
+        // Allow all connections to be closed
+        await Task.Run(CloseAllConnections);
+
+        // Alerts any awaiters for stopping that we are done
+        _serverStoppedHandle.Set();
+
+        // Logger.InfoFormat(ServerMessages.Stopped);
+        Logger.LogInfo(ServerMessages.Stopped);
+    }
+
+    private async Task CreateClientHandler(IHttpListener listener, Func<IHttpContext, Task> aggregatedHandler)
+    {
+        IClient client = await listener.GetClient().ContextIndependent();
+        _clientHandlers.Add(new HttpClientHandler(client, aggregatedHandler, _requestProvider, Logger));
+    }
+
+    private void HandleClientException(Exception ex)
+    {
+        // Logger.WarnException(ServerMessages.ErrorGettingClient, e);
+        Logger.LogError(ServerMessages.ErrorGettingClient);
+        Logger.LogException(ex);
+    }
+
+    public void Dispose()
+    {
+        CloseServer();
+    }
+
+    public void CloseServer()
+    {
+        _cancellationTokenSource.Cancel();
+    }
+
+    public void WaitForClose()
+    {
+        _serverStoppedHandle.WaitOne();
+    }
+
+    public void CloseAllConnections()
+    {
+        void CloseConnection(HttpClientHandler clientHandler)
         {
-            handlers.Add(handler);
+            clientHandler?.CloseClient();
         }
-
-        public void Use(IHttpListener listener)
-        {
-            listeners.Add(listener);
-        }
-
-        public void Start()
-        {
-            isActive = true;
-            foreach (IHttpListener listener in listeners)
-            {
-                IHttpListener tempListener = listener;
-                Task.Factory.StartNew(() => Listen(tempListener));
-            }
-
-            // Logger.InfoFormat("Embedded uhttpserver started.");
-            Logger.LogInfo("Embedded uhttpserver started.");
-        }
-
-        private async void Listen(IHttpListener listener)
-        {
-            Func<IHttpContext, Task> aggregatedHandler = handlers.Aggregate();
-            while (isActive)
-            {
-                try
-                {
-                    IClient client = await listener.GetClient().ConfigureAwait(false);
-                    clientHandlers.Add(new HttpClientHandler(client, aggregatedHandler, requestProvider, Logger));
-                }
-                catch (Exception ex)
-                {
-                    // Logger.WarnException("Error while getting client", e);
-                    Logger.LogError("Error while getting client");
-                    Logger.LogException(ex);
-                }
-            }
-
-            await Task.Run(CloseAllConnections);
-
-            ServerStoppedHandle.Set();
-
-            // Logger.InfoFormat("Embedded uhttpserver stopped.");
-            Logger.LogInfo("Embedded uhttpserver stopped.");
-        }
-
-        public void Dispose()
-        {
-            CloseServer();
-        }
-
-        public void CloseServer()
-        {
-            isActive = false;
-        }
-
-        public void WaitForClose()
-        {
-            ServerStoppedHandle.WaitOne();
-        }
-
-        public SafeWaitHandle ServerWaitHandle => ServerStoppedHandle.SafeWaitHandle;
-
-        public bool Serving => !clientHandlers.Any(c => c.Client.Connected);
-
-        public void CloseAllConnections()
-        {
-            foreach (HttpClientHandler clientHandler in clientHandlers)
-            {
-                clientHandler?.ForceClose();
-            }
-        }
+        
+        _clientHandlers.ForEach(CloseConnection);
     }
 }

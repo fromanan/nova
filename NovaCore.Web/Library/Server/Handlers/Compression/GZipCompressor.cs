@@ -1,16 +1,16 @@
 using System.Threading.Tasks;
+using NovaCore.Web.Server.Interfaces;
 
-namespace uhttpsharp.Handlers.Compression
+namespace NovaCore.Web.Server.Handlers.Compression;
+
+public class GZipCompressor : ICompressor
 {
-    public class GZipCompressor : ICompressor
-    {
-        public static readonly ICompressor Default = new GZipCompressor();
+    public static readonly ICompressor Default = new GZipCompressor();
 
-        public string Name => "gzip";
+    public string Name => "gzip";
         
-        public Task<IHttpResponse> Compress(IHttpResponse response)
-        {
-            return CompressedResponse.CreateGZip(response);
-        }
+    public Task<IHttpResponse> Compress(IHttpResponse response)
+    {
+        return CompressedResponse.CreateGZip(response);
     }
 }

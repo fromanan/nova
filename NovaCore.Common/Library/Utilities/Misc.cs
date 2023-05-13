@@ -1,7 +1,6 @@
-namespace NovaCore.Common.Utilities
+namespace NovaCore.Common.Utilities;
+
+public static class Misc
 {
-    public static class Misc
-    {
         
-    }
 }

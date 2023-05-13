@@ -1,7 +1,6 @@
-namespace NovaCore.Common
+namespace NovaCore.Common.Interfaces;
+
+public interface INovaRestart : INova
 {
-    public interface INovaRestart : INova
-    {
-        void OnRestart();
-    }
+    void OnRestart();
 }

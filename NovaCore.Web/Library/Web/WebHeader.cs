@@ -1,35 +1,39 @@
 ﻿using System;
 using Header = System.Collections.Generic.KeyValuePair<string, string>;
 
-namespace NovaCore.Web
+namespace NovaCore.Web;
+
+public record WebHeader : IFormattable
 {
-    public class WebHeader : IFormattable
+    private readonly Header _header;
+
+    public string Key => _header.Key;
+
+    public string Value => _header.Value;
+
+    public WebHeader(Header header)
     {
-        private readonly Header header;
-
-        public string Key => header.Key;
-
-        public string Value => header.Value;
-
-        public WebHeader(Header header)
-        {
-            this.header = header;
-        }
+        _header = header;
+    }
         
-        public WebHeader(string key, string value)
-        {
-            header = new Header(key, value);
-        }
+    public WebHeader(string key, string value)
+    {
+        _header = new Header(key, value);
+    }
 
-        public static implicit operator Header(WebHeader d) => d.header;
-        
-        public static explicit operator WebHeader(Header b) => new WebHeader(b);
+    public string HeaderString => $"{_header.Key} : {_header.Value}";
 
-        public override string ToString() => $"{header.Key} : {header.Value}";
+    public static implicit operator Header(WebHeader d) => d._header;
         
-        public string ToString(string format, IFormatProvider formatProvider)
-        {
-            return $"{header.Key} : {header.Value}";
-        }
+    public static explicit operator WebHeader(Header b) => new(b);
+
+    public override string ToString()
+    {
+        return HeaderString;
+    }
+
+    public string ToString(string format, IFormatProvider formatProvider)
+    {
+        return HeaderString;
     }
 }

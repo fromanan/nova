@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <LangVersion>9</LangVersion>
+        <LangVersion>10</LangVersion>
         <SelfContained>true</SelfContained>
         <TargetFrameworks>net6.0;net6.0-windows</TargetFrameworks>
         <Title>NovaCore</Title>

@@ -1,36 +1,26 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using NovaCore.Web.Server.Interfaces;
 
-namespace uhttpsharp.Headers
+namespace NovaCore.Web.Server.Headers;
+
+internal record HttpHeadersDebuggerProxy(IHttpHeaders Real)
 {
-    internal class HttpHeadersDebuggerProxy
+    [DebuggerDisplay("{Value,nq}", Name = "{Key,nq}")]
+    internal class HttpHeader
     {
-        private readonly IHttpHeaders real;
-
-        [DebuggerDisplay("{Value,nq}", Name = "{Key,nq}")]
-        internal class HttpHeader
+        private readonly StringPair _header;
+        public HttpHeader(StringPair header)
         {
-            private readonly KeyValuePair<string, string> header;
-            public HttpHeader(KeyValuePair<string, string> header)
-            {
-                this.header = header;
-            }
-
-            public string Value => header.Value;
-
-            public string Key => header.Key;
+            _header = header;
         }
 
-        public HttpHeadersDebuggerProxy(IHttpHeaders real)
-        {
-            this.real = real;
-        }
+        public string Value => _header.Value;
 
-        [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
-        public HttpHeader[] Headers
-        {
-            get { return real.Select(kvp => new HttpHeader(kvp)).ToArray(); }
-        }
+        public string Key => _header.Key;
     }
+
+    [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
+    public IEnumerable<HttpHeader> Headers => Real.Select(kvp => new HttpHeader(kvp)).ToArray();
 }

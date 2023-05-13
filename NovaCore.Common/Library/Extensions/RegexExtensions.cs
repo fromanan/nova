@@ -1,12 +1,11 @@
 using System.Text.RegularExpressions;
 
-namespace NovaCore.Common.Extensions
+namespace NovaCore.Common.Extensions;
+
+public static class RegexExtensions
 {
-    public static class RegexExtensions
+    public static string Remove(this Regex regex, string input)
     {
-        public static string Remove(this Regex regex, string input)
-        {
-            return regex.Replace(input, "");
-        }
+        return regex.Replace(input, "");
     }
 }

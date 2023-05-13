@@ -1,17 +1,14 @@
 using System;
+using NovaCore.Web.Server.Interfaces;
 
-namespace uhttpsharp
+namespace NovaCore.Web.Server;
+
+public readonly struct HttpMethodProvider : IHttpMethodProvider
 {
-    public class HttpMethodProvider : IHttpMethodProvider
+    public static readonly IHttpMethodProvider Default = new HttpMethodProviderCache(new HttpMethodProvider());
+
+    public HttpMethods Provide(string name)
     {
-        public static readonly IHttpMethodProvider Default = new HttpMethodProviderCache(new HttpMethodProvider());
-
-        internal HttpMethodProvider() { }
-
-        public HttpMethods Provide(string name)
-        {
-            string capitalName = name[..1].ToUpper() + name.Substring(1).ToLower();
-            return (HttpMethods)Enum.Parse(typeof(HttpMethods), capitalName);
-        }
+        return Enum.Parse<HttpMethods>(name[..1].ToUpper() + name[1..].ToLower());
     }
 }

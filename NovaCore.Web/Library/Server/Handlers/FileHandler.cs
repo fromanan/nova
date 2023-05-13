@@ -1,71 +1,48 @@
-﻿/*
- * Copyright (C) 2011 uhttpsharp project - http://github.com/raistlinthewiz/uhttpsharp
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
-
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
-
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- */
-
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Threading.Tasks;
-using uhttpsharp.Headers;
+using NovaCore.Common.Extensions;
+using NovaCore.Web.Server.Interfaces;
+using NovaCore.Web.Server.Responses;
 
-namespace uhttpsharp.Handlers
+namespace NovaCore.Web.Server.Handlers;
+
+public class FileHandler : IHttpRequestHandler
 {
-    public class FileHandler : IHttpRequestHandler
+    public static string DefaultMimeType { get; set; } = "text/plain";
+    
+    public static string HttpRootDirectory { get; set; }
+    
+    public static IStringDict MimeTypes { get; private set; } = new StringDict
     {
-        public static string DefaultMimeType { get; set; }
-        public static string HttpRootDirectory { get; set; }
-        public static IDictionary<string, string> MimeTypes { get; private set; }
+        { ".css", "text/css" },
+        { ".gif", "image/gif" },
+        { ".htm", "text/html" },
+        { ".html", "text/html" },
+        { ".jpg", "image/jpeg" },
+        { ".js", "application/javascript" },
+        { ".png", "image/png" },
+        { ".xml", "application/xml" },
+    };
 
-        static FileHandler()
+    private static string GetContentType(string path)
+    {
+        string extension = Path.GetExtension(path) ?? string.Empty;
+        return MimeTypes.TryGetValue(extension, out string type) ? type : DefaultMimeType;
+    }
+    public async Task Handle(IHttpContext context, System.Func<Task> next)
+    {
+        string requestPath = context.Request.Uri.OriginalString.TrimStart('/');
+
+        string httpRoot = Path.GetFullPath(HttpRootDirectory ?? ".");
+        string path = Path.GetFullPath(Path.Combine(httpRoot, requestPath));
+
+        if (!File.Exists(path))
         {
-            DefaultMimeType = "text/plain";
-            MimeTypes = new Dictionary<string, string>
-            {
-                { ".css", "text/css" },
-                { ".gif", "image/gif" },
-                { ".htm", "text/html" },
-                { ".html", "text/html" },
-                { ".jpg", "image/jpeg" },
-                { ".js", "application/javascript" },
-                { ".png", "image/png" },
-                { ".xml", "application/xml" },
-            };
+            await next().ContextIndependent();
+            return;
         }
 
-        private static string GetContentType(string path)
-        {
-            string extension = Path.GetExtension(path) ?? string.Empty;
-            return MimeTypes.ContainsKey(extension) ? MimeTypes[extension] : DefaultMimeType;
-        }
-        public async Task Handle(IHttpContext context, System.Func<Task> next)
-        {
-            string requestPath = context.Request.Uri.OriginalString.TrimStart('/');
-
-            string httpRoot = Path.GetFullPath(HttpRootDirectory ?? ".");
-            string path = Path.GetFullPath(Path.Combine(httpRoot, requestPath));
-
-            if (!File.Exists(path))
-            {
-                await next().ConfigureAwait(false);
-
-                return;
-            }
-
-            context.Response = new HttpResponse(GetContentType(path), File.OpenRead(path),
-                context.Request.Headers.KeepAliveConnection());
-        }
+        context.Response = new HttpResponse(GetContentType(path), File.OpenRead(path),
+            context.Request.Headers.KeepAliveConnection());
     }
 }

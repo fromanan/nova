@@ -3,7 +3,7 @@
     <PropertyGroup>
         <TargetFramework>net6.0-windows</TargetFramework>
         <Nullable>enable</Nullable>
-        <LangVersion>9</LangVersion>
+        <LangVersion>10</LangVersion>
         <PublishSingleFile>true</PublishSingleFile>
         <SelfContained>true</SelfContained>
         <UseWindowsForms>true</UseWindowsForms>
@@ -12,6 +12,13 @@
         <Authors>Froman Interactive Media</Authors>
         <PackageProjectUrl>https://github.com/fromanan/nova</PackageProjectUrl>
         <NeutralLanguage>en</NeutralLanguage>
+    </PropertyGroup>
+    
+    <PropertyGroup>
+        <NoWarn>CS8600</NoWarn>
+        <NoWarn>CS8603</NoWarn>
+        <NoWarn>CS8625</NoWarn>
+        <NoWarn>CS8618</NoWarn>
     </PropertyGroup>
 
     <ItemGroup>

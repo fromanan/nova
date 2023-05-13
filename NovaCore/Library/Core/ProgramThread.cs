@@ -1,12 +1,11 @@
 using NovaCore.Threading;
 
-namespace NovaCore.Core
+namespace NovaCore.Core;
+
+public class ProgramThread : NovaThread
 {
-    public class ProgramThread : NovaThread
+    protected override void Update()
     {
-        protected override void Update()
-        {
             
-        }
     }
 }

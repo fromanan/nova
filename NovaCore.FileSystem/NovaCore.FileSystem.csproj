@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <LangVersion>9</LangVersion>
+        <LangVersion>10</LangVersion>
         <PublishSingleFile>true</PublishSingleFile>
         <SelfContained>true</SelfContained>
         <RootNamespace>NovaCore</RootNamespace>
@@ -10,6 +10,7 @@
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <PackageProjectUrl>https://github.com/fromanan/nova</PackageProjectUrl>
         <NeutralLanguage>en</NeutralLanguage>
+        <NoWarn>CA1416</NoWarn>
     </PropertyGroup>
     <PropertyGroup>
         <AssemblyOriginatorKeyFile>novacore.filesystem.snk</AssemblyOriginatorKeyFile>

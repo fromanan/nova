@@ -1,15 +1,14 @@
 ﻿using System.Net;
 
-namespace NovaCore.Web.Extensions
+namespace NovaCore.Web.Extensions;
+
+public static class HttpWebRequestExtensions
 {
-    public static class HttpWebRequestExtensions
+    public static void AddHeaders(this HttpWebRequest request, params WebHeader[] extraHeaders)
     {
-        public static void AddHeaders(this HttpWebRequest request, params WebHeader[] extraHeaders)
+        foreach (WebHeader header in extraHeaders)
         {
-            foreach (WebHeader header in extraHeaders)
-            {
-                request.Headers.Add(header.Key, header.Value);
-            }
+            request.Headers.Add(header.Key, header.Value);
         }
     }
 }

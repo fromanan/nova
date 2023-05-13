@@ -2,102 +2,85 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using uhttpsharp.Headers;
+using NovaCore.Web.Server.Interfaces;
 
-namespace uhttpsharp.ModelBinders
+namespace NovaCore.Web.Server.ModelBinders;
+
+public record ModelBinder(IObjectActivator Activator) : IModelBinder
 {
-    public class ModelBinder : IModelBinder
+    public T Get<T>(byte[] raw, string prefix)
     {
-        private readonly IObjectActivator activator;
-
-        public ModelBinder(IObjectActivator activator)
-        {
-            this.activator = activator;
-        }
-
-        public T Get<T>(byte[] raw, string prefix)
-        {
-            throw new NotSupportedException();
-        }
-
-        public T Get<T>(IHttpHeaders headers)
-        {
-            T retVal = activator.Activate<T>(null);
-
-            foreach (PropertyInfo prop in retVal.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
-            {
-                if (prop.PropertyType.IsPrimitive || prop.PropertyType == typeof(string))
-                {
-                    if (!headers.TryGetByName(prop.Name, out string stringValue)) continue;
-                    object value = Convert.ChangeType(stringValue, prop.PropertyType);
-                    prop.SetValue(retVal, value);
-                }
-                else
-                {
-                    object value = Get(prop.PropertyType, headers, prop.Name);
-                    prop.SetValue(retVal, value);
-                }
-            }
-
-            return retVal;
-        }
-
-        private object Get(Type type, IHttpHeaders headers, string prefix)
-        {
-            if (type.IsPrimitive || type == typeof(string))
-            {
-                return headers.TryGetByName(prefix, out string value) ? Convert.ChangeType(value, type) : null;
-            }
-
-            object retVal = activator.Activate(type, null);
-
-            List<PropertyInfo> setValues =
-                retVal.GetType()
-                    .GetProperties(BindingFlags.Instance | BindingFlags.Public)
-                    .Where(p => headers.TryGetByName($"{prefix}[{p.Name}]", out string _)).ToList();
-
-            if (setValues.Count == 0)
-            {
-                return null;
-            }
-
-            foreach (PropertyInfo prop in setValues)
-            {
-                if (!headers.TryGetByName($"{prefix}[{prop.Name}]", out string stringValue)) continue;
-                object value = prop.PropertyType.IsPrimitive || prop.PropertyType == typeof(string)
-                    ? Convert.ChangeType(stringValue, prop.PropertyType)
-                    : Get(prop.PropertyType, headers, $"{prefix}[{prop.Name}]");
-
-                prop.SetValue(retVal, value);
-            }
-
-            return retVal;
-        }
-
-        public T Get<T>(IHttpHeaders headers, string prefix)
-        {
-            return (T)Get(typeof(T), headers, prefix);
-        }
+        throw new NotSupportedException();
+    }
+    
+    public T Get<T>(IHttpHeaders headers, string prefix)
+    {
+        return (T)Get(typeof(T), headers, prefix);
     }
 
-    public class ObjectActivator : IObjectActivator
+    public T Get<T>(IHttpHeaders headers)
     {
-        public object Activate(Type type, Func<string, Type, object> argumentGetter)
+        T returnValue = Activator.Activate<T>();
+
+        foreach (PropertyInfo prop in GetProperties(returnValue))
         {
-            return Activator.CreateInstance(type);
+            object value;
+            
+            if (prop.PropertyType.IsPrimitive || prop.PropertyType == typeof(string))
+            {
+                if (!headers.HasValue(prop.Name))
+                    continue;
+                value = Convert.ChangeType(headers.GetByName(prop.Name), prop.PropertyType);
+            }
+            else
+            {
+                value = Get(prop.PropertyType, headers, prop.Name);
+            }
+            
+            prop.SetValue(returnValue, value);
         }
+
+        return returnValue;
     }
 
-    public interface IObjectActivator
+    private object Get(Type type, IHttpHeaders headers, string prefix)
     {
-        object Activate(Type type, Func<string, Type, object> argumentGetter);
+        if (type.IsPrimitive || type == typeof(string))
+        {
+            string value = headers.GetByNameOrDefault<string>(prefix, null);
+            return value is not null ? Convert.ChangeType(value, type) : null;
+        }
+
+        object returnValue = Activator.Activate(type);
+
+        List<PropertyInfo> setValues = GetProperties(returnValue)
+                .Where(p => headers.HasValue($"{prefix}[{p.Name}]"))
+                .ToList();
+
+        if (setValues.Count == 0)
+            return null;
+
+        foreach (PropertyInfo prop in setValues.Where(prop => headers.HasValue($"{prefix}[{prop.Name}]")))
+        {
+            object value;
+
+            if (prop.PropertyType.IsPrimitive || prop.PropertyType == typeof(string))
+            {
+                value = Convert.ChangeType(headers.GetByName($"{prefix}[{prop.Name}]"), prop.PropertyType);
+            }
+            else
+            {
+                value = Get(prop.PropertyType, headers, $"{prefix}[{prop.Name}]");
+            }
+
+            prop.SetValue(returnValue, value);
+        }
+
+        return returnValue;
     }
 
-    public static class ObjectActivatorExtensions
+    private static IEnumerable<PropertyInfo> GetProperties<T>(T returnValue)
     {
-        public static T Activate<T>(this IObjectActivator activator, Func<string, Type, object> argumentGetter)
-        {
-            return (T)activator.Activate(typeof(T), argumentGetter);
-        }
+        return returnValue.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
     }
 }

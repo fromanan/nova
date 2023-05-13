@@ -1,7 +1,6 @@
-namespace NovaCore.Common
+namespace NovaCore.Common.Interfaces;
+
+public interface INovaShutdown : INova
 {
-    public interface INovaShutdown : INova
-    {
-        void OnShutdown();
-    }
+    void OnShutdown();
 }

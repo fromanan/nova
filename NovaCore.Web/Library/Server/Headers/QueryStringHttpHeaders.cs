@@ -2,58 +2,52 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using NovaCore.Web.Server.Interfaces;
 
-namespace uhttpsharp.Headers
+namespace NovaCore.Web.Server.Headers;
+
+[DebuggerDisplay("{Count} Query String Headers")]
+[DebuggerTypeProxy(typeof(HttpHeadersDebuggerProxy))]
+internal class QueryStringHttpHeaders : IHttpHeaders
 {
-    [DebuggerDisplay("{Count} Query String Headers")]
-    [DebuggerTypeProxy(typeof(HttpHeadersDebuggerProxy))]
-    internal class QueryStringHttpHeaders : IHttpHeaders
+    private readonly HttpHeaders _child;
+
+    internal int Count { get; }
+
+    public QueryStringHttpHeaders(string query)
     {
-        private readonly HttpHeaders child;
-        private static readonly char[] Separators = { '&', '=' };
+        StringDict values = Webtools.DeserializeDictionary(query);
+        Count = values.Count;
+        _child = new HttpHeaders(values);
+    }
 
-        public QueryStringHttpHeaders(string query)
-        {
-            string[] splitKeyValues = query.Split(Separators, StringSplitOptions.RemoveEmptyEntries);
-            Dictionary<string, string> values = new(splitKeyValues.Length / 2,
-                StringComparer.InvariantCultureIgnoreCase);
+    public bool HasValue(string name)
+    {
+        return _child.HasValue(name);
+    }
 
-            for (int i = 0; i < splitKeyValues.Length; i += 2)
-            {
-                string key = Uri.UnescapeDataString(splitKeyValues[i]);
-                string value = null;
-                if (splitKeyValues.Length > i + 1)
-                {
-                    value = Uri.UnescapeDataString(splitKeyValues[i + 1]).Replace('+', ' ');
-                }
+    public bool HasValue(string name, string value, StringComparison comparison)
+    {
+        return _child.HasValue(name, value, comparison);
+    }
 
-                values[key] = value;
-            }
-
-            Count = values.Count;
-            child = new HttpHeaders(values);
-        }
-
-        public string GetByName(string name)
-        {
-            return child.GetByName(name);
-        }
+    public string GetByName(string name)
+    {
+        return _child.GetByName(name);
+    }
         
-        public bool TryGetByName(string name, out string value)
-        {
-            return child.TryGetByName(name, out value);
-        }
+    public bool TryGetByName(string name, out string value)
+    {
+        return _child.TryGetByName(name, out value);
+    }
+    
+    public IEnumerator<StringPair> GetEnumerator()
+    {
+        return _child.GetEnumerator();
+    }
         
-        public IEnumerator<KeyValuePair<string, string>> GetEnumerator()
-        {
-            return child.GetEnumerator();
-        }
-        
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
-        internal int Count { get; }
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
     }
 }

@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <LangVersion>9</LangVersion>
+        <LangVersion>10</LangVersion>
         <PublishSingleFile>true</PublishSingleFile>
         <SelfContained>true</SelfContained>
         <TargetFrameworks>net6.0;net6.0-windows</TargetFrameworks>
@@ -24,6 +24,28 @@
     </ItemGroup>
     <ItemGroup>
       <Folder Include="External" />
+    </ItemGroup>
+    <ItemGroup>
+      <EmbeddedResource Update="Library\CLI\ConsoleMessages.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>ConsoleMessages.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Messages.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Messages.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+    </ItemGroup>
+    <ItemGroup>
+      <Compile Update="Library\CLI\ConsoleMessages.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>ConsoleMessages.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Messages.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Messages.resx</DependentUpon>
+      </Compile>
     </ItemGroup>
     <Target Name="PostBuild" AfterTargets="PostBuildEvent">
       <Exec Command="echo f | xcopy /R /F /I /Y &quot;$(TargetPath)&quot; &quot;%userprofile%\Downloads\Builds\&quot;&#xA;echo f | xcopy /R /F /I /Y &quot;$(TargetDir)..\*.nupkg&quot; &quot;X:\Packages\&quot;" />

@@ -1,26 +1,28 @@
 ﻿using System.Net.Sockets;
 using System.Threading.Tasks;
-using uhttpsharp.Clients;
+using NovaCore.Common.Extensions;
+using NovaCore.Web.Server.Clients;
+using NovaCore.Web.Server.Interfaces;
 
-namespace uhttpsharp.Listeners
+namespace NovaCore.Web.Server.Listeners;
+
+public readonly struct TcpListenerAdapter : IHttpListener
 {
-    public class TcpListenerAdapter : IHttpListener
+    private readonly TcpListener _listener;
+
+    public TcpListenerAdapter(TcpListener listener)
     {
-        private readonly TcpListener listener;
+        _listener = listener;
+        _listener.Start();
+    }
+    
+    public async Task<IClient> GetClient()
+    {
+        return new TcpClientAdapter(await _listener.AcceptTcpClientAsync().ContextIndependent());
+    }
 
-        public TcpListenerAdapter(TcpListener listener)
-        {
-            this.listener = listener;
-            this.listener.Start();
-        }
-        public async Task<IClient> GetClient()
-        {
-            return new TcpClientAdapter(await listener.AcceptTcpClientAsync().ConfigureAwait(false));
-        }
-
-        public void Dispose()
-        {
-            listener.Stop();
-        }
+    public void Dispose()
+    {
+        _listener.Stop();
     }
 }

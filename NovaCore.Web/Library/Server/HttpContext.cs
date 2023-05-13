@@ -1,26 +1,23 @@
+using System;
 using System.Dynamic;
 using System.Net;
-using uhttpsharp.Headers;
+using NovaCore.Web.Server.Headers;
+using NovaCore.Web.Server.Interfaces;
 
-namespace uhttpsharp
+namespace NovaCore.Web.Server;
+
+internal record HttpContext(IHttpRequest Request, EndPoint RemoteEndPoint) : IHttpContext
 {
-    internal class HttpContext : IHttpContext
-    {
-        private readonly ExpandoObject state = new();
-        public HttpContext(IHttpRequest request, EndPoint remoteEndPoint)
-        {
-            Request = request;
-            RemoteEndPoint = remoteEndPoint;
-            Cookies = new CookiesStorage(Request.Headers.GetByNameOrDefault("cookie", string.Empty));
-        }
+    private readonly ExpandoObject _state = new();
 
-        public IHttpRequest Request { get; }
+    public IHttpResponse Response { get; set; }
 
-        public IHttpResponse Response { get; set; }
+    public ICookiesStorage Cookies { get; }
+        = new CookiesStorage(Request.Headers.GetByNameOrDefault("cookie", string.Empty));
 
-        public ICookiesStorage Cookies { get; }
+    public dynamic State => _state;
 
-        public dynamic State => state;
-        public EndPoint RemoteEndPoint { get; }
-    }
+    public string[] SupportedEncodings => Request.Headers
+        .GetByNameOrDefault<string>("Accept-Encoding", null)?
+        .Split(',', StringSplitOptions.RemoveEmptyEntries);
 }

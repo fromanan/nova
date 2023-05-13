@@ -1,7 +1,6 @@
-namespace NovaCore.Common
+namespace NovaCore.Common.Interfaces;
+
+public interface INovaValidate : INova
 {
-    public interface INovaValidate : INova
-    {
-        void OnValidate();
-    }
+    void OnValidate();
 }

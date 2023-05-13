@@ -1,106 +1,90 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using uhttpsharp.Headers;
+using NovaCore.Common.Extensions;
+using NovaCore.Web.Server.Headers;
+using NovaCore.Web.Server.Interfaces;
 
-namespace uhttpsharp.RequestProviders
+namespace NovaCore.Web.Server.RequestProviders;
+
+public class HttpRequestProvider : IHttpRequestProvider
 {
-    public class HttpRequestProvider : IHttpRequestProvider
+    private static readonly char[] Separators = { '/' };
+
+    public async Task<IHttpRequest> Provide(IStreamReader reader)
     {
-        private static readonly char[] Separators = { '/' };
+        // parse the http request
+        if (await reader.ReadLine().ContextIndependent() is not { } request)
+            return null;
 
-        public async Task<IHttpRequest> Provide(IStreamReader reader)
+        if (SplitRequest(request) is not ({ } defaultMethod, { } url, { } httpProtocol))
+            return null;
+
+        IHttpHeaders queryString = GetQueryStringData(ref url);
+        
+        Uri uri = new(url, UriKind.Relative);
+
+        IHttpHeaders headers = await ReadHeaders(reader);
+        
+        IHttpPost post = await GetPostData(reader, headers).ContextIndependent();
+
+        HttpMethods httpMethod = GetMethod(headers, defaultMethod);
+
+        string[] parameters = uri.OriginalString.Split(Separators, StringSplitOptions.RemoveEmptyEntries);
+        
+        return new HttpRequest(headers, httpMethod, httpProtocol, uri, parameters, queryString, post);
+    }
+
+    private static IHttpHeaders GetQueryStringData(ref string url)
+    {
+        if (!url.Contains('?'))
+            return EmptyHttpHeaders.Empty;
+        (url, string queryString) = url.SplitAt('?');
+        return new QueryStringHttpHeaders(queryString);
+    }
+
+    private static async Task<IHttpPost> GetPostData(IStreamReader streamReader, IHttpHeaders headers)
+    {
+        if (headers.TryGetByName("content-length", out int postContentLength) && postContentLength > 0)
+            return await HttpPost.Create(streamReader, postContentLength).ContextIndependent();
+
+        return EmptyHttpPost.Empty;
+    }
+
+    private static StringPair SplitHeader(string header)
+    {
+        (string key, string value) = header.SplitAt(": ");
+        return new StringPair(key, value);
+    }
+    
+    private static (string DefaultMethod, string Url, string HttpProtocol) SplitRequest(string request)
+    {
+        int firstSpace = request.IndexOf(' ');
+        int lastSpace = request.LastIndexOf(' ');
+        return (request[..firstSpace], request.Substring(firstSpace + 1, lastSpace - firstSpace - 1),
+            request[(lastSpace + 1)..]);
+    }
+
+    private static async Task<IHttpHeaders> ReadHeaders(IStreamReader reader)
+    {
+        List<StringPair> headersRaw = new();
+
+        string line = string.Empty;
+        
+        async Task<bool> GetLine()
         {
-            // parse the http request
-            string request = await reader.ReadLine().ConfigureAwait(false);
-
-            if (request == null)
-                return null;
-
-            int firstSpace = request.IndexOf(' ');
-            int lastSpace = request.LastIndexOf(' ');
-
-            string[] tokens =
-            {
-                request[..firstSpace],
-                request.Substring(firstSpace + 1, lastSpace - firstSpace - 1),
-                request[(lastSpace + 1)..]
-            };
-
-            if (tokens.Length != 3)
-            {
-                return null;
-            }
-
-            string httpProtocol = tokens[2];
-
-            string url = tokens[1];
-            IHttpHeaders queryString = GetQueryStringData(ref url);
-            Uri uri = new(url, UriKind.Relative);
-
-            List<KeyValuePair<string, string>> headersRaw = new();
-
-            // get the headers
-            string line;
-
-            while (!string.IsNullOrEmpty((line = await reader.ReadLine().ConfigureAwait(false))))
-            {
-                KeyValuePair<string, string> headerKvp = SplitHeader(line);
-                headersRaw.Add(headerKvp);
-            }
-
-            IHttpHeaders headers =
-                new HttpHeaders(headersRaw.ToDictionary(k => k.Key, k => k.Value,
-                    StringComparer.InvariantCultureIgnoreCase));
-            IHttpPost post = await GetPostData(reader, headers).ConfigureAwait(false);
-
-            if (!headers.TryGetByName("_method", out string verb))
-            {
-                verb = tokens[0];
-            }
-
-            HttpMethods httpMethod = HttpMethodProvider.Default.Provide(verb);
-            return new HttpRequest(headers, httpMethod, httpProtocol, uri,
-                uri.OriginalString.Split(Separators, StringSplitOptions.RemoveEmptyEntries), queryString, post);
+            line = await reader.ReadLine().ContextIndependent();
+            return line.HasValue();
         }
 
-        private static IHttpHeaders GetQueryStringData(ref string url)
-        {
-            int queryStringIndex = url.IndexOf('?');
-            IHttpHeaders queryString;
-            if (queryStringIndex != -1)
-            {
-                queryString = new QueryStringHttpHeaders(url[(queryStringIndex + 1)..]);
-                url = url[..queryStringIndex];
-            }
-            else
-            {
-                queryString = EmptyHttpHeaders.Empty;
-            }
+        while (await GetLine())
+            headersRaw.Add(SplitHeader(line));
 
-            return queryString;
-        }
+        return new HttpHeaders(headersRaw);
+    }
 
-        private static async Task<IHttpPost> GetPostData(IStreamReader streamReader, IHttpHeaders headers)
-        {
-            IHttpPost post;
-            if (headers.TryGetByName("content-length", out int postContentLength) && postContentLength > 0)
-            {
-                post = await HttpPost.Create(streamReader, postContentLength).ConfigureAwait(false);
-            }
-            else
-            {
-                post = EmptyHttpPost.Empty;
-            }
-
-            return post;
-        }
-
-        private static KeyValuePair<string, string> SplitHeader(string header)
-        {
-            int index = header.IndexOf(": ", StringComparison.InvariantCultureIgnoreCase);
-            return new KeyValuePair<string, string>(header[..index], header[(index + 2)..]);
-        }
+    private static HttpMethods GetMethod(IHttpHeaders headers, string defaultMethod)
+    {
+        return HttpMethodProvider.Default.Provide(headers.GetByNameOrDefault("_method", defaultMethod));
     }
 }

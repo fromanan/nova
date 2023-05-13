@@ -1,7 +1,6 @@
-namespace NovaCore.Common
+namespace NovaCore.Common;
+
+public static class Default
 {
-    public static class Default
-    {
         
-    }
 }

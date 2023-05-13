@@ -1,27 +1,28 @@
 using System;
 using System.Diagnostics;
 using System.Reflection;
+using NovaCore.Common.Resources;
 
-namespace NovaCore.Common
+namespace NovaCore.Common;
+
+public static class AppInfo
 {
-    public static class AppInfo
-    {
-        public static readonly Assembly AssemblyInfo = Assembly.GetEntryAssembly();
+    public static readonly Assembly AssemblyInfo = Assembly.GetEntryAssembly();
         
-        public static readonly AssemblyName AssemblyName = Assembly.GetEntryAssembly()?.GetName();
+    public static readonly AssemblyName AssemblyName = AssemblyInfo?.GetName();
         
-        public static readonly FileVersionInfo VersionInfo = FileVersionInfo.GetVersionInfo(AssemblyInfo.Location);
+    public static readonly FileVersionInfo VersionInfo = FileVersionInfo.GetVersionInfo(AppContext.BaseDirectory);
 
-        //Assembly.GetExecutingAssembly().FullName
-        //Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyTitleAttribute>().Title;
-        public static string ApplicationTitle => AssemblyInfo?.FullName;
+    //Assembly.GetExecutingAssembly().FullName
+    //Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyTitleAttribute>().Title;
+    public static string ApplicationTitle => AssemblyInfo?.FullName;
         
-        public static string ProductName => VersionInfo.ProductName;
+    public static string ProductName => VersionInfo.ProductName;
 
-        public static string ProductVersion => VersionInfo.ProductVersion;
+    public static string ProductVersion => VersionInfo.ProductVersion;
 
-        public static string CompanyName => VersionInfo.CompanyName;
+    public static string CompanyName => VersionInfo.CompanyName;
 
-        public static string Copyright = $"{ProductName}, Version {ProductVersion}\nCopyright {CompanyName} ({DateTime.Now.Year}). All rights reserved.";
-    }
+    public static readonly string Copyright = 
+        string.Format(Messages.Copyright, ProductName, ProductVersion, CompanyName, DateTime.Now.Year);
 }

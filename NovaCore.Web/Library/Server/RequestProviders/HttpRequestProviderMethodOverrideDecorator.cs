@@ -1,28 +1,21 @@
 ﻿using System.Threading.Tasks;
+using NovaCore.Common.Extensions;
+using NovaCore.Web.Extensions;
+using NovaCore.Web.Server.Interfaces;
 
-namespace uhttpsharp.RequestProviders
+namespace NovaCore.Web.Server.RequestProviders;
+
+public record HttpRequestProviderMethodOverrideDecorator(IHttpRequestProvider Child) : IHttpRequestProvider
 {
-    public class HttpRequestProviderMethodOverrideDecorator : IHttpRequestProvider
+    public async Task<IHttpRequest> Provide(IStreamReader streamReader)
     {
-        private readonly IHttpRequestProvider child;
+        if (await Child.Provide(streamReader).ContextIndependent() is not { } childValue)
+            return null;
+        
+        if (!childValue.HasHeader("X-HTTP-Method-Override"))
+            return childValue;
 
-        public HttpRequestProviderMethodOverrideDecorator(IHttpRequestProvider child)
-        {
-            this.child = child;
-        }
-
-        public async Task<IHttpRequest> Provide(IStreamReader streamReader)
-        {
-            IHttpRequest childValue = await child.Provide(streamReader).ConfigureAwait(false);
-
-            if (childValue == null)
-            {
-                return null;
-            }
-
-            return !childValue.Headers.TryGetByName("X-HTTP-Method-Override", out string methodName)
-                ? childValue
-                : new HttpRequestMethodDecorator(childValue, HttpMethodProvider.Default.Provide(methodName));
-        }
+        string methodName = childValue.Headers.GetByName("X-HTTP-Method-Override");
+        return new HttpRequestMethodDecorator(childValue, HttpMethodProvider.Default.Provide(methodName));
     }
 }

@@ -3,130 +3,56 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using uhttpsharp.RequestProviders;
+using NovaCore.Web.Server.Interfaces;
 
-namespace uhttpsharp.Headers
+namespace NovaCore.Web.Server.Headers;
+
+[DebuggerDisplay("{Count} Headers")]
+[DebuggerTypeProxy(typeof(HttpHeadersDebuggerProxy))]
+public class HttpHeaders : IHttpHeaders
 {
-    internal class EmptyHttpPost : IHttpPost
+    private readonly IStringDict _values;
+    
+    internal int Count => _values.Count;
+
+    public HttpHeaders(IStringDict values)
     {
-        private static readonly byte[] EmptyBytes = Array.Empty<byte>();
-
-        public static readonly IHttpPost Empty = new EmptyHttpPost();
-
-        private EmptyHttpPost() { }
-
-        #region IHttpPost implementation
-        public byte[] Raw => EmptyBytes;
-
-        public IHttpHeaders Parsed => EmptyHttpHeaders.Empty;
-        #endregion
+        _values = values;
     }
 
-    internal class HttpPost : IHttpPost
+    public HttpHeaders(IEnumerable<StringPair> values)
     {
-        public static async Task<IHttpPost> Create(IStreamReader reader, int postContentLength)
-        {
-            byte[] raw = await reader.ReadBytes(postContentLength).ConfigureAwait(false);
-            return new HttpPost(raw, postContentLength);
-        }
-
-        private readonly int readBytes;
-
-        private readonly Lazy<IHttpHeaders> parsed;
-
-        public HttpPost(byte[] raw, int readBytes)
-        {
-            Raw = raw;
-            this.readBytes = readBytes;
-            parsed = new Lazy<IHttpHeaders>(Parse);
-        }
-
-        private IHttpHeaders Parse()
-        {
-            string body = Encoding.UTF8.GetString(Raw, 0, readBytes);
-            QueryStringHttpHeaders parsed = new(body);
-
-            return parsed;
-        }
-
-        #region IHttpPost implementation
-        public byte[] Raw { get; }
-
-        public IHttpHeaders Parsed => parsed.Value;
-        #endregion
+        _values = new StringDict(values);
     }
 
-    [DebuggerDisplay("{Count} Headers")]
-    [DebuggerTypeProxy(typeof(HttpHeadersDebuggerProxy))]
-    public class ListHttpHeaders : IHttpHeaders
+    public bool HasValue(string name)
     {
-        private readonly IList<KeyValuePair<string, string>> values;
+        return _values.ContainsKey(name);
+    }
+    
+    public bool HasValue(string name, string value, StringComparison comparison)
+    {
+        return _values.Any(kvp => kvp.Key.Equals(name, Webtools.IGNORE_CASE) 
+                                  && kvp.Value.Equals(value, comparison));
+    }
+
+    public string GetByName(string name)
+    {
+        return _values[name];
+    }
         
-        public ListHttpHeaders(IList<KeyValuePair<string, string>> values)
-        {
-            this.values = values;
-        }
-
-        public string GetByName(string name)
-        {
-            return values.Where(kvp => kvp.Key.Equals(name, StringComparison.InvariantCultureIgnoreCase))
-                .Select(kvp => kvp.Value).First();
-        }
-
-        public bool TryGetByName(string name, out string value)
-        {
-            value = values.Where(kvp => kvp.Key.Equals(name, StringComparison.InvariantCultureIgnoreCase))
-                .Select(kvp => kvp.Value).FirstOrDefault();
-
-            return value != default;
-        }
-
-        public IEnumerator<KeyValuePair<string, string>> GetEnumerator()
-        {
-            return values.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
-        internal int Count => values.Count;
+    public bool TryGetByName(string name, out string value)
+    {
+        return _values.TryGetValue(name, out value);
     }
 
-    [DebuggerDisplay("{Count} Headers")]
-    [DebuggerTypeProxy(typeof(HttpHeadersDebuggerProxy))]
-    public class HttpHeaders : IHttpHeaders
+    public IEnumerator<StringPair> GetEnumerator()
     {
-        private readonly IDictionary<string, string> values;
+        return _values.GetEnumerator();
+    }
 
-        public HttpHeaders(IDictionary<string, string> values)
-        {
-            this.values = values;
-        }
-
-        public string GetByName(string name)
-        {
-            return values[name];
-        }
-        
-        public bool TryGetByName(string name, out string value)
-        {
-            return values.TryGetValue(name, out value);
-        }
-
-        public IEnumerator<KeyValuePair<string, string>> GetEnumerator()
-        {
-            return values.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
-        internal int Count => values.Count;
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
     }
 }

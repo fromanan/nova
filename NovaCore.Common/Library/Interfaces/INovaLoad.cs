@@ -1,7 +1,6 @@
-namespace NovaCore.Common
+namespace NovaCore.Common.Interfaces;
+
+public interface INovaLoad : INova
 {
-    public interface INovaLoad : INova
-    {
-        void OnLoad();
-    }
+    void OnLoad();
 }

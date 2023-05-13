@@ -1,71 +1,76 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Threading.Tasks;
-using uhttpsharp.Headers;
+using NovaCore.Common.Extensions;
+using NovaCore.Web.Server.Headers;
+using NovaCore.Web.Server.Interfaces;
+using NovaCore.Web.Server.Responses;
 
-namespace uhttpsharp.Handlers.Compression
+namespace NovaCore.Web.Server.Handlers.Compression;
+
+public class CompressedResponse : IHttpResponse
 {
-    public class CompressedResponse : IHttpResponse
+    private readonly MemoryStream _memoryStream;
+    
+    public HttpResponseCode ResponseCode { get; }
+        
+    public IHttpHeaders Headers { get; }
+        
+    public bool CloseConnection { get; }
+
+    public CompressedResponse(IHttpResponse child, MemoryStream memoryStream, string encoding)
     {
-        private readonly MemoryStream memoryStream;
-
-        public CompressedResponse(IHttpResponse child, MemoryStream memoryStream, string encoding)
-        {
-            this.memoryStream = memoryStream;
-
-            ResponseCode = child.ResponseCode;
-            CloseConnection = child.CloseConnection;
-            Headers =
-                new ListHttpHeaders(
-                    child.Headers.Where(h => !h.Key.Equals("content-length", StringComparison.InvariantCultureIgnoreCase))
-                        .Concat(new[]
-                        {
-                            new KeyValuePair<string, string>("content-length",
-                                memoryStream.Length.ToString(CultureInfo.InvariantCulture)),
-                            new KeyValuePair<string, string>("content-encoding", encoding),
-                        })
-                        .ToList());
-        }
-
-        public static async Task<IHttpResponse> Create(string name, IHttpResponse child, Func<Stream, Stream> streamFactory)
-        {
-            MemoryStream memoryStream = new();
-            await using (Stream deflateStream = streamFactory(memoryStream))
-            await using (StreamWriter deflateWriter = new(deflateStream))
+        _memoryStream = memoryStream;
+        ResponseCode = child.ResponseCode;
+        CloseConnection = child.CloseConnection;
+        Headers = new ListHttpHeaders(
+        child.Headers.Where(h =>
             {
-                await child.WriteBody(deflateWriter).ConfigureAwait(false);
-                await deflateWriter.FlushAsync().ConfigureAwait(false);
-            }
+                return !h.Key.Equals("content-length", StringComparison.InvariantCultureIgnoreCase);
+            })
+            .Concat(new[]
+            {
+                new StringPair("content-length", memoryStream.Length.ToString()),
+                new StringPair("content-encoding", encoding),
+            })
+            .ToList());
+    }
 
-            return new CompressedResponse(child, memoryStream, name);
-        }
-
-        public static Task<IHttpResponse> CreateDeflate(IHttpResponse child)
+    public static async Task<IHttpResponse> Create(string name, IHttpResponse child, Func<Stream, Stream> streamFactory)
+    {
+        MemoryStream memoryStream = new();
+        await using (Stream deflateStream = streamFactory(memoryStream))
+        await using (StreamWriter deflateWriter = new(deflateStream))
         {
-            return Create("deflate", child, s => new DeflateStream(s, CompressionMode.Compress, true));
+            await child.WriteBody(deflateWriter).ContextIndependent();
+            await deflateWriter.FlushAsync().ContextIndependent();
         }
 
-        public static Task<IHttpResponse> CreateGZip(IHttpResponse child)
+        return new CompressedResponse(child, memoryStream, name);
+    }
+
+    public static Task<IHttpResponse> CreateDeflate(IHttpResponse child)
+    {
+        return Create("deflate", child, s =>
         {
-            return Create("gzip", child, s => new GZipStream(s, CompressionMode.Compress, true));
-        }
+            return new DeflateStream(s, CompressionMode.Compress, true);
+        });
+    }
 
-        public async Task WriteBody(StreamWriter writer)
+    public static Task<IHttpResponse> CreateGZip(IHttpResponse child)
+    {
+        return Create("gzip", child, s =>
         {
-            memoryStream.Position = 0;
+            return new GZipStream(s, CompressionMode.Compress, true);
+        });
+    }
 
-            await writer.FlushAsync().ConfigureAwait(false);
-            await memoryStream.CopyToAsync(writer.BaseStream).ConfigureAwait(false);
-        }
-        
-        public HttpResponseCode ResponseCode { get; }
-        
-        public IHttpHeaders Headers { get; }
-        
-        public bool CloseConnection { get; }
+    public async Task WriteBody(StreamWriter writer)
+    {
+        _memoryStream.Position = 0;
+        await writer.FlushAsync().ContextIndependent();
+        await _memoryStream.CopyToAsync(writer.BaseStream).ContextIndependent();
     }
 }

@@ -1,7 +1,6 @@
-namespace NovaCore.Common
+namespace NovaCore.Common.Interfaces;
+
+public interface INovaSave : INova
 {
-    public interface INovaSave : INova
-    {
-        void OnSave();
-    }
+    void OnSave();
 }
